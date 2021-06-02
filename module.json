@@ -1,9 +1,9 @@
 {   
   "name": "swademacros",   
-  "title": "SWADE - Macros",
+  "title": "Macros for SWADE",
   "description": "Macros for SWADE",   
   "author": "Mestre Digital",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "minimumCoreVersion": "0.8.6",
   "compatibleCoreVersion":"0.8.6",
   "packs": [
