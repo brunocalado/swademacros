@@ -21,3 +21,4 @@ There is a journal with the module with instructions for each macro.
 You can see changes at [CHANGELOG](CHANGELOG.md).
 
 # License
+You can see changes at [LICENSE](LICENSE).

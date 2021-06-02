@@ -1,20 +1,27 @@
 {   
-   "name": "swademacros",   
-   "title": "SWADE - Macros",
-   "description": "Macros for SWADE",   
-   "author": "Mestre Digital",
-   "version": "0.0.1",
-   "minimumCoreVersion": "0.8.6",
-   "compatibleCoreVersion":"0.8.6",
-   "packs": [
-      {
-        "name": "macros-for-swade",
-        "label": "Macros for SWADE",
-        "path": "packs/macros-for-swade.db",
-        "entity": "Macro",
-        "module": "swademacros"
-      }
-    ],
+  "name": "swademacros",   
+  "title": "SWADE - Macros",
+  "description": "Macros for SWADE",   
+  "author": "Mestre Digital",
+  "version": "0.0.2",
+  "minimumCoreVersion": "0.8.6",
+  "compatibleCoreVersion":"0.8.6",
+  "packs": [
+    {
+      "name": "macros-for-swade",
+      "label": "Macros for SWADE",
+      "path": "packs/macros-for-swade.db",
+      "entity": "Macro",
+      "module": "swademacros"
+    },
+    {
+      "name": "guide-macros-for-swade",
+      "label": "Guide - Macros for SWADE",
+      "path": "packs/guide-macros-for-swade.db",
+      "entity": "JournalEntry",
+      "module": "swademacros"
+    }      
+  ],
   "system": "swade",
   "url": "https://github.com/brunocalado/swademacros",
   "manifest": "https://raw.githubusercontent.com/brunocalado/swademacros/main/module.json",  
