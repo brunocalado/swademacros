@@ -1,3 +1,6 @@
+# 0.0.7
+raise calculator
+
 # 0.0.6
 small fix for release
 

@@ -15,6 +15,7 @@ const managerType = 'Player - Macro Manager';
     "Next Turn",
     "Gang Up",
     "Grappling",
+    "Raise Calculator",
     "Size/Scale Calculator"
   ];
 

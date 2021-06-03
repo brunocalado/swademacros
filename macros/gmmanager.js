@@ -16,6 +16,7 @@ const managerType = 'GM - Macro Manager';
     "Gang Up",
     "Grappling",
     "Mass Battle",
+    "Raise Calculator",
     "Size/Scale Calculator",
     "Quick Combat"
   ];

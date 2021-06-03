@@ -4,9 +4,17 @@ Simple macros for SWADE.
 <table>
 <thead>
   <tr>
-    <th><p align="center">
-  <img width="300" src="docs/preview01.jpg">
-</p></th>
+    <th>
+      <p align="center">
+        <img width="900" src="docs/preview01.jpg">
+      </p>
+    </th>
+    <th>
+      <p align="center">
+        <img width="400" src="docs/preview02.jpg">
+      </p>
+    </th>    
+  </tr>
 </thead>
 </table>
 
@@ -29,15 +37,18 @@ There is a journal with the module with instructions for each macro.
 <table>
 <thead>
   <tr>
-    <th><p align="center">
-  <img width="300" src="docs/journaldocs.jpg">
-</p></th>
+    <th>
+      <p align="center">
+        <img width="300" src="docs/journaldocs.jpg">
+      </p>
+    </th>
+  </tr>
 </thead>
 </table>
 
-# TODO
-Do you have a cool macro for SWADE? Share it! [Share](https://github.com/brunocalado/swademacros/issues)
-Do you find out a bug? Report it! [Report](https://github.com/brunocalado/swademacros/issues)
+# Community
+- Do you have a cool macro for SWADE? Share it! [Share](https://github.com/brunocalado/swademacros/issues)
+- Do you find out a bug? Report it! [Report](https://github.com/brunocalado/swademacros/issues)
 
 # Changes
 You can see changes at [CHANGELOG](CHANGELOG.md).
