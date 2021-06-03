@@ -22,6 +22,10 @@ Use this: https://raw.githubusercontent.com/brunocalado/swademacros/main/module.
 # How To
 You can get the macros from the compendium after activate the module.
 
+# Macros
+
+There is a journal with the module with instructions for each macro.
+
 <table>
 <thead>
   <tr>
@@ -31,9 +35,9 @@ You can get the macros from the compendium after activate the module.
 </thead>
 </table>
 
-# Macros
-
-There is a journal with the module with instructions for each macro.
+# TODO
+Do you have a cool macro for SWADE? Share it! [Share](https://github.com/brunocalado/swademacros/issues)
+Do you find out a bug? Report it! [Report](https://github.com/brunocalado/swademacros/issues)
 
 # Changes
 You can see changes at [CHANGELOG](CHANGELOG.md).
