@@ -1,6 +1,15 @@
 # Macros for SWADE
 Simple macros for SWADE.
 
+<table>
+<thead>
+  <tr>
+    <th><p align="center">
+  <img width="300" src="docs/preview01.jpg">
+</p></th>
+</thead>
+</table>
+
 # Instalation
 
 ## Foundry VTT
@@ -12,6 +21,15 @@ Use this: https://raw.githubusercontent.com/brunocalado/swademacros/main/module.
 
 # How To
 You can get the macros from the compendium after activate the module.
+
+<table>
+<thead>
+  <tr>
+    <th><p align="center">
+  <img width="300" src="docs/journaldocs.jpg">
+</p></th>
+</thead>
+</table>
 
 # Macros
 
