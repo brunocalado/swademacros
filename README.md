@@ -13,7 +13,7 @@ Simple macros for SWADE.
   <tr>
     <th>
       <p align="center">
-        <img width="600" src="docs/preview02.jpg">
+        <img width="600" src="docs/preview03.jpg">
       </p>
     </th>    
   </tr>  
