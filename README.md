@@ -9,12 +9,14 @@ Simple macros for SWADE.
         <img width="900" src="docs/preview01.jpg">
       </p>
     </th>
+  </tr>
+  <tr>
     <th>
       <p align="center">
         <img width="400" src="docs/preview02.jpg">
       </p>
     </th>    
-  </tr>
+  </tr>  
 </thead>
 </table>
 
