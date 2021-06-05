@@ -1,3 +1,9 @@
+# 0.0.8
+- fix healing to detect wild card ok
+- fix grappling (wild detect) ok
+- fix mass battle (wild select) ok
+- Survival Guide
+
 # 0.0.7
 raise calculator
 

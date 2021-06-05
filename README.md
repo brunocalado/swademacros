@@ -13,10 +13,17 @@ Simple macros for SWADE.
   <tr>
     <th>
       <p align="center">
-        <img width="600" src="docs/preview03.jpg">
+        <img width="600" src="docs/preview02.jpg">
       </p>
     </th>    
   </tr>  
+  <tr>
+    <th>
+      <p align="center">
+        <img width="500" src="docs/preview03.jpg">
+      </p>
+    </th>    
+  </tr>    
 </thead>
 </table> 
 
@@ -49,8 +56,8 @@ There is a journal with the module with instructions for each macro.
 </table>
 
 # Community
-- Do you have a cool macro for SWADE? Share it! [Share](https://github.com/brunocalado/swademacros/issues)
-- Do you find out a bug? Report it! [Report](https://github.com/brunocalado/swademacros/issues)
+- Do you have a cool macro for SWADE? [Share it!](https://github.com/brunocalado/swademacros/issues)
+- Do you find out a bug? [Report it!](https://github.com/brunocalado/swademacros/issues)
 
 # Changes
 You can see changes at [CHANGELOG](CHANGELOG.md).

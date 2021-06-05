@@ -15,8 +15,10 @@ const managerType = 'Player - Macro Manager';
     "Next Turn",
     "Gang Up",
     "Grappling",
+    "Healing",
     "Raise Calculator",
-    "Size/Scale Calculator"
+    "Size/Scale Calculator",
+    "Survival Guide"
   ];
 
   let buttons = {}, dialog, content = `<div sytle="width:100%;text-align:center;><h2>Choose Macro</h2></div>`;
