@@ -1,4 +1,4 @@
-const version = 'v1.0';
+const version = 'v1.1';
 const chatimage = "icons/creatures/mammals/bull-horned-blue.webp";
 let coreRules = false;
 const coreRulesLink = '@Compendium[swade-core-rules.swade-rules.GsNwqTjOQLVbQras]{Push}';
@@ -168,7 +168,7 @@ function pushTheTarget(html) {
   const shields = parseInt( html.find("#shields")[0].value );    
   const running = html.find("#running")[0].checked;
   
-  let sizebonus = howBiggerAmI(attacker, target);
+  let sizebonus = howBigAmI(attacker, target);
   let attackerRolled;
   let targetRolled;
   let targetProneRolled;
@@ -237,7 +237,8 @@ function pushTheTarget(html) {
   }  
   //outcome  
   let distance;
-  if ( (attackerResult>=targetResult) && sizebonus!=-1 ) { // success
+  let proneBonusMessage=``;
+  if ( (attackerResult>=4) && (attackerResult>targetResult) && sizebonus!=-1 ) { // success
     if ( (attackerResult+4)>=targetResult ) {
       if (sizebonus==0) {
         distance=2;        
@@ -246,6 +247,7 @@ function pushTheTarget(html) {
       } 
       message += `<p>The ${target.name} is pushed ${distance} square(s).</p>`;
       targetProneResult+=-2;
+      proneBonusMessage=`(-2 attacker raise)`;
     } else {
       if (sizebonus==0) {
         distance=1;        
@@ -253,18 +255,16 @@ function pushTheTarget(html) {
         distance=2;
       } 
       message += `<p>The ${target.name} is pushed ${distance} square(s).</p>`;
-      targetProneResult+=-2;
     }
     
-    // prone    
-    if( targetProneResult<4 ) {
+    if( targetProneResult<4 ) {      
       if (coreRules) {
-        message += `<p>The ${target.name} rolled ${targetProneResult} and is knocked @Compendium[swade-core-rules.swade-rules.JhBfyamFYWMA4T93]{Prone}.</p>`;        
+        message += `<p>The ${target.name} rolled ${targetProneResult} ${proneBonusMessage} and is knocked @Compendium[swade-core-rules.swade-rules.JhBfyamFYWMA4T93]{Prone}.</p>`;        
       } else {        
-        message += `<p>The ${target.name} rolled ${targetProneResult} and is knocked prone.</p>`;
+        message += `<p>The ${target.name} rolled ${targetProneResult} ${proneBonusMessage} and is knocked prone.</p>`;
       }               
     } else {
-      message += `<p>The ${target.name} rolled ${targetProneResult} and was not knocked prone.</p>`;
+      message += `<p>The ${target.name} rolled ${targetProneResult} ${proneBonusMessage} and was not knocked prone.</p>`;
     } 
     
   } else {
@@ -291,14 +291,16 @@ function pushTheTarget(html) {
     if (!targetCriticalFailure) {criticalFailureMessage =``;}  
     rolls3D[1].toMessage({flavor: `<h3 style="color:red">${target.name}</h3>${criticalFailureMessage}`});  
     //prone
-    criticalFailureMessage = `<p><b style="color:red">CRITICAL FAILURE</b></p>`;   
-    if (!targetProneCriticalFailure) {criticalFailureMessage =``;}  
-    rolls3D[2].toMessage({flavor: `<h3 style="color:red">${target.name}</h3>${criticalFailureMessage}`});      
+    if ( (attackerResult>=targetResult) ) { // success
+      criticalFailureMessage = `<p><b style="color:red">CRITICAL FAILURE</b></p>`;   
+      if (!targetProneCriticalFailure) {criticalFailureMessage =``;}  
+      rolls3D[2].toMessage({flavor: `<h3 style="color:red">${target.name}</h3>${criticalFailureMessage}`});      
+    }
   }
 }
 
 // ======================
-function howBiggerAmI(attacker, target) {
+function howBigAmI(attacker, target) {
   let actorSize = attacker.actor.data.data.stats.size;
   let targetSize = target.actor.data.data.stats.size;
   if (actorSize == targetSize) {
@@ -306,8 +308,10 @@ function howBiggerAmI(attacker, target) {
   } else { 
     if ( targetSize>(actorSize+2) ) {      
       return -1;
-    } else if (actorSize>=targetSize) {
+    } else if (actorSize>targetSize) {
       return 2;
+    } else if (targetSize>actorSize) {
+      return 0;
     }
   }
 }
