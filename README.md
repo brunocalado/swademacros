@@ -37,7 +37,7 @@ Search **Macros for SWADE** in modules.
 Use this: https://raw.githubusercontent.com/brunocalado/swademacros/main/module.json
 
 # How To
-You can get the macros from the compendium after activate the module.
+You can get the macros from the compendium after activate the module. 
 
 # Macros
 

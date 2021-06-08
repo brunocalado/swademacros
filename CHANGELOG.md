@@ -1,3 +1,6 @@
+# 0.0.9
+- push macro
+
 # 0.0.8
 - fix healing to detect wild card ok
 - fix grappling (wild detect) ok

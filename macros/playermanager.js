@@ -16,6 +16,7 @@ const managerType = 'Player - Macro Manager';
     "Gang Up",
     "Grappling",
     "Healing",
+    "Push",
     "Raise Calculator",
     "Size/Scale Calculator",
     "Survival Guide"
