@@ -1,3 +1,7 @@
+# 0.1.1
+- chase small fix
+- Sprawlrunners LP Check
+
 # 0.1.0
 - push fix
 

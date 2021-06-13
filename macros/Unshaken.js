@@ -1,4 +1,4 @@
-const version = 'v1.0';
+const version = 'v1.1';
 const chatimage = "icons/magic/control/fear-fright-white.webp";
 
 /* Unshaken
@@ -8,10 +8,19 @@ icon: icons/magic/control/fear-fright-white.webp
 */
 
 let bennies;
-let token;
+let token=canvas.tokens.controlled[0];
 let bv;
 
-if (canvas.tokens.controlled[0]===undefined) {
+let turnAlert=false;
+if (game.modules.get("turnAlert")?.active) { 
+  turnAlert = true; 
+  if ( (typeof(args) !== "undefined") ) {
+    let scene = game.scenes.contents.filter(scene => scene.active === true)[0];    
+    token = scene.data.tokens.find(i => (i.key==args[0]) );
+  }
+}
+
+if (token===undefined) {
   ui.notifications.error("Please select a token."); // No Token is Selected
 } else {
   token = canvas.tokens.controlled[0];
@@ -27,6 +36,18 @@ async function main() {
       user: game.user.id,
       content: `<p><b style="color:red">${game.user.name}</b> is Shaken now!</p>`,
     });        
+    if (turnAlert) {
+      let combatantID = game.combat.combatants.find(i => (i.data.tokenId==token.id) ).id;
+      const alertData = {
+          round: 1,
+          roundAbsolute: false,
+          turnId: combatantID,
+          message: "SHAKEN",
+          macro: "unshaken turn",
+          args: [ token.id ]
+      };
+      TurnAlert.create(alertData);
+    }
   }
 }
 

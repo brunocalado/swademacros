@@ -1,4 +1,4 @@
-const version = 'v1.1';
+const version = 'v1.2';
 
 /* Chase
 Features
@@ -30,14 +30,26 @@ function main() {
     Width: <input id="width" type="number" min="1" style="width: 50px" value=107>
   </p>
   <br />
-  <p>
-    <input type="checkbox" id="reset" checked/>
-    Reset Table?
-  </p> 
-  <p>
-    <input type="checkbox" id="stackupcards"/>
-    Just stack up all cards
-  </p>  
+  
+  <table>
+  <tbody>
+  <tr>
+    <td>
+      <p>
+      <input type="checkbox" id="reset" checked/>
+      Reset Table?
+      </p>
+    </td>
+    <td>
+      <p>
+        <input type="checkbox" id="stackupcards"/>
+        Just stack up all cards
+      </p>    
+    </td>
+  </tr>
+  </tbody>
+  </table>
+ 
   <br />  
   <p>
     <h3>Horizontal spacing between cards</h3>
@@ -86,9 +98,6 @@ async function makeTiles(html) {
       .find((el) => el.data.name == tableName)
       .drawMany(cardsToDraw)
   ).results;
-/*
-let cardDraws = ( await game.tables.find((el) => el.data.name == 'Action Cards').drawMany(5).results );
-*/
 
   let centerX = Math.round(game.scenes.active.data.width/3);
   let centerY = Math.round(game.scenes.active.data.height/2);
