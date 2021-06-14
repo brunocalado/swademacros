@@ -62,5 +62,10 @@ There is a journal with the module with instructions for each macro.
 # Changes
 You can see changes at [CHANGELOG](CHANGELOG.md).
 
+# Acknowledgements
+- https://github.com/SalieriC/SWADE-Immersive-Macros
+- https://github.com/spacemandev-git/swade-macros-simple
+- kristianserrano
+
 # License
 You can see changes at [LICENSE](LICENSE).
