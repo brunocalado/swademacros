@@ -37,7 +37,8 @@ Search **Macros for SWADE** in modules.
 Use this: https://raw.githubusercontent.com/brunocalado/swademacros/main/module.json
 
 # How To
-You can get the macros from the compendium after activate the module. 
+
+There is a Journal in the compendium. Read it! All instructions in there.
 
 # Macros
 
@@ -68,4 +69,4 @@ You can see changes at [CHANGELOG](CHANGELOG.md).
 - Kristian Serrano (Savaged.us Importer)
 
 # License
-You can see changes at [LICENSE](LICENSE).
+License at [LICENSE](LICENSE).

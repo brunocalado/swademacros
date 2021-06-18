@@ -1,3 +1,6 @@
+# 0.1.6
+Auto update macros.
+
 # 0.1.5
 chase improved again 2 by kristianserrano
 
