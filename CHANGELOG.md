@@ -1,3 +1,8 @@
+# 0.1.7
+- Improved Adventure Generator macro for Deadlands
+- compendium with macros are private by default
+- docs
+
 # 0.1.6
 Auto update macros.
 

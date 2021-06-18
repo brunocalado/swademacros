@@ -3,7 +3,7 @@
   "title": "Macros for SWADE",
   "description": "Macros for SWADE",   
   "author": "Mestre Digital",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "minimumCoreVersion": "0.8.6",
   "compatibleCoreVersion":"0.8.7",
   "scripts": [
@@ -16,15 +16,17 @@
       "label": "Macros for SWADE",
       "path": "packs/macros-for-swade.db",
       "entity": "Macro",
-      "module": "swademacros"
+      "module": "swademacros",
+      "private": true
     },
     {
       "name": "auto-update-macros",
       "label": "Auto Update Macros",
       "path": "packs/auto-update-macros.db",
       "entity": "Macro",
-      "module": "swademacros"
-    },    
+      "module": "swademacros",
+      "private": true
+    },
     {
       "name": "guide-macros-for-swade",
       "label": "Guide - Macros for SWADE",
