@@ -1,4 +1,23 @@
-## Welcome to GitHub Pages
+## Settings
+
+Better Rolls 2 comes with a variety of settings:
+
+![Settings](docs/module-settings.jpg)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 You can use the [editor on GitHub](https://github.com/brunocalado/swademacros/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
