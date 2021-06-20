@@ -2,7 +2,10 @@
 
 Better Rolls 2 comes with a variety of settings:
 
-![Settings](docs/module-settings.jpg)
+![Settings](docs/preview01.jpg)
+
+
+
 
 
 
