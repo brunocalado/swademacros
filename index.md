@@ -2,7 +2,7 @@
 
 Better Rolls 2 comes with a variety of settings:
 
-![Settings](docs/preview01.jpg)
+![Settings](Anatomy_Overview_v1-119.png)
 
 
 
