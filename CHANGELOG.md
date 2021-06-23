@@ -1,3 +1,6 @@
+# 0.1.9
+- doc update
+
 # 0.1.8
 - LP Check only when equipped
 - 3d measure
