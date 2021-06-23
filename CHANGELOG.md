@@ -1,3 +1,9 @@
+# 0.1.8
+- LP Check only when equipped
+- 3d measure
+- better docs
+- manager update
+
 # 0.1.7
 - Improved Adventure Generator macro for Deadlands
 - compendium with macros are private by default

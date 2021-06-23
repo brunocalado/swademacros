@@ -1,4 +1,4 @@
-const version = 'v1.0';
+const version = 'v1.2';
 const chatimage = "icons/commodities/treasure/puzzle-box-glowing-blue.webp";
 const rule = '@Compendium[sprawl-core-rules.sprawl-rules.jhEs3al7qA4sAwaa]{Logistics Points}';
 let coreRules = false;
@@ -23,28 +23,28 @@ if (coreRules) {
   message = `<div><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Logistics Points</h2><div><ul>`;
 }
 
+let characters = game.actors.contents.filter(e => e.data.type === 'character' && e.hasPlayerOwner);
 
-let chars = game.actors.contents.filter(e => e.data.type === 'character' && e.hasPlayerOwner);
-
-if (chars==undefined) {
+if (characters==undefined) {
   ui.notifications.warn("Each player should own a character!");    
 } else {
-  for(const char of chars) {
-    if (char.data.data.additionalStats.LP==undefined) {
+  for(const character of characters) {
+    if (character.data.data.additionalStats.LP==undefined) {
       ui.notifications.error("You need to check Enabled for LP in player Tweaks!");
       return;
     }   
     
-    let maxLP = char.data.data.additionalStats.LP.max;
+    let maxLP = character.data.data.additionalStats.LP.max;
 
-    let total = char.items
+    let total = character.items.map(i => i.data.data).filter(p => (p.price > 0) && (p.equipped) ).reduce((total, curr) => total + curr.price, 0);
+    /*let total = character.items
         .map(i => i.data.data.price)
         .filter(p => p > 0)
-        .reduce((total, curr) => total + curr, 0);
+        .reduce((total, curr) => total + curr, 0);*/
 
-    message += `<li> ${char.name}: <b style="color:darkblue">${total}</b> of <b style="color:red">${maxLP}</b> </li>`;
+    message += `<li> ${character.name}: <b style="color:darkblue">${total}</b> of <b style="color:red">${maxLP}</b> </li>`;
 
-    char.update({"data.additionalStats.LP.value": total});
+    character.update({"data.additionalStats.LP.value": total});
 
     grandTotal += total;
     grandTotalMax += maxLP;

@@ -1,24 +1,29 @@
+
+const version = '0.2';
+
 /*
   GM Menu
   
-  icons: icons/sundries/documents/document-sealed-signatures-red.webp
+  icons: icons/sundries/documents/document-writing-pink.webp
   
   Fill the constant macros with the names of your macros, when you click the button it will run the macro.
 
   Dialog Window will not close until the X button is pressed.
 */
-const managerType = 'GM - Macro Manager';
+const managerType = 'Player - Macro Manager';
 
 (()=>{
   const macros = [
-    "Chase",
-    "Deviation",
+    "3D Measure",
+    "Unshaken",
+    "Next Turn",
     "Gang Up",
     "Grappling",
-    "Mass Battle",
+    "Healing",
+    "Push",
     "Raise Calculator",
     "Size/Scale Calculator",
-    "Quick Combat"
+    "Survival Guide"
   ];
 
   let buttons = {}, dialog, content = `<div sytle="width:100%;text-align:center;><h2>Choose Macro</h2></div>`;
