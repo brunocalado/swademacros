@@ -91,7 +91,7 @@ class sm {
       return rolled.terms[0].rolls[0].total;
     }
   }
-  
+
   // ---------------------------------------------------------------
   // ??
   static hasItem(itemName, itemType=['edge']) {

@@ -1,4 +1,9 @@
-// --- Seperate Macro for players ---
+
+const version = 'v1.0';
+const chatimage = "icons/magic/life/cross-area-circle-green-white.webp";
+let coreRules = false;
+if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
+// 
 
 main();
 
@@ -7,20 +12,21 @@ async function main(){
     let actor = game.actors.get(user.data.character);
 
     if(!actor){
-        ui.notifications.warn("Cannot use this macro if player hasn't been assigned an actor");
+        ui.notifications.error("Cannot use this macro if player hasn't been assigned an actor");
         return;
     }
 
     actor.spendBenny();
-    ui.notifications.notify(`${actor.data.name} (${user.data.name}) gave a benny to the Gamemaster`)
-    game.macros.get("rwzEgqjC30sm6ALM").execute();
-}
 
-// --- Seperate Macro only for the GM ---
+    if (coreRules) {
+      message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> @Compendium[swade-core-rules.swade-rules.nF3w2ly84awwGf3z]{Hard Choices}</h2></div>`;
+    } else {
+      message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Hard Choices</h2>`;
+    }
 
-main() //Execute Macro as GM
+    message += `${actor.data.name} (${user.data.name}) gave a benny to the Gamemaster`;
 
-async function main(){
-    let gm = game.users.find(u => u.data.name == "Gamemaster");
-    await gm.update({"flags.swade.bennies": gm.data.flags.swade.bennies + 1});
+    ChatMessage.create({ content: message });
+
+    sm.bennieChangeGM(1);
 }

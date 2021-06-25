@@ -1,3 +1,7 @@
+# 0.2.1
+- scene for chase
+
+
 # 0.2.0
 - healing fix
 - API
