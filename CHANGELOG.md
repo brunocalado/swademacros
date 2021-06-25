@@ -1,3 +1,7 @@
+# 0.2.0
+- healing fix
+- API
+
 # 0.1.9
 - doc update
 
