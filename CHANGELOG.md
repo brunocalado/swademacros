@@ -1,6 +1,11 @@
+# 0.2.2
+- healing wounds/fatigue ok
+- support
+- gm/everyday/swade manager
+- api
+
 # 0.2.1
 - scene for chase
-
 
 # 0.2.0
 - healing fix

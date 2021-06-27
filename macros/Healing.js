@@ -2,13 +2,12 @@
 Healing
 - Med kit heal faz roll
 - Natural heal faz roll
-- Fatigue
 
 icon: icons/magic/life/cross-area-circle-green-white.webp
 */
 
 let token;
-const version = 'v1.2';
+const version = 'v1.3';
 const chatimage = "icons/magic/life/cross-area-circle-green-white.webp";
 let coreRules = false;
 if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
@@ -21,12 +20,7 @@ if (canvas.tokens.controlled[0]===undefined) {
 }
 
 function main() {
-  let dialogText = `
-    <div class="divTableCell">
-      <p>Modifier (support, item, edge, etc): 
-      <input id="modifier" type="number" min="-10" max="10" style="width: 60px; box-sizing: border-box;border: none;background-color: #ff0000;color: white; text-align: center;" value="0"></p>       
-    </div>
-    `;
+  let dialogText = ``;
   
   dialogButtons = {
     one: {
@@ -60,25 +54,22 @@ Wounded characters make a Vigor roll every five days. Success recovers one Wound
 A Critical Failure increases the victim’s Wounds level by one—either from infection, blood loss, or aggravating the injuries. If this causes Incapacitation, don’t use the usual rules for taking damage. Instead, the victim lapses in and out of consciousness and makes a Vigor roll every 12 hours. If the roll is failed, he expires. Success means he must roll again 12 hours later. With a raise he stabilizes and wakes. Allies may also attempt to stabilize the hero as explained under Bleeding Out, above.
 Support: Don’t forget to use Support when your party has been beaten up a bit. Characters with Healing, Survival, or other skills can make Support rolls to help allies make their Vigor rolls to heal!
 */
-function naturalHeal(html) {
-  const modifier = parseInt( html.find("#modifier")[0].value );    
-  
+async function naturalHeal(html) {
   const edgeNames = ['fast healer'];  
   // Roll Vigor and check for Fast Healer.
-  let rolled = sm.rollAttribute(token, 'vigor');
-
-  let r = sm.betterDice(rolled);
+  let rolled = await token.actor.rollAttribute('vigor');
+  let r = rolled;
   
   const edges = token.actor.data.items.filter(function (item) {
     return edgeNames.includes(item.name.toLowerCase()) && (item.type === "edge" || item.type === "ability");
   });
-  let rollWithEdge = r;
+  let rollWithEdge = r.total;
   let edgeText = "";
   for (let edge of edges) {
     rollWithEdge += 2;
     edgeText += `<br/><i>+ ${edge.name}</i>`;
   }
-  r = rollWithEdge+modifier;
+  r = rollWithEdge;
   
   // Roll Vigor including +2 if Fast Healer is present and another +2 if this is a reroll.
   let message;
@@ -89,8 +80,8 @@ function naturalHeal(html) {
   }
 
   // Checking for a Critical Failure.  
-  if ( sm.isWildCard(token) && sm.isCritical(rolled) ) {
-    message += `${actorAlias} rolled a <b style="color: red; font-size:150%">Critical Failure!</b> and takes another Wound!`;    
+  if ( sm.isCriticalBeta(rolled) ) {
+    message += `${token.name} rolled a <b style="color: red; font-size:150%">Critical Failure!</b> and takes another Wound!`;    
     sm.applyWounds(token, 1);
     ChatMessage.create({ content: message });
   } else {
@@ -111,30 +102,29 @@ function naturalHeal(html) {
   message += `<ul><li>This roll can be done every five day</li></ul>`;
 
   ChatMessage.create({ content: message });
-  rolled.toMessage();
 }
 
 /*
 Healing skill: Each attempt requires 10 minutes per wound level of the patient. Subtract 1 from Healing rolls without a basic First Aid kit or similar supplies.
 A success removes one Wound, and a raise removes two. Failure means no Wounds are removed. A Critical Failure increases the victim’s Wound level by one.
 */
-function skillHeal(html) {
-  const modifier = parseInt( html.find("#modifier")[0].value );    
-
+async function skillHeal(html) {
   // Roll Vigor and check for Fast Healer.  
-  let rolled = sm.rollSkill(token, 'healing');  
-  let r = sm.betterDice(rolled) + modifier;
+  let r = await sm.rollSkill(token, 'healing');  
+  let rolled = r;
 
   let message;
   if (coreRules) {
     message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> @Compendium[swade-core-rules.swade-rules.gCrNh35pUQHaVN4J]{Healing}</h2></div>`;
   } else {
-    message = `<div><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Healing</h2></div>`;
+    message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Healing</h2>`;
   }
 
+  r = r.total;
+
   // Checking for a Critical Failure.
-  if ( sm.isWildCard(token) && sm.isCritical(rolled) ) {
-    message += `${actorAlias} rolled a <b style="color: red; font-size:150%">Critical Failure!</b> and takes another Wound!`;    
+  if ( sm.isCriticalBeta(rolled) ) {
+    message += `${token.name} rolled a <b style="color: red; font-size:150%">Critical Failure!</b> and takes another Wound!`;    
     sm.applyWounds(token, 1);
   } else {
     let skill = 'Healing'.toLowerCase();
@@ -158,5 +148,4 @@ function skillHeal(html) {
   <li>This attempt required <b>${sm.getWounds(token)*10}</b> minutes</li></ul>`;
   
   ChatMessage.create({ content: message });
-  rolled.toMessage();
 }

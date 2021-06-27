@@ -30,21 +30,7 @@ class sm {
   // rollSkill(myActor, skill)
   // myActor = token
   // attribute = notice, athletics, etc
-  static async rollSkill(token, skill) { 
-    let actorSkill = token.actor.data.items.find(i => (i.name.toLowerCase() === skill) );
-    let skillName; 
-    if (!actorSkill) {
-      actorSkill = token.actor.data.items.find(i => (i.name === 'Untrained' || i.name === 'Unskilled Attempt' ) );
-    }
-    skillName = actorSkill.name;
-    return await game.swade.rollItemMacro(skillName);
-  }
-
-
-  // rollSkill(myActor, skill)
-  // myActor = token
-  // attribute = notice, athletics, etc
-  static rollSkillFor(myActor, skill) { 
+  static rollSkill(myActor, skill) { 
     let actorSkill = myActor.actor.data.items.find(i => (i.name.toLowerCase().includes(skill.toLowerCase()) ) );
     let diceExpression;
     let wildDie = '';
@@ -62,7 +48,6 @@ class sm {
     }
     return new Roll(diceExpression).roll({ async : false });  
   }
-
 
   // isWildCard(token)
   // token = token
@@ -95,31 +80,6 @@ class sm {
     let trait = rolled.terms[0].rolls[0].terms[0].results[0].result;  
     let wild = rolled.terms[0].rolls[1].terms[0].results[0].result;  
     return (trait==1 && wild==1);
-  }
-
-  // SKill List
-  static listSkills(token) {
-    return token.actor.data.items.filter(i => (i.type === 'skill') ).map(i => (i.name));  
-  }
-
-  // ---------------------------------------------------------------
-  // CRITICAL
-  static isCriticalBeta(r) {
-    return (this.isSame_bool(r.dice) && this.isSame_numb(r.dice) === 1);
-  }    
-  
-  static isSame_bool(d = []) { // Functions to determine a critical failure. This one checks if all dice rolls are the same.
-    return d.reduce((c, a, i) => {
-      if (i === 0) return true;
-      return c && a.total === d[i - 1].total;
-    }, true);
-  }
-  
-  static isSame_numb(d = []) { // Functions to determine a critical failure. This one checks what the number of the "same" was.
-    return d.reduce((c, a, i) => {
-      if (i === 0 || d[i - 1].total === a.total) return a.total;
-      return null;
-    }, 0);
   }
 
   static betterDice(rolled) {

@@ -1,4 +1,4 @@
-const version = 'v1.2';
+const version = 'v1.1';
 const chatimage = "icons/creatures/mammals/bull-horned-blue.webp";
 let coreRules = false;
 const coreRulesLink = '@Compendium[swade-core-rules.swade-rules.GsNwqTjOQLVbQras]{Push}';
@@ -162,7 +162,7 @@ function main() {
   }, { id: 'kultcss'}).render(true);
 }
 
-async function pushTheTarget(html) {
+function pushTheTarget(html) {
   const skillAttacker = html.find("#skillAttacker")[0].value;    
   const skillTarget = html.find("#skillTarget")[0].value;    
   const shields = parseInt( html.find("#shields")[0].value );    
@@ -172,38 +172,49 @@ async function pushTheTarget(html) {
   let attackerRolled;
   let targetRolled;
   let targetProneRolled;
-  //let rolls3D=[];
+  let rolls3D=[];
   
   let message;
   if (coreRules) {
-      message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> ${coreRulesLink}</h2><div>`;
+      message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> ${coreRulesLink}</h2>`;
   } else {
-     message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Push</h2>`;
+     message = `<div><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Push</h2>`;
   }    
 
   if (skillAttacker=='Athletics') {
-    //attackerRolled = rollSkill(attacker, skillAttacker);    
-    attackerRolled = await sm.rollSkill(attacker, skillAttacker);  
+    attackerRolled = rollSkill(attacker, skillAttacker);    
   } else {
-    //attackerRolled = rollAttribute(attacker, skillAttacker);    
-    attackerRolled = await attacker.actor.rollAttribute(skillAttacker);
+    attackerRolled = rollAttribute(attacker, skillAttacker);    
   }
-  //rolls3D.push(attackerRolled);
+  rolls3D.push(attackerRolled);
   if (skillTarget=='Athletics') {
-    targetRolled = await sm.rollSkill(target, skillAttacker);  
-    //targetRolled = rollSkill(target, skillTarget);  
+    targetRolled = rollSkill(target, skillTarget);  
   } else {
-    targetRolled = await target.actor.rollAttribute(skillAttacker);
-    //targetRolled = rollAttribute(target, skillTarget);    
+    targetRolled = rollAttribute(target, skillTarget);    
   }
   
-  //rolls3D.push(targetRolled);
+  rolls3D.push(targetRolled);
   
-  let attackerResult = attackerRolled.total;
+  let attackerResult;
   let attackerCriticalFailure=false;  
-
-  let targetResult = targetRolled.total;
+  if (isWildCard(attacker)) {
+    let attackerTrait = attackerRolled.terms[0].rolls[0].total;
+    let attackerWild = attackerRolled.terms[0].rolls[1].total;  
+    attackerResult = Math.max( attackerTrait, attackerWild );
+    if ( attackerTrait==1 && attackerWild==1 ) {attackerCriticalFailure=true;}
+  } else {
+    attackerResult = attackerRolled.total;
+  }
+  let targetResult;
   let targetCriticalFailure=false;    
+  if (isWildCard(target)) {
+    let targetTrait = targetRolled.terms[0].rolls[0].total;
+    let targetWild = targetRolled.terms[0].rolls[1].total;       
+    targetResult = Math.max( targetTrait, targetWild );
+    if ( targetTrait==1 && targetWild==1 ) {targetCriticalFailure=true;}
+  } else {
+    targetResult = targetRolled.total;
+  }  
   
   //other bonuses
   attackerResult+=shields;
@@ -213,7 +224,7 @@ async function pushTheTarget(html) {
 
   //prone
   targetProneRolled = rollSkill(target, 'Athletics');  
-  //rolls3D.push(targetProneRolled);  
+  rolls3D.push(targetProneRolled);  
   let targetProneResult; //----------------prone
   let targetProneCriticalFailure=false;    
   if (isWildCard(target)) {
@@ -263,7 +274,9 @@ async function pushTheTarget(html) {
       message += `<p>${attacker.name} failed.</p>`;      
     }
   }  
- 
+  
+  message+=`</div>`;
+  
   // send message
   let chatData = {
     content: message
@@ -272,16 +285,16 @@ async function pushTheTarget(html) {
   if (sizebonus!=-1) {
     let criticalFailureMessage = `<p><b style="color:red">CRITICAL FAILURE</b></p>`;   
     if (!attackerCriticalFailure) {criticalFailureMessage =``;}   
-    //rolls3D[0].toMessage({flavor: `<h3 style="color:red">${attacker.name}</h3>${criticalFailureMessage}`});
+    rolls3D[0].toMessage({flavor: `<h3 style="color:red">${attacker.name}</h3>${criticalFailureMessage}`});
     
     criticalFailureMessage = `<p><b style="color:red">CRITICAL FAILURE</b></p>`;   
     if (!targetCriticalFailure) {criticalFailureMessage =``;}  
-    //rolls3D[1].toMessage({flavor: `<h3 style="color:red">${target.name}</h3>${criticalFailureMessage}`});  
+    rolls3D[1].toMessage({flavor: `<h3 style="color:red">${target.name}</h3>${criticalFailureMessage}`});  
     //prone
     if ( (attackerResult>=targetResult) ) { // success
       criticalFailureMessage = `<p><b style="color:red">CRITICAL FAILURE</b></p>`;   
       if (!targetProneCriticalFailure) {criticalFailureMessage =``;}  
-      //rolls3D[2].toMessage({flavor: `<h3 style="color:red">${target.name}</h3>${criticalFailureMessage}`});      
+      rolls3D[2].toMessage({flavor: `<h3 style="color:red">${target.name}</h3>${criticalFailureMessage}`});      
     }
   }
 }

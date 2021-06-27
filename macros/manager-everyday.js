@@ -1,5 +1,5 @@
 
-const version = '0.3';
+const version = '0.2';
 
 /*
   GM Menu
@@ -10,18 +10,13 @@ const version = '0.3';
 
   Dialog Window will not close until the X button is pressed.
 */
-const managerType = 'Player - Macro Manager';
+const managerType = 'Everyday - Macro Manager';
 
 (()=>{
   const macros = [
-    "Unshaken",
-    "Gang Up",
-    "Grappling",
-    "Healing",
-    "Push",
-    "Raise Calculator",
-    "Size/Scale Calculator",
-    "Survival Guide"
+    "3D Measure",
+    "Next Turn",
+    "Quick Combat"    
   ];
 
   let buttons = {}, dialog, content = `<div sytle="width:100%;text-align:center;><h2>Choose Macro</h2></div>`;
