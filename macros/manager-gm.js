@@ -1,5 +1,5 @@
 
-const version = '0.3';
+const version = '0.4';
 
 /*
   GM Menu
@@ -18,7 +18,8 @@ const managerType = 'GM - Macro Manager';
     "Deviation",
     "Mass Battle",
     "Raise Calculator",
-    "Size/Scale Calculator"
+    "Size/Scale Calculator",
+    "Quick Combat"    
   ];
 
   let buttons = {}, dialog, content = `<div sytle="width:100%;text-align:center;><h2>Choose Macro</h2></div>`;

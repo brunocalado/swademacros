@@ -2,6 +2,18 @@ const version = 'v1.5';
 const chatimage = "icons/creatures/mammals/wolf-shadow-black.webp";
 
 /* Gang Up p101 SWADE core
+
+
+Cyril "Gronyon" Ronseaux — Hoje às 16:20
+About that Gang Up macro. (I think by @md-mention2reply)
+I got rules clarifications: (from French SWADE team)
+
+- when cancelling gang up bonuses, "adjacent to both" does not mean "adjacent to the attacker and the defender" but "adjacent to the defender and the flanker, the one bringing the +1 you want to cancel".
+
+- reduction from Block is applied after the max +4. so with Block max against you becomes +3, and with Imp Block would be +2.
+
+
+
 IMPORTANT
 - YOU SHOULD DEFINE TOKEN DISPOSITION: FRIENDLY FOR PCS AND ALLIES. HOSTILE FOR ENEMIES
 

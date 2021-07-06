@@ -1,5 +1,5 @@
 
-const version = '0.3';
+const version = '0.4';
 
 /*
   GM Menu
@@ -15,10 +15,9 @@ const managerType = 'Player - Macro Manager';
 (()=>{
   const macros = [
     "Unshaken",
+    "Unstun",
     "Gang Up",
-    "Grappling",
     "Healing",
-    "Push",
     "Raise Calculator",
     "Size/Scale Calculator",
     "Survival Guide"

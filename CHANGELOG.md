@@ -1,3 +1,11 @@
+# 0.2.3
+- don't care about core star
+- Unshaken fixed
+- unstun added
+- api improved
+- grappling/push removed until fixed
+- healing 
+
 # 0.2.2
 - healing wounds/fatigue ok
 - support

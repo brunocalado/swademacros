@@ -7,7 +7,7 @@ icon: icons/magic/life/cross-area-circle-green-white.webp
 */
 
 let token;
-const version = 'v1.3';
+const version = 'v1.4';
 const chatimage = "icons/magic/life/cross-area-circle-green-white.webp";
 let coreRules = false;
 if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
@@ -80,7 +80,7 @@ async function naturalHeal(html) {
   }
 
   // Checking for a Critical Failure.  
-  if ( sm.isCriticalBeta(rolled) ) {
+  if ( sm.isCritical(rolled) ) {
     message += `${token.name} rolled a <b style="color: red; font-size:150%">Critical Failure!</b> and takes another Wound!`;    
     sm.applyWounds(token, 1);
     ChatMessage.create({ content: message });
@@ -123,7 +123,7 @@ async function skillHeal(html) {
   r = r.total;
 
   // Checking for a Critical Failure.
-  if ( sm.isCriticalBeta(rolled) ) {
+  if ( sm.isCritical(rolled) ) {
     message += `${token.name} rolled a <b style="color: red; font-size:150%">Critical Failure!</b> and takes another Wound!`;    
     sm.applyWounds(token, 1);
   } else {

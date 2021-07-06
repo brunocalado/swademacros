@@ -181,23 +181,17 @@ async function pushTheTarget(html) {
      message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Push</h2>`;
   }    
 
-  if (skillAttacker=='Athletics') {
-    //attackerRolled = rollSkill(attacker, skillAttacker);    
+  if ( skillAttacker.toLowerCase().includes('Athletics'.toLowerCase()) ) {
     attackerRolled = await sm.rollSkill(attacker, skillAttacker);  
   } else {
-    //attackerRolled = rollAttribute(attacker, skillAttacker);    
     attackerRolled = await attacker.actor.rollAttribute(skillAttacker);
   }
-  //rolls3D.push(attackerRolled);
-  if (skillTarget=='Athletics') {
-    targetRolled = await sm.rollSkill(target, skillAttacker);  
-    //targetRolled = rollSkill(target, skillTarget);  
+
+  if ( skillTarget.toLowerCase().includes('Athletics'.toLowerCase()) ) {
+    targetRolled = await sm.rollSkillFor(target, skillAttacker);  
   } else {
     targetRolled = await target.actor.rollAttribute(skillAttacker);
-    //targetRolled = rollAttribute(target, skillTarget);    
   }
-  
-  //rolls3D.push(targetRolled);
   
   let attackerResult = attackerRolled.total;
   let attackerCriticalFailure=false;  

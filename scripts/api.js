@@ -30,8 +30,8 @@ class sm {
   // rollSkill(myActor, skill)
   // myActor = token
   // attribute = notice, athletics, etc
-  static async rollSkill(token, skill) { 
-    let actorSkill = token.actor.data.items.find(i => (i.name.toLowerCase() === skill) );
+  static async rollSkill(token, skill) {
+    let actorSkill = token.actor.data.items.find(i => (i.name.toLowerCase().includes(skill.toLowerCase())) );
     let skillName; 
     if (!actorSkill) {
       actorSkill = token.actor.data.items.find(i => (i.name === 'Untrained' || i.name === 'Unskilled Attempt' ) );
@@ -44,8 +44,8 @@ class sm {
   // rollSkill(myActor, skill)
   // myActor = token
   // attribute = notice, athletics, etc
-  static rollSkillFor(myActor, skill) { 
-    let actorSkill = myActor.actor.data.items.find(i => (i.name.toLowerCase().includes(skill.toLowerCase()) ) );
+  static rollSkillFor(token, skill) { 
+    let actorSkill = token.actor.data.items.find(i => (i.name.toLowerCase().includes(skill.toLowerCase()) ) );
     let diceExpression;
     let wildDie = '';
     
@@ -91,20 +91,77 @@ class sm {
     return token.actor.data.data.wounds.max;
   }
 
-  static isCritical(rolled) {
-    let trait = rolled.terms[0].rolls[0].terms[0].results[0].result;  
-    let wild = rolled.terms[0].rolls[1].terms[0].results[0].result;  
-    return (trait==1 && wild==1);
-  }
-
   // SKill List
   static listSkills(token) {
     return token.actor.data.items.filter(i => (i.type === 'skill') ).map(i => (i.name));  
   }
 
   // ---------------------------------------------------------------
+  // BENNY MAG
+  // Spend Benny function
+  static async spendBenny(tokenD) { // Spend Benny function
+    let bennies = tokenD.actor.data.data.bennies.value;
+    //Subtract the spend, use GM benny if user is GM and token has no more bennies left or spend token benny if user is player and/or token has bennies left.
+    if (game.user.isGM && bennies < 1) {
+      game.user.setFlag("swade", "bennies", game.user.getFlag("swade", "bennies") - 1)
+    } else {
+      tokenD.actor.update({
+        "data.bennies.value": bennies - 1,
+      })
+    }
+
+    //Show the Benny Flip
+    if (game.dice3d) {
+      game.dice3d.showForRoll(new Roll("1dB").roll({ async : false }), game.user, true, null, false);
+    }
+
+    //Chat Message to let the everyone know a benny was spent
+    ChatMessage.create({
+      user: game.user.id,
+      content: `<p><b style="color:red">${game.user.name}</b> spent a Benny for <b style="color:red">${tokenD.name}</b>.</p>`,
+    });
+  }
+
+  static checkBennies(tokenD) { // Check for Bennies
+    let bennies = tokenD.actor.data.data.bennies.value;
+
+    // Non GM token has <1 bennie OR GM user AND selected token has <1 benny
+    if ((!game.user.isGM && bennies < 1) || (game.user.isGM && bennies < 1 && game.user.getFlag("swade", "bennies") < 1)) {
+      ui.notifications.error("You have no more bennies left.");
+      return 0;
+    } else if (game.user.isGM) {
+      return bennies + game.user.getFlag("swade", "bennies");
+    } else {
+      return bennies;
+    }
+  }
+  
+  static async useBenny(tokenD) {
+    let bennies = this.checkBennies(tokenD);
+    if (bennies > 0) {
+      new Dialog({
+        title: 'Spend a Benny?',
+        content: `Do you want to spend a Benny? (You have <b>${bennies}</b> Bennies left.)`,
+        buttons: {
+            one: {
+              label: "Yes.",
+              callback: (html) => {
+                this.spendBenny(tokenD);
+              }
+            },
+            two: {
+              label: "No.",
+              callback: (html) => {},
+            }
+          },
+          default: "one"
+        }).render(true)
+    }
+  }
+    
+  // ---------------------------------------------------------------
   // CRITICAL
-  static isCriticalBeta(r) {
+  static isCritical(r) {
     return (this.isSame_bool(r.dice) && this.isSame_numb(r.dice) === 1);
   }    
   
@@ -146,6 +203,13 @@ class sm {
     await macro.execute();    
   }
   
+  // ---------------------------------------------------------------
+  // GENERAL
+  static isModuleOn(moduleName) {    
+    if (game.modules.get(moduleName)?.active) { return true; }
+    else { return false; }
+  }
+   
   // ---------------------------------------------------------------
   // Debug
   static debug(message) {
