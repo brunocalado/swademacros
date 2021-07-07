@@ -1,3 +1,9 @@
+# 0.2.4
+- support added to player
+- fear swade added to player
+- api load macro from any compendium
+- manager no longer reopen
+
 # 0.2.3
 - don't care about core star
 - Unshaken fixed

@@ -1,5 +1,5 @@
 
-const version = '0.4';
+const version = '0.5';
 
 /*
   GM Menu
@@ -16,10 +16,12 @@ const managerType = 'Player - Macro Manager';
   const macros = [
     "Unshaken",
     "Unstun",
+    "Fear Table",
     "Gang Up",
     "Healing",
     "Raise Calculator",
     "Size/Scale Calculator",
+    "Support",
     "Survival Guide"
   ];
 
@@ -37,7 +39,7 @@ const managerType = 'Player - Macro Manager';
         </div>`,
       callback : () => {
         game.macros.getName(str).execute();
-        dialog.render(true);
+        //dialog.render(true);
       }
     }
   });

@@ -197,8 +197,8 @@ class sm {
   
   // ---------------------------------------------------------------
   // Helper
-  static async macroRun(macroName) {  
-    let pack = game.packs.get('swademacros.macros-for-swade');
+  static async macroRun(macroName, compendiumName='swademacros.macros-for-swade') {  
+    let pack = game.packs.get(compendiumName);
     let macro = ( await pack.getDocuments() ).find(i => (i.data.name==macroName) );
     await macro.execute();    
   }

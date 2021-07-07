@@ -1,5 +1,5 @@
 
-const version = '0.3';
+const version = '0.5';
 
 /*
   GM Menu
@@ -32,7 +32,7 @@ const managerType = 'Everyday - Macro Manager';
         </div>`,
       callback : () => {
         game.macros.getName(str).execute();
-        dialog.render(true);
+        //dialog.render(true);
       }
     }
   });

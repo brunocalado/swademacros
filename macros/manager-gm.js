@@ -1,5 +1,5 @@
 
-const version = '0.4';
+const version = '0.5';
 
 /*
   GM Menu
@@ -36,7 +36,7 @@ const managerType = 'GM - Macro Manager';
         </div>`,
       callback : () => {
         game.macros.getName(str).execute();
-        dialog.render(true);
+        //dialog.render(true);
       }
     }
   });
