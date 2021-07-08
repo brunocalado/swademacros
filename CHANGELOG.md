@@ -1,3 +1,6 @@
+# 0.2.5
+Chase scene fixed
+
 # 0.2.4
 - support added to player
 - fear swade added to player
