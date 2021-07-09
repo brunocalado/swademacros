@@ -1,5 +1,5 @@
 
-const version = '0.5';
+const version = '0.6';
 
 /*
   GM Menu
@@ -15,7 +15,8 @@ const managerType = 'Everyday - Macro Manager';
 (()=>{
   const macros = [
     "3D Measure",
-    "Next Turn"
+    "Next Turn",
+    "Token Vision"
   ];
 
   let buttons = {}, dialog, content = `<div sytle="width:100%;text-align:center;><h2>Choose Macro</h2></div>`;

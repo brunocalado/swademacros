@@ -1,3 +1,8 @@
+# 0.2.6
+- size/scale macro updated
+- token vision added
+- update for docs
+
 # 0.2.5
 Chase scene fixed
 

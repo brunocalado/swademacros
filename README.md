@@ -6,7 +6,7 @@ Simple macros for SWADE.
   <tr>
     <th>
       <p align="center">
-        <img width="900" src="docs/preview01.jpg">
+        <img width="1000" src="docs/preview01.jpg">
       </p>
     </th>
   </tr>
