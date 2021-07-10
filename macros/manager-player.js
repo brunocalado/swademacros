@@ -1,5 +1,5 @@
 
-const version = '0.5';
+const version = '0.6';
 
 /*
   GM Menu
@@ -22,7 +22,8 @@ const managerType = 'Player - Macro Manager';
     "Raise Calculator",
     "Size/Scale Calculator",
     "Support",
-    "Survival Guide"
+    "Survival Guide",
+    "Power Point Management"
   ];
 
   let buttons = {}, dialog, content = `<div sytle="width:100%;text-align:center;><h2>Choose Macro</h2></div>`;

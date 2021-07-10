@@ -6,8 +6,8 @@ Healing
 icon: icons/magic/life/cross-area-circle-green-white.webp
 */
 
-let token;
-const version = 'v1.4';
+let tokenD;
+const version = 'v1.5';
 const chatimage = "icons/magic/life/cross-area-circle-green-white.webp";
 let coreRules = false;
 if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
@@ -15,7 +15,7 @@ if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
 if (canvas.tokens.controlled[0]===undefined) {
   ui.notifications.error("Please, select a token."); // No Token is Selected
 } else {
-  token = canvas.tokens.controlled[0];
+  tokenD = canvas.tokens.controlled[0];
   main();
 }
 
@@ -32,12 +32,12 @@ function main() {
     two: {
       label: "Healing Skill",
       callback: (html) => {
-        skillHeal(html);
+        skillHealSelector(html);
       }
     }
   }
 
-  // Main Dialogue    
+  // Main Dialogue
   new Dialog({
     title: 'Healing',
     content: dialogText,
@@ -57,10 +57,10 @@ Support: Don’t forget to use Support when your party has been beaten up a bit.
 async function naturalHeal(html) {
   const edgeNames = ['fast healer'];  
   // Roll Vigor and check for Fast Healer.
-  let rolled = await token.actor.rollAttribute('vigor');
+  let rolled = await tokenD.actor.rollAttribute('vigor');
   let r = rolled;
   
-  const edges = token.actor.data.items.filter(function (item) {
+  const edges = tokenD.actor.data.items.filter(function (item) {
     return edgeNames.includes(item.name.toLowerCase()) && (item.type === "edge" || item.type === "ability");
   });
   let rollWithEdge = r.total;
@@ -81,19 +81,19 @@ async function naturalHeal(html) {
 
   // Checking for a Critical Failure.  
   if ( sm.isCritical(rolled) ) {
-    message += `${token.name} rolled a <b style="color: red; font-size:150%">Critical Failure!</b> and takes another Wound!`;    
-    sm.applyWounds(token, 1);
+    message += `${tokenD.name} rolled a <b style="color: red; font-size:150%">Critical Failure!</b> and takes another Wound!`;    
+    sm.applyWounds(tokenD, 1);
     ChatMessage.create({ content: message });
   } else {
-    message += `<p><b style="color:red">${token.name}</b> rolled <b style="color:blue">${r}</b>`;    
+    message += `<p><b style="color:red">${tokenD.name}</b> rolled <b style="color:blue">${r}</b>`;    
     if (r < 4) {
       message += ` and is <b style="color:red">unable to heal</b> any Wounds.</p>`;
     } else if ( r>=4 && r<8 ) {
-      message += ` and heals <b style="color:darkgreen">1</b> of his ${sm.getWounds(token)} Wounds.</p>`;      
-      sm.applyWounds(token, -1);
+      message += ` and heals <b style="color:darkgreen">1</b> of his ${sm.getWounds(tokenD)} Wounds.</p>`;      
+      sm.applyWounds(tokenD, -1);
     } else if ( r>8 ) {
-      message += ` and heals <b style="color:darkgreen">2</b> of his ${sm.getWounds(token)} Wounds.</p>`;      
-      sm.applyWounds(token, -2);
+      message += ` and heals <b style="color:darkgreen">2</b> of his ${sm.getWounds(tokenD)} Wounds.</p>`;      
+      sm.applyWounds(tokenD, -2);
     }
         
     message += ` ${edgeText}`;
@@ -104,14 +104,71 @@ async function naturalHeal(html) {
   ChatMessage.create({ content: message });
 }
 
+async function skillHealSelector(html) {
+  let tokenTarget = Array.from(game.user.targets)[0];
+  if (tokenTarget === undefined) {
+    skillHeal(html);
+  } else {
+    skillHealTarget(html, tokenTarget);
+  }  
+}
+
 /*
 Healing skill: Each attempt requires 10 minutes per wound level of the patient. Subtract 1 from Healing rolls without a basic First Aid kit or similar supplies.
 A success removes one Wound, and a raise removes two. Failure means no Wounds are removed. A Critical Failure increases the victim’s Wound level by one.
 */
 async function skillHeal(html) {
   // Roll Vigor and check for Fast Healer.  
-  let r = await sm.rollSkill(token, 'healing');  
+  let r = await sm.rollSkill(tokenD, 'healing');  
   let rolled = r;
+  let startingWounds = sm.getWounds(tokenD);
+  
+  let message;
+  if (coreRules) {
+    message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> @Compendium[swade-core-rules.swade-rules.gCrNh35pUQHaVN4J]{Healing}</h2></div>`;
+  } else {
+    message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Healing</h2>`;
+  }
+
+  r = r.total;
+
+  // Checking for a Critical Failure.
+  if ( sm.isCritical(rolled) ) {
+    message += `${tokenD.name} rolled a <b style="color: red; font-size:150%">Critical Failure!</b> and takes another Wound!`;    
+    sm.applyWounds(tokenD, 1);
+  } else {
+    let skill = 'Healing'.toLowerCase();
+    let actorSkill = tokenD.actor.data.items.find(i => (i.name.toLowerCase() === skill) );
+    let skillName; 
+    if (!actorSkill) {skillName = 'Untrained';} else {skillName = actorSkill.name;}
+    message += `<p><b style="color:red">${tokenD.name}</b> rolled <b style="color:blue">${r}</b> with <b style="color:darkgreen">${skillName}</b>`;
+    if (r < 4) {
+      message += ` and is <b style="color:red">unable to heal</b> any Wounds.</p>`;
+    } else if ( r>=4 && r<8 ) {
+      message += ` and heals <b style="color:darkgreen">1</b> of his ${startingWounds} Wounds.</p>`;      
+      sm.applyWounds(tokenD, -1);
+    } else if ( r>8 ) {
+      message += ` and heals <b style="color:darkgreen">2</b> of his ${startingWounds} Wounds.</p>`;      
+      sm.applyWounds(tokenD, -2);
+    }
+  }
+  
+  message += `<ul>
+  <li><b>Subtract 1</b> from Healing rolls without a basic First Aid kit or similar supplies.</li>
+  <li>This attempt required <b>${startingWounds*10}</b> minutes</li></ul>`;
+  
+  ChatMessage.create({ content: message });
+}
+
+/*
+Healing skill: Each attempt requires 10 minutes per wound level of the patient. Subtract 1 from Healing rolls without a basic First Aid kit or similar supplies.
+A success removes one Wound, and a raise removes two. Failure means no Wounds are removed. A Critical Failure increases the victim’s Wound level by one.
+*/
+async function skillHealTarget(html, tokenTarget) {
+  // Roll Vigor and check for Fast Healer.  
+  let r = await sm.rollSkill(tokenD, 'healing');  
+  let rolled = r;
+  let startingWounds = sm.getWounds(tokenTarget);
 
   let message;
   if (coreRules) {
@@ -124,28 +181,26 @@ async function skillHeal(html) {
 
   // Checking for a Critical Failure.
   if ( sm.isCritical(rolled) ) {
-    message += `${token.name} rolled a <b style="color: red; font-size:150%">Critical Failure!</b> and takes another Wound!`;    
-    sm.applyWounds(token, 1);
+    message += `${tokenD.name} rolled a <b style="color: red; font-size:150%">Critical Failure!</b> and <b style="color: red;">${tokenTarget.name}</b> takes another Wound!`;    
+    sm.applyWounds(tokenD, 1);
   } else {
     let skill = 'Healing'.toLowerCase();
-    let actorSkill = token.actor.data.items.find(i => (i.name.toLowerCase() === skill) );
+    let actorSkill = tokenD.actor.data.items.find(i => (i.name.toLowerCase() === skill) );
     let skillName; 
     if (!actorSkill) {skillName = 'Untrained';} else {skillName = actorSkill.name;}
-    message += `<p><b style="color:red">${token.name}</b> rolled <b style="color:blue">${r}</b> with <b style="color:darkgreen">${skillName}</b>`;
+    message += `<p><b style="color:red">${tokenD.name}</b> rolled <b style="color:blue">${r}</b> with <b style="color:darkgreen">${skillName}</b>`;
     if (r < 4) {
-      message += ` and is <b style="color:red">unable to heal</b> any Wounds.</p>`;
+      message += ` and is <b style="color:red">unable to heal</b> any Wounds from <b style="color: red;">${tokenTarget.name}</b>.</p>`;
     } else if ( r>=4 && r<8 ) {
-      message += ` and heals <b style="color:darkgreen">1</b> of his ${sm.getWounds(token)} Wounds.</p>`;      
-      sm.applyWounds(token, -1);
+      message += ` and heals <b style="color:darkgreen">1</b> from <b style="color: red;">${tokenTarget.name}</b>.</p>`;            
     } else if ( r>8 ) {
-      message += ` and heals <b style="color:darkgreen">2</b> of his ${sm.getWounds(token)} Wounds.</p>`;      
-      sm.applyWounds(token, -2);
+      message += ` and heals <b style="color:darkgreen">2</b> from <b style="color: red;">${tokenTarget.name}</b>.</p>`;            
     }
   }
-  
+
   message += `<ul>
   <li><b>Subtract 1</b> from Healing rolls without a basic First Aid kit or similar supplies.</li>
-  <li>This attempt required <b>${sm.getWounds(token)*10}</b> minutes</li></ul>`;
+  <li>This attempt required <b>${startingWounds*10}</b> minutes</li></ul>`;
   
   ChatMessage.create({ content: message });
 }

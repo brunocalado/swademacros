@@ -19,12 +19,34 @@ if (canvas.tokens.controlled[0]===undefined) {
 }
 
 function main() {
-  let dialogText = `
-    <p>Power Points: <input id="powerpoints" type="number" min="-30" max="30" style="width: 80px; text-align: center;" value=0></input>
-    </p>
-    <p style=text-align: center;">Only use this input if you will use the <b>Manual Change</b>.</p>
+  let dialogText = `    
+
+  <style type="text/css">
+    .tg  {border-collapse:collapse;border-spacing:0;}
+    .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+      overflow:hidden;padding:10px 5px;word-break:normal;}
+    .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+      font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+    .tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
+    .tg .tg-xwyw{border-color:#000000;text-align:center;vertical-align:middle}
+  </style>
+  <table class="tg">
+  <tbody>
+    <tr>
+      <td class="tg-xwyw">
+        <p style=text-align: center;">Only use this input if you will use the <b>Manual Change</b>.</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tg-c3ow">
+        <p>Power Points: <input id="powerpoints" type="number" min="-30" max="30" style="width: 80px; text-align: center;" value=0></input></p>
+      </td>
+    </tr>
+  </tbody>
+  </table>
+
   `;
-            
+
   dialogButtons = {
     one: {
       label: "Natural Recover",
@@ -45,15 +67,6 @@ function main() {
       }
     }    
   }
-
-/*
-  var two = {};
-  two.label = "Benny Recover";
-  two.callback = (callback: (html) => {
-        manualChange(html);
-      });
-  dialogButtons.push({two: two});
-*/
 
   // Main Dialogue    
   new Dialog({
@@ -80,7 +93,7 @@ async function naturalRecover(html) {
     message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Recharging</h2>`;
   }
 
-  changePowerPoints(tokenD, 5);
+  await changePowerPoints(tokenD, 5);
   message += `<p><b style="color:red;">${tokenD.name}</b> recovered 5 Power Points after 1 hour. The current power points are: <b>${tokenD.actor.data.data.powerPoints.value}</b> </p>`;
 
   ChatMessage.create({ content: message });
@@ -98,14 +111,32 @@ async function bennyRecover(html) {
     message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Recharging</h2>`;
   }
 
-  changePowerPoints(tokenD, 5);
-  message += `<p><b style="color:red;">${tokenD.name}</b> recovered 5 Power Points after 1 hour. The current power points are: <b>${tokenD.actor.data.data.powerPoints.value}</b> </p>`;
+  if ( sm.checkBennies(tokenD)>0 ) {
+    sm.spendBenny(tokenD);
+    await changePowerPoints(tokenD, 5);
+    message += `<p><b style="color:red;">${tokenD.name}</b> recovered 5 Power Points after spent a benny. The current power points are: <b>${tokenD.actor.data.data.powerPoints.value}</b>.</p>`;
+  } else {
+    message += `<p><b style="color:red;">${tokenD.name}</b> don't have bennies to spend. The current power points are: <b>${tokenD.actor.data.data.powerPoints.value}</b>.</p>`;
+  }
 
   ChatMessage.create({ content: message });
 }
 
 async function manualChange(html) {
+  let message;
+  const powerpoints = parseInt( html.find("#powerpoints")[0].value );    
   
+  if (coreRules) {
+    message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> ${rule}</h2></div>`;
+  } else {
+    message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Recharging</h2>`;
+  }
+
+  await changePowerPoints(tokenD, powerpoints);
+  
+  message += `<p><b style="color:red;">${tokenD.name}</b> manually added ${powerpoints} Power Points. The current power points are: <b>${tokenD.actor.data.data.powerPoints.value}</b>.</p>`;
+  
+  ChatMessage.create({ content: message });
 }
 
 async function changePowerPoints(tokenD, val) {

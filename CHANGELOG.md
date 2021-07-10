@@ -1,3 +1,11 @@
+# 0.2.7
+- healing can target
+- support fixed
+- Size/Scale Calculator update
+- Power Point Management
+- Player - Macro Manager
+- Fear 
+
 # 0.2.6
 - size/scale macro updated
 - token vision added

@@ -1,4 +1,4 @@
-const version = 'v1.8';
+const version = 'v1.9';
 const chatimage = "icons/tools/hand/scale-balances-merchant-brown.webp";
 const debugFlag = false;
 
@@ -30,9 +30,9 @@ if (tokenActor === undefined || tokenTarget === undefined) {
   function rollForIt() {
       let actorSize = tokenActor.actor.data.data.stats.size;
       let targetSize = tokenTarget.actor.data.data.stats.size;
-      let actorModifier = sizeToModifier(actorSize);
-      let targetModifier = sizeToModifier(targetSize);
-      let modifier = sizeCalculator(actorSize, targetSize);
+      let actorModifier = sizeToScaleModifier(actorSize);
+      let targetModifier = sizeToScaleModifier(targetSize);
+      let modifier = getToHitScaleModifier(actorSize, targetSize);
 
       let message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Size & Scale Calculator</h2>`;
       if (coreRules === true) {
@@ -49,7 +49,7 @@ if (tokenActor === undefined || tokenTarget === undefined) {
           message += ` and has Swat*.</li>`;
         } else { message += `.</li>` }
 
-        message += `<li>${tokenTarget.name} has <b style="color:red">${sizeCalculator(targetSize, actorSize)}</b> to attack ${tokenActor.name}`;
+        message += `<li>${tokenTarget.name} has <b style="color:red">${getToHitScaleModifier(targetSize, actorSize)}</b> to attack ${tokenActor.name}`;
 
         if (targetSwat) {
           message += ` and has Swat*.</li></ul>`;
@@ -73,6 +73,12 @@ if (tokenActor === undefined || tokenTarget === undefined) {
       ChatMessage.create(chatData, {});
   }
 
+  function getToHitScaleModifier(actorSize, targetSize) { // Match from page 106 core
+    let actorScaleModifier = sizeToScaleModifier(actorSize);
+    let targetScaleModifier = sizeToScaleModifier(targetSize);
+    return targetScaleModifier - actorScaleModifier;
+  } 
+/*
   function sizeCalculator(actorSize, targetSize) { // Mach from page 106 core
     let actorModifier = sizeToModifier(actorSize);
     let targetModifier = sizeToModifier(targetSize);
@@ -92,8 +98,8 @@ if (tokenActor === undefined || tokenTarget === undefined) {
       }
     }
   }
-
-  function sizeToModifier(size) { //p179 swade core
+*/
+  function sizeToScaleModifier(size) { //p179 swade core
     if (size == -4) {
         return -6;
     } else if (size == -3) {

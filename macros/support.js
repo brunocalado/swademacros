@@ -1,4 +1,4 @@
-const version = 'v1.1';
+const version = 'v1.2';
 const chatimage = "icons/skills/social/diplomacy-unity-alliance.webp";
 let coreRules = false;
 const coreRulesLink = '@Compendium[swade-core-rules.swade-rules.TFR8EmfT9ci1gBEy]{Support}';
@@ -128,6 +128,7 @@ function main() {
     </style>    
     
     <h2 style="text-align:center; color:white">${supporter.name} will try to Support ${target.name}</h2>
+    
     <div class="divTable purpleHorizon">
     <div class="divTableBody">
     
@@ -143,17 +144,11 @@ function main() {
         <select id="skillTarget" type="text" style="width: 100px; box-sizing: border-box;border: none;background-color: #ff0000;color: white; text-align: center;">
           ${targetSkillsList}
         </select>      
+    </div>
+    </div>
+    
+    </div>
     </div>    
- 
-    </div>
-    
-    </div>
-    </div>
-
-   
-    </div>
-    </div>
-    
   `;
   
   new Dialog({
@@ -190,20 +185,22 @@ async function support(html) {
 
   supporterRolled = await sm.rollSkill(supporter, skillSupporter);  
   total = supporterRolled.total;
-  
+
   message += `<p><b style="color:darkblue">${supporter.name}</b> is trying to support <b style="color:darkred">${target.name}</b>.</p>`;  
   
-  if ( sm.isCriticalBeta(supporterRolled) ) {
+  if ( sm.isCritical(supporterRolled) ) {
     message += `<p><b style="color:darkblue">${supporter.name}</b> rolled a <b style="color: red; font-size:150%">Critical Failure!</b>!</p>`;
     modifier = -2;
   } else if ( total>=4 && total<8 ) {
-    message += `<p><b style="color:darkblue">${supporter.name}</b> rolled <b style="color: red; font-size:100%">${total}</b>!</p>`;
+    message += `<p><b style="color:darkblue">${supporter.name}</b> rolled <b style="color: red;">${total}</b>!</p>`;
     modifier = 1;
   } else if ( total>=8 ) {
-    message += `<p><b style="color:darkblue">${supporter.name}</b> rolled <b style="color: red; font-size:100%">${total}</b>!</p>`;
+    message += `<p><b style="color:darkblue">${supporter.name}</b> rolled <b style="color: red;">${total}</b>!</p>`;
     modifier = 2;
+  } else {
+    message += `<p><b style="color:darkblue">${supporter.name}</b> failed!</p>`;    
   }
-  
+
   message += `<p><b style="color:darkred">${target.name}</b> should roll with <b style="color:red">${modifier}</b>.</p>`;
 
   // send message1

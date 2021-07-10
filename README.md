@@ -66,7 +66,7 @@ You can see changes at [CHANGELOG](CHANGELOG.md).
 # Acknowledgements
 - https://github.com/SalieriC/SWADE-Immersive-Macros
 - https://github.com/spacemandev-git/swade-macros-simple
-- Kristian Serrano (Savaged.us Importer)
+- Kristian Serrano [Savaged.us](https://savaged.us/)
 
 # License
 License at [LICENSE](LICENSE).
