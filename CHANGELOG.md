@@ -1,3 +1,7 @@
+# 0.2.8
+- ae builder
+- scene for social conflict
+
 # 0.2.7
 - healing can target
 - support fixed

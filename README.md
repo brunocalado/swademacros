@@ -69,4 +69,7 @@ You can see changes at [CHANGELOG](CHANGELOG.md).
 - Kristian Serrano [Savaged.us](https://savaged.us/)
 
 # License
-License at [LICENSE](LICENSE).
+Code license at [LICENSE](LICENSE).
+
+Other stuff
+- Chair: https://unsplash.com/license
