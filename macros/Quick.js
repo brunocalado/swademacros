@@ -1,4 +1,4 @@
-/* All tokens to Combat v1.1
+/* All tokens to Combat v1.2
 * - This macro select all tokens in the scene
 * - Add all of them to the combat tracker
 * - Roll Initiave for all
@@ -21,7 +21,8 @@
       tokens.push({tokenId:token.id});
     });
 
-    Combat.create({scene:scene.data._id, combatants:tokens}).then(startCRoll);
+    //Combat.create({scene:scene.data._id, combatants:tokens}).then(startCRoll); // start and roll
+    Combat.create({scene:scene.data._id, combatants:tokens});
 
   } else {
     // Combat already exists, add the missing tokens.
@@ -33,9 +34,9 @@
       }
     });
 
-    //game.combat.createCombatant(tokens).then(startCRoll);
-    game.combat.createEmbeddedDocuments("Combatant", tokens).then(startCRoll);
-
+    //game.combat.createEmbeddedDocuments("Combatant", tokens).then(startCRoll); // start and roll
+    game.combat.createEmbeddedDocuments("Combatant", tokens);
+    
     //The Combat#createCombatant method has been deprecated in favor of Combatant.create and will be removed in 0.9.0
   }
   

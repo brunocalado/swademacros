@@ -1,3 +1,8 @@
+# 0.3.0
+- quick wait for you
+- docs
+- manager player update
+
 # 0.2.9
 - gang up rules link
 - test macro
