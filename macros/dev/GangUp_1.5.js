@@ -1,11 +1,19 @@
-const version = 'v1.6';
+const version = 'v1.5';
 const chatimage = "icons/creatures/mammals/wolf-shadow-black.webp";
-const rules = '@Compendium[swade-core-rules.swade-rules.hdXOHCe38O8KGyUz]{Ganging Up}';
-let coreRules = false;
-if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
-const debug_flag=true;
-  
+
 /* Gang Up p101 SWADE core
+
+
+Cyril "Gronyon" Ronseaux — Hoje às 16:20
+About that Gang Up macro. (I think by @md-mention2reply)
+I got rules clarifications: (from French SWADE team)
+
+- when cancelling gang up bonuses, "adjacent to both" does not mean "adjacent to the attacker and the defender" but "adjacent to the defender and the flanker, the one bringing the +1 you want to cancel".
+
+- reduction from Block is applied after the max +4. so with Block max against you becomes +3, and with Imp Block would be +2.
+
+
+
 IMPORTANT
 - YOU SHOULD DEFINE TOKEN DISPOSITION: FRIENDLY FOR PCS AND ALLIES. HOSTILE FOR ENEMIES
 
@@ -21,7 +29,7 @@ icon: icons/creatures/mammals/wolf-shadow-black.webp
 */
 
 // Requires at least 1 target
-if (canvas.tokens.controlled[0]===undefined || Array.from(game.user.targets)[0]===undefined){ 
+if (canvas.tokens.controlled[0]===undefined || Array.from(game.user.targets)[0]===undefined){
   ui.notifications.warn("You must select a token and target another one!");    
 } else {
   let target=Array.from(game.user.targets)[0]; // token will not be count
@@ -30,14 +38,8 @@ if (canvas.tokens.controlled[0]===undefined || Array.from(game.user.targets)[0]=
 }
 
 function messageToTheChat(attacker, target) {
-  let message = ``;
-  if (coreRules) {
-    message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> ${rules}</h2></div>`;
-  } else {
-    message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Ganging Up</h2>`;
-  }
-  
-  message += `<p><b style="color:red">${attacker.name}</b> will receive ${gangUp(attacker, target)} to attack <b style="color:darkblue">${target.name}</b>.</p>`;
+  let message = `<h2 style="color:red"><img style="vertical-align:middle" src=${chatimage} width="28" height="28">Gang Up</h2>`;
+  message += `<p><b style="color:red">${attacker.name}</b> will receive ${gangUp(attacker, target)} to attack <b style="color:darkblue">${target.name}</b></p>`;
   
   // send message
   let chatData = {
@@ -52,6 +54,8 @@ function messageToTheChat(attacker, target) {
 // - adds +1 to all the attackers’ Fighting rolls, up to a maximum of +4.
 // - Each ally adjacent to the defender cancels out one point of Gang Up bonus from an attacker adjacent to both.
 function gangUp(attacker, target) {
+  const debug_flag=true;
+
   let itemRange=1; // dist 1''
   let enemies;
   let allies;

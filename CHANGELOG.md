@@ -1,3 +1,10 @@
+# 0.2.9
+- gang up rules link
+- test macro
+- support update
+- docs
+- mass battle whisper
+
 # 0.2.8
 - ae builder
 - scene for social conflict

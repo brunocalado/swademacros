@@ -1,26 +1,18 @@
-const version = 'v1.3';
-const chatimage = "icons/skills/social/diplomacy-unity-alliance.webp";
+const version = 'v1.0';
+const chatimage = 'icons/sundries/gaming/dice-pair-white-green.webp';
 let coreRules = false;
-const coreRulesLink = '@Compendium[swade-core-rules.swade-rules.TFR8EmfT9ci1gBEy]{Support}';
+const coreRulesLink = '@Compendium[swade-core-rules.swade-rules.2aAyYC6n07MrZ47O]{Test}';
 if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
 
-/* Support p104 SWADE core
+/* Test
 IMPORTANT
 - 
 
 TODO
 - 
 source: 
-icon: icons/skills/social/diplomacy-unity-alliance.webp
+icon: icons/sundries/gaming/dice-pair-white-green.webp
 */
-
-/*
-- list target skills
-- search the same skill
-- roll
-- report outcome
-*/
-
 
 // Requires at least 1 target
 let supporter;
@@ -36,6 +28,7 @@ if (canvas.tokens.controlled[0]===undefined || Array.from(game.user.targets)[0]=
 function main() {  
 
   let supporterSkills = sm.listSkills(supporter);
+  let targetSkills = sm.listSkills(target);
 
   let supporterSkillsList = ``;
   supporterSkills.map((t) => {
@@ -122,7 +115,7 @@ function main() {
       }
     </style>    
     
-    <h2 style="text-align:center; color:white">${supporter.name} will try to Support ${target.name}.</h2>
+    <h2 style="text-align:center; color:white">${supporter.name} will try to Test ${target.name}!</h2>
     
     <div class="divTable purpleHorizon">
     <div class="divTableBody">
@@ -141,13 +134,13 @@ function main() {
   `;
   
   new Dialog({
-    title: `Support - ${version}`,
+    title: `Test - ${version}`,
     content: template,
     buttons: {
       ok: {
-        label: "Support!",
+        label: "Test!",
         callback: async (html) => {
-          support(html);
+          testTarget(html);
         },
       },
       cancel: {
@@ -158,12 +151,20 @@ function main() {
   }, { id: 'kultcss'}).render(true);
 }
 
-async function support(html) {
+async function testTarget(html) {
   const skillSupporter = html.find("#skillAttacker")[0].value;    
   let supporterRolled;
   let total;
   let message;
-  let modifier = 0;
+  let message_temp=``;
+  let word1 = 'Distracted';
+  let word2 = 'Vulnerable';
+  let word3 = 'Shaken';
+  if (coreRules) {
+    word1 = '@Compendium[swade-core-rules.swade-rules.vuud75GDkKL3NW10]{Distracted}';
+    word2 = '@Compendium[swade-core-rules.swade-rules.vuud75GDkKL3NW10]{Vulnerable}';
+    word3 = '@Compendium[swade-core-rules.swade-rules.30TJKevSbgxK6jQy]{Shaken}';
+  }
   
   if (coreRules) {
       message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> ${coreRulesLink}</h2><div>`;
@@ -174,30 +175,27 @@ async function support(html) {
   supporterRolled = await sm.rollSkill(supporter, skillSupporter);  
   total = supporterRolled.total;
 
-  message += `<p><b style="color:darkblue">${supporter.name}</b> is trying to support <b style="color:darkred">${target.name}</b>.</p>`;  
+  message += `<p><b style="color:darkblue">${supporter.name}</b> is trying to test <b style="color:darkred">${target.name}</b>.</p>`;  
+
+  message_temp += `<p><b style="color:darkred">${target.name}</b> should roll <b style="color:red">${total}</b> or higher.</p>`;  
+  message_temp += `<h3>Outcomes</h3>`;
+  message_temp += `<ul><li><b style="color:darkred">${supporter.name}</b> succeeded: <b style="color:darkblue">${supporter.name}</b> can add ${word1} or ${word2} to <b style="color:darkred">${target.name}</b></li>`;
+  message_temp += `<li><b style="color:darkred">${supporter.name}</b> raised: <b style="color:darkblue">${supporter.name}</b> can add ${word1} or ${word2} to <b style="color:darkred">${target.name}</b> and <b style="color:darkred">${target.name}</b> is ${word3}.</li></ul>`;
+
   
   if ( sm.isCritical(supporterRolled) ) {
     message += `<p><b style="color:darkblue">${supporter.name}</b> rolled a <b style="color: red; font-size:150%">Critical Failure!</b>!</p>`;
-    modifier = -2;
-    message += `<p><b style="color:darkred">${target.name}</b> should roll with <b style="color:red">${modifier}</b>.</p>`;;
-  } else if ( total>=4 && total<8 ) {
+  } else if ( total>=4 ) {
     message += `<p><b style="color:darkblue">${supporter.name}</b> rolled <b style="color: red;">${total}</b>!</p>`;
-    modifier = 1;
-    message += `<p><b style="color:darkred">${target.name}</b> should roll with <b style="color:red">${modifier}</b>.</p>`;;
-  } else if ( total>=8 ) {
-    message += `<p><b style="color:darkblue">${supporter.name}</b> rolled <b style="color: red;">${total}</b>!</p>`;
-    modifier = 2;
-    message += `<p><b style="color:darkred">${target.name}</b> should roll with <b style="color:red">${modifier}</b>.</p>`;;
+    message += message_temp;
   } else {
-    message += `<p><b style="color:darkblue">${supporter.name}</b> rolled <b style="color: red;">${total}</b>!</p>`;
     message += `<p><b style="color:darkblue">${supporter.name}</b> failed!</p>`;    
   }
-
-  
 
   // send message1
   let chatData = {
     content: message
   };  
-  ChatMessage.create(chatData, {});  
+  ChatMessage.create(chatData, {});
+  
 }
