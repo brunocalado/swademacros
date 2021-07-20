@@ -1,3 +1,8 @@
+# 0.3.1
+- sprawlrunners_slowburn_options
+- Character Summarizer penllawen 
+- docs
+
 # 0.3.0
 - quick wait for you
 - docs
