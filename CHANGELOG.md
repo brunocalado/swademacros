@@ -1,3 +1,6 @@
+# 0.3.2
+- 2 scenes
+
 # 0.3.1
 - sprawlrunners_slowburn_options
 - Character Summarizer penllawen 

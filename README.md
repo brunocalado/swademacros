@@ -73,3 +73,4 @@ Code license at [LICENSE](LICENSE).
 
 Other stuff
 - Chair: https://unsplash.com/license
+- Man: https://unsplash.com/license
