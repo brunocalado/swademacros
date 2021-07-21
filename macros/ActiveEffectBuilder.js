@@ -1,8 +1,9 @@
 
 /* AE Builder
+docs: https://gitlab.com/peginc/swade/-/wikis/active-effects#attribute-keys
 */
 
-const version = 'v1.0';
+const version = 'v1.1';
 const icon = "icons/magic/symbols/rune-sigil-green.webp";
 
 if ( canvas.tokens.controlled[0]===undefined && Array.from(game.user.targets)[0]===undefined ) {
@@ -12,7 +13,7 @@ if ( canvas.tokens.controlled[0]===undefined && Array.from(game.user.targets)[0]
 }
 
 function main() {
-  
+
   let dialogue_content = `
     <form>
       <div class="form-group">
@@ -35,8 +36,25 @@ function main() {
           <option value="data.status.isVulnerable">Vulnerable</option>
           <option value="data.status.isStunned">Stunned</option>
           <option value="data.status.isEntangled">Entangled</option>
-          <option value="data.status.isBound">Bound</option>
+          <option value="data.status.isBound">Bound</option>          
           
+          <option value="data.attributes.agility.die.sides">Agility Die</option>         
+          <option value="data.attributes.smarts.die.sides">Smarts Die</option>         
+          <option value="data.attributes.spirit.die.sides">Spirit Die</option>         
+          <option value="data.attributes.strength.die.sides">Strength Die</option>         
+          <option value="data.attributes.vigor.die.sides">Vigor Die</option>         
+
+          <option value="data.attributes.agility.die.modifier">Agility Modifier</option>         
+          <option value="data.attributes.smarts.die.modifier">Smarts Modifier</option>         
+          <option value="data.attributes.spirit.die.modifier">Spirit Modifier</option>         
+          <option value="data.attributes.strength.die.modifier">Strength Modifier</option>         
+          <option value="data.attributes.vigor.die.modifier">Vigor Modifier</option>         
+
+          <option value="data.initiative.hasLevelHeaded">Level Headed</option>         
+          <option value="data.initiative.hasImpLevelHeaded">Improved Level Headed</option>         
+          <option value="data.initiative.hasHesitant">Hesitant</option>         
+          <option value="data.initiative.hasQuick">Quick</option>         
+
         </datalist>  
       </div>
       <div class="form-group">
@@ -95,27 +113,30 @@ async function applyActiveEffect(html) {
 }
 
 function keyToMode(mykey) {
-  let aeTypeAdd = ['data.stats.toughness.armor', 'data.stats.size', 'data.stats.speed.value', 'data.stats.parry.value', 'data.stats.toughness.value' ];
-  let aeTypeOverride = [ 'data.status.isShaken', 'data.status.isDistracted', 'data.status.isVulnerable', 'data.status.isStunned', 'data.status.isEntangled', 'data.status.isBound' ];
+  //let aeTypeAdd = ['data.stats.toughness.armor', 'data.stats.size', 'data.stats.speed.value', 'data.sta0ts.parry.value', 'data.stats.toughness.value' ];
+  let aeTypeOverride = [ 'data.status.isShaken', 'data.status.isDistracted', 'data.status.isVulnerable', 'data.status.isStunned', 'data.status.isEntangled', 'data.status.isBound', 'data.initiative.hasLevelHeaded', 'data.initiative.hasImpLevelHeaded', 'data.initiative.hasHesitant', 'data.initiative.hasQuick' ];
 
-  if ( aeTypeAdd.includes(mykey) ) {
-    return CONST.ACTIVE_EFFECT_MODES.ADD;
-  } else if ( aeTypeOverride.includes(mykey) ) {
+  if ( aeTypeOverride.includes(mykey) ) {
     return CONST.ACTIVE_EFFECT_MODES.OVERRIDE;
-  } else {
-    ui.notifications.error("Error");
+  } else { // ADD
+    return CONST.ACTIVE_EFFECT_MODES.ADD;
   }  
 }
 
 function keyToValue(mykey, myvalue) {
-  let aeTypeAdd = ['data.stats.toughness.armor', 'data.stats.size', 'data.stats.speed.value', 'data.stats.parry.value', 'data.stats.toughness.value' ];
+  //let aeTypeAdd = ['data.stats.toughness.armor', 'data.stats.size', 'data.stats.speed.value', 'data.stats.parry.value', 'data.stats.toughness.value' ];
   let aeTypeOverride = [ 'data.status.isShaken', 'data.status.isDistracted', 'data.status.isVulnerable', 'data.status.isStunned', 'data.status.isEntangled', 'data.status.isBound' ];
+  let aeTypeSteps = ['data.attributes.agility.die.sides', 'data.attributes.smarts.die.sides', 'data.attributes.spirit.die.sides', 'data.attributes.strength.die.sides', 'data.attributes.vigor.die.sides' ];
 
-  if ( aeTypeAdd.includes(mykey) ) {
-    return myvalue;
-  } else if ( aeTypeOverride.includes(mykey) ) {
+  if ( aeTypeOverride.includes(mykey) ) {
     return true;
+  } else if ( aeTypeSteps.includes(mykey) ) {
+    if ([2,4,6,8,10].includes( Math.abs(myvalue) ) ) {
+      return myvalue;
+    } else {
+      return 2;
+    }
   } else {
-    ui.notifications.error("Error");
+    return myvalue;
   }  
 }
