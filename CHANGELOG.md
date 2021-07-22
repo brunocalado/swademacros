@@ -1,3 +1,9 @@
+# 0.3.4
+- ImagesToFolder
+- test with creative combat
+- feet to swade macro
+- docs
+
 # 0.3.3
 - sprawlrunners_slowburn_options update
 - AE Builder update

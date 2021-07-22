@@ -1,4 +1,4 @@
-const version = 'v1.0';
+const version = 'v1.1';
 const chatimage = 'icons/sundries/gaming/dice-pair-white-green.webp';
 let coreRules = false;
 const coreRulesLink = '@Compendium[swade-core-rules.swade-rules.2aAyYC6n07MrZ47O]{Test}';
@@ -131,6 +131,20 @@ function main() {
     
     </div>
     </div>    
+
+    <h2 style="text-align:center; color:white">Options</h2>
+    <div class="divTable purpleHorizon">
+    <div class="divTableBody">
+    
+    <div class="divTableRow">
+    <div class="divTableCell">
+        <input type="checkbox" id="creativecombat" style="background-color: #ff0000; color: white;"/>Creative Combat
+    </div>
+    </div>
+    
+    </div>
+    </div> 
+    
   `;
   
   new Dialog({
@@ -153,6 +167,7 @@ function main() {
 
 async function testTarget(html) {
   const skillSupporter = html.find("#skillAttacker")[0].value;    
+  let creativecombat = html.find("#creativecombat")[0].checked;
   let supporterRolled;
   let total;
   let message;
@@ -180,14 +195,18 @@ async function testTarget(html) {
   message_temp += `<p><b style="color:darkred">${target.name}</b> should roll <b style="color:red">${total}</b> or higher.</p>`;  
   message_temp += `<h3>Outcomes</h3>`;
   message_temp += `<ul><li><b style="color:darkred">${supporter.name}</b> succeeded: <b style="color:darkblue">${supporter.name}</b> can add ${word1} or ${word2} to <b style="color:darkred">${target.name}</b></li>`;
-  message_temp += `<li><b style="color:darkred">${supporter.name}</b> raised: <b style="color:darkblue">${supporter.name}</b> can add ${word1} or ${word2} to <b style="color:darkred">${target.name}</b> and <b style="color:darkred">${target.name}</b> is ${word3}.</li></ul>`;
-
+  if (creativecombat==false) {
+    message_temp += `<li><b style="color:darkred">${supporter.name}</b> raised: <b style="color:darkblue">${supporter.name}</b> can add ${word1} or ${word2} to <b style="color:darkred">${target.name}</b> and <b style="color:darkred">${target.name}</b> is ${word3}.</li></ul>`; 
+  }
   
   if ( sm.isCritical(supporterRolled) ) {
     message += `<p><b style="color:darkblue">${supporter.name}</b> rolled a <b style="color: red; font-size:150%">Critical Failure!</b>!</p>`;
   } else if ( total>=4 ) {
     message += `<p><b style="color:darkblue">${supporter.name}</b> rolled <b style="color: red;">${total}</b>!</p>`;
     message += message_temp;
+    if (creativecombat==true) {
+      message += await creativeCombatMessage();    
+    }
   } else {
     message += `<p><b style="color:darkblue">${supporter.name}</b> failed!</p>`;    
   }
@@ -198,4 +217,17 @@ async function testTarget(html) {
   };  
   ChatMessage.create(chatData, {});
   
+}
+
+async function creativeCombatMessage() {
+  let message=``;
+  const tableCreativeCombatID = await game.packs.get("swade-core-rules.swade-tables").index.find(el => el.name == "Creative Combat")._id;
+  let tableCreativeCombat = await game.packs.get("swade-core-rules.swade-tables").getDocument( tableCreativeCombatID );
+
+  let output = await tableCreativeCombat.roll();
+  let result = output.results[0].data.text;
+  
+  message += `<p>If you got a raise, this will happen:</p>`;
+  message += `<p>${result}</p>`;
+  return message;
 }
