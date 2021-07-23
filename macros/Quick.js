@@ -1,43 +1,25 @@
-/* All tokens to Combat v1.2
+/* All tokens to Combat v1.3
 * - This macro select all tokens in the scene
 * - Add all of them to the combat tracker
-* - Roll Initiave for all
-* modified from @atnoslen with a little help from @Atropos (thanks!) 
+
 * source: 
 * icon: icons/magic/time/clock-stopwatch-white-blue.webp
 */
 
 (async () => {
-  const scene = game.scenes.contents.filter(scene => scene.active === true)[0];
-  let tokens = [];
   
-  let startCRoll=async function rollAndStart() {
-    await game.combat.rollAll();
-    await game.combat.startCombat();
-  }
+  const combat = !game.combat ? await Combat.create({scene: canvas.scene.id, active: true}) : game.combat;
 
-  if (!game.combat) {
-    scene.data.tokens.forEach(function(token) {
-      tokens.push({tokenId:token.id});
-    });
+  let toCreate = [];
 
-    //Combat.create({scene:scene.data._id, combatants:tokens}).then(startCRoll); // start and roll
-    Combat.create({scene:scene.data._id, combatants:tokens});
+  const tokens = canvas.tokens.placeables;
 
-  } else {
-    // Combat already exists, add the missing tokens.
-    // This assumes createCombatant is expensive, so create an array
-    // instead of calling individually.
-    scene.data.tokens.forEach(function(token) {
-      if (game.combat.combatants.filter(combatant => combatant.tokenId === token.id).length === 0) {
-        tokens.push({tokenId:token.id});
+  if(tokens.length){
+      for(let t of tokens){
+          if(t.inCombat) continue;
+          toCreate.push({tokenId: t.id, hidden: t.data.hidden});
       }
-    });
-
-    //game.combat.createEmbeddedDocuments("Combatant", tokens).then(startCRoll); // start and roll
-    game.combat.createEmbeddedDocuments("Combatant", tokens);
-    
-    //The Combat#createCombatant method has been deprecated in favor of Combatant.create and will be removed in 0.9.0
+      const combatants = await combat.createEmbeddedDocuments("Combatant", toCreate);
   }
-  
+
 })()

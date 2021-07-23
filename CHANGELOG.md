@@ -1,3 +1,6 @@
+# 0.3.5
+- Quick Combat is back!
+
 # 0.3.4
 - ImagesToFolder
 - test with creative combat
