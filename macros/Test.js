@@ -1,7 +1,6 @@
 const version = 'v1.1';
 const chatimage = 'icons/sundries/gaming/dice-pair-white-green.webp';
-let coreRules = false;
-const coreRulesLink = '@Compendium[swade-core-rules.swade-rules.2aAyYC6n07MrZ47O]{Test}';
+let coreRules = sm.isModuleOn("swade-core-rules");
 if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
 
 /* Test

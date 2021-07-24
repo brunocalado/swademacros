@@ -1,13 +1,13 @@
-const version = 'v1.4';
+const version = 'v1.6';
 
 /* Unshaken
 
 source: 
 icon: icons/magic/control/fear-fright-white.webp
 */
+
 const chatimage = "icons/magic/control/fear-fright-white.webp";
-let coreRules = false;
-if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
+let coreRules = sm.isModuleOn("swade-core-rules");
 const coreRulesLink = '@Compendium[swade-core-rules.swade-rules.30TJKevSbgxK6jQy]{Shaken}';
 let tokenD=canvas.tokens.controlled[0];
 
@@ -22,10 +22,17 @@ async function main() {
   if (tokenD.actor.data.data.status.isShaken === true) {
     rollUnshake();
   } else if (tokenD) {
+    let message=``;
     await tokenD.actor.update({ "data.status.isShaken": true });
+    if (coreRules) {
+      message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> ${coreRulesLink}</h2></div>`;
+    } else {
+      message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Shaken</h2>`;
+    }
+    message+=`<p><b style="color:red">${tokenD.name}</b> is Shaken now!</p>`;
     ChatMessage.create({
       user: game.user.id,      
-      content: `<p><b style="color:red">${tokenD.name}</b> is Shaken now!</p>`,
+      content: message,
     });        
   }
 }
@@ -38,7 +45,7 @@ async function rollUnshake() {
   const edges = tokenD.actor.data.items.filter(function (item) {
     return edgeNames.includes(item.name.toLowerCase()) && (item.type === "edge" || item.type === "ability");
   });
-  
+
   let rollWithEdge = rolled.total;
   let edgeText = "";
   for (let edge of edges) {
@@ -61,7 +68,12 @@ async function rollUnshake() {
   } else {
     if (rollWithEdge <= 3) {
       message += ` and remains Shaken.`;
-      sm.useBenny(tokenD);
+      if ( (sm.checkBennies(tokenD)>0) ) {
+        var unshakenFunction = async function(tokenD) { 
+          await tokenD.actor.update({ "data.status.isShaken": false });
+        };        
+        sm.useBenny(tokenD, unshakenFunction);
+      }
     } else if (rollWithEdge >= 4) {
       message += `, is no longer Shaken and may act normally.`;
       await tokenD.actor.update({ "data.status.isShaken": false });

@@ -1,3 +1,9 @@
+# 0.3.6
+- shaken spend benny to unshaken
+- Dramatic Tasks
+- unstun
+- docs
+
 # 0.3.5
 - Quick Combat is back!
 

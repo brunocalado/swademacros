@@ -1,4 +1,4 @@
-const version = 'v1.0';
+const version = 'v1.1';
 
 /* Unstun
 
@@ -82,7 +82,6 @@ async function rollUnstun() {
       message += `<li>remains Distracted until end of this turn.</li></ul>`;
       await tokenD.actor.update({ "data.status.isVulnerable": true });
       await tokenD.actor.update({ "data.status.isStunned": false });
-      sm.useBenny(tokenD);
     } else if (rollWithEdge >= 8) {
       message += `<p>${tokenD.name} is no longer Stunned and looses Vulnerable/Distracted.</p>`;
       await tokenD.actor.update({ "data.status.isDistracted": false });
@@ -90,7 +89,12 @@ async function rollUnstun() {
       await tokenD.actor.update({ "data.status.isVulnerable": false });
     } else {
       message += `<p>${tokenD.name} remains Stunned.</p>`;
-      sm.useBenny(tokenD);
+      if ( (sm.checkBennies(tokenD)>0) ) {
+        var unstunFunction = async function() { 
+          sm.macroRun('Unstun');
+        };        
+        sm.useBenny(tokenD, unstunFunction);
+      }      
     }
     message += ` ${edgeText}`;
   }

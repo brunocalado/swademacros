@@ -136,7 +136,7 @@ class sm {
     }
   }
   
-  static async useBenny(tokenD) {
+  static async useBenny(tokenD, inlineFunction=undefined) {
     let bennies = this.checkBennies(tokenD);
     if (bennies > 0) {
       new Dialog({
@@ -147,6 +147,9 @@ class sm {
               label: "Yes.",
               callback: (html) => {
                 this.spendBenny(tokenD);
+                if (inlineFunction!=undefined) {
+                  inlineFunction(tokenD)
+                }
               }
             },
             two: {
@@ -156,9 +159,9 @@ class sm {
           },
           default: "one"
         }).render(true)
-    }
+    } 
   }
-    
+  
   // ---------------------------------------------------------------
   // CRITICAL
   static isCritical(r) {
