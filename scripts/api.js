@@ -205,7 +205,22 @@ class sm {
     let macro = ( await pack.getDocuments() ).find(i => (i.data.name==macroName) );
     await macro.execute();    
   }
-  
+
+  // ---------------------------------------------------------------
+  // Tables
+  static async drawFromCompendiumTable(compendiumName, tableName) {
+    let list_compendium = await game.packs.filter(p=>p.documentName=='RollTable');      
+    let inside = await list_compendium.filter( p=>p.metadata.label==compendiumName )[0].getDocuments();      
+    let table = await inside.filter( p=>p.data['name']==tableName )[0];
+    
+    if (!table) {
+      ui.notifications.error(`Table ${tableName} not found.`, {});
+      return;
+    }
+    return await table.draw({rollMode: 'gmroll'});
+  }
+
+
   // ---------------------------------------------------------------
   // GENERAL
   static isModuleOn(moduleName) {    
