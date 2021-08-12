@@ -108,3 +108,55 @@ function calculateTaskTokens(players, difficult) {
   message+=`<ul><li>Task Tokens: <b style="color:red;">${tasksTokens}</b></li><li>Rounds: <b style="color:red;">${tasksTurns}</b></p>`;
   return message;
 }
+
+/*
+// prob ===============================================
+async function resolveOneTask(skills) {    
+    let outcome = 0; // "outcome" is "task tokens", ie. one per success plus one per raise
+    for (const skillDie of skills) { 
+        const diceFormula ="{" + skillDie + "x,d6x}kh";
+        let diceRoll = new Roll(diceFormula);
+        diceRoll.evaluate({async: false});
+        outcome += Math.floor(diceRoll.result / 4);
+        //console.log(`Result ${diceRoll.result} outcome is now ${outcome}`);
+    }
+    return outcome;
+}
+
+var attemptedTasks = Array.from(Array(1000).keys());
+var sucessfulTasks = attemptedTasks.reduce((acumulador, numero) => {
+  let outcome = resolveOneTask(["d8", "d8", "d8", "d8"]);
+  if (outcome >= 6) { 
+    acumulador++;
+  }
+  return acumulador;
+}, 0)
+
+let fraction = sucessfulTasks / attemptedTasks.length;
+console.log(`Did ${attemptedTasks.length} tasks, ${sucessfulTasks} succeeded (${fraction})`);
+
+javier
+async function resolveOneTask(skills) {    
+    let outcome = 0; // "outcome" is "task tokens", ie. one per success plus one per raise
+    for (const skillDie of skills) { 
+        const diceFormula ="{" + skillDie + "x,d6x}kh";
+        let diceRoll = new Roll(diceFormula);
+        diceRoll.evaluate({async: false});
+        outcome += Math.floor(diceRoll.result / 4);
+        //console.log(`Result ${diceRoll.result} outcome is now ${outcome}`);
+    }
+    return outcome;
+}
+
+var attemptedTasks = Array.from(Array(1000).keys());
+var sucessfulTasks = attemptedTasks.reduce( async (acumulador) => {
+  let outcome = resolveOneTask(["d8", "d8", "d8", "d8"]);
+  if (outcome >= 6) { 
+    await accumulador;
+    return acumulador++;
+  }
+}, 0)
+
+let fraction = sucessfulTasks / attemptedTasks.length;
+console.log(`Did ${attemptedTasks.length} tasks, ${sucessfulTasks} succeeded (${fraction})`);
+*/

@@ -1,3 +1,9 @@
+# 0.3.8
+- gm manager macro update
+- docs
+- deviation
+- dependencies: warpgate and compendium-folders
+
 # 0.3.7
 - interlude
 
