@@ -1,3 +1,6 @@
+# 0.3.9
+v8.9 ok
+
 # 0.3.8
 - gm manager macro update
 - docs

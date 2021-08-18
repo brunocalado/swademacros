@@ -3,9 +3,9 @@
   "title": "Macros for SWADE",
   "description": "Macros for SWADE",   
   "author": "Mestre Digital",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "minimumCoreVersion": "0.8.6",
-  "compatibleCoreVersion":"0.8.8",
+  "compatibleCoreVersion":"0.8.9",
   "scripts": [
       "./scripts/api.js"
   ],  
