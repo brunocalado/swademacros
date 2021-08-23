@@ -63,37 +63,59 @@ class sm {
     return new Roll(diceExpression).roll({ async : false });  
   }
 
-
   // isWildCard(token)
   // token = token
-  static isWildCard(token) {  
-    return token.actor.data.data.wildcard;
+  static isWildCard(tokenD) {  
+    return tokenD.actor.data.data.wildcard;
   }
-
-  static async applyWounds(token, val) {
-    let currentWounds = this.getWounds(token);
-    let maxWounds = this.getMaxWounds(token);
+  
+  // WOUNDS
+  static async applyWounds(tokenD, val) {
+    let currentWounds = this.getWounds(tokenD);
+    let maxWounds = this.getMaxWounds(tokenD);
     
     if ( (currentWounds+val)>maxWounds ) {
-      await token.actor.update({ "data.wounds.value": maxWounds });
+      await tokenD.actor.update({ "data.wounds.value": maxWounds });
     } else if ( (currentWounds+val)<0 ) {
-      await token.actor.update({ "data.wounds.value": 0 });
+      await tokenD.actor.update({ "data.wounds.value": 0 });
     } else {
-      await token.actor.update({ "data.wounds.value": (currentWounds+val) });
+      await tokenD.actor.update({ "data.wounds.value": (currentWounds+val) });
     }
   }
 
-  static getWounds(token) {
-    return token.actor.data.data.wounds.value;
+  static getWounds(tokenD) {
+    return tokenD.actor.data.data.wounds.value;
   }
 
-  static getMaxWounds(token) {
-    return token.actor.data.data.wounds.max;
+  static getMaxWounds(tokenD) {
+    return tokenD.actor.data.data.wounds.max;
+  }
+
+  // FATIGUE
+  static async applyFatigue(tokenD, val) {
+    let currentFatigue = this.getFatigue(tokenD);
+    let maxFatigue = this.getMaxFatigue(tokenD);
+    
+    if ( (currentFatigue+val)>maxFatigue ) {
+      await tokenD.actor.update({ "data.fatigue.value": maxFatigue });
+    } else if ( (currentFatigue+val)<0 ) {
+      await tokenD.actor.update({ "data.fatigue.value": 0 });
+    } else {
+      await tokenD.actor.update({ "data.fatigue.value": (currentFatigue+val) });
+    }
+  }
+
+  static getFatigue(tokenD) {
+    return tokenD.actor.data.data.fatigue.value;
+  }
+
+  static getMaxFatigue(tokenD) {
+    return tokenD.actor.data.data.fatigue.max;
   }
 
   // SKill List
-  static listSkills(token) {
-    return token.actor.data.items.filter(i => (i.type === 'skill') ).map(i => (i.name));  
+  static listSkills(tokenD) {
+    return tokenD.actor.data.items.filter(i => (i.type === 'skill') ).map(i => (i.name));  
   }
 
   // ---------------------------------------------------------------

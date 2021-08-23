@@ -1,3 +1,8 @@
+# 0.4.0
+- fear table checks spirit
+- api fatigue
+- docs
+
 # 0.3.9
 v8.9 ok
 
