@@ -1,3 +1,6 @@
+# 0.4.1
+- fear table fix
+
 # 0.4.0
 - fear table checks spirit
 - api fatigue

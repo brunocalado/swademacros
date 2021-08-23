@@ -4,7 +4,7 @@ icon: icons/magic/death/undead-ghost-scream-teal.webp
 */
 
 let tokenD;
-const version = 'v1.3';
+const version = 'v1.4';
 const chatimage = "icons/magic/death/undead-ghost-scream-teal.webp";
 let coreRules = false;
 let rules = '@Compendium[swade-core-rules.swade-rules.jaYcLBJnBk1ai5EH]{Fear}';
@@ -91,6 +91,7 @@ async function rollFearTable(html) {
       message += '<p>You <b style="color:darkgreen">SUCCEEDED</b>!</p>';
     }
   } else {    
+    message += '<p>The fear source is <b>Terror</b>.</p>';
     if (rollOutcome=='critical') {
       mod = mod + 2;
       message += '<p>You rolled a <b style="color:red">CRITICAL FAILURE</b>!</p>';
