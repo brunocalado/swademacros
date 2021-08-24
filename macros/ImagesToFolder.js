@@ -2,7 +2,7 @@
 source: 
 icon: icons/sundries/gaming/rune-card.webp
 */
-const version = '1.0';
+const version = '1.1';
 main();
 
 async function main() {
@@ -11,9 +11,6 @@ async function main() {
     content: `
     <h3>Important</h3>
     <ul>
-      <li>The folder name must be unique.</li>
-      <li>You need to create the folder manually.</li>
-      <li>The folder name must match what you type in here. It's case sensitive.</li>
       <li>To get the folder path right, you can drop a tile from it in the canvas and copy the path.</li>
     </ul>
     <h3>Form</h3>
@@ -42,7 +39,10 @@ async function main() {
 
 async function createImageFolder(html) {
   const folderName = html.find("#folderName")[0].value;  
-  const folderPath = html.find("#folderName")[0].value;  
+  const folderPath = html.find("#folderPath")[0].value;  
+
+  const createdFolder = await Folder.createDocuments([{name: folderName, type: "JournalEntry"}]);
+  const folderID = createdFolder[0].id;
 
   let {files} = await FilePicker.browse("data", folderPath);
   
@@ -55,7 +55,7 @@ async function createImageFolder(html) {
     await JournalEntry.create({
       img,
       name: splitPath(img), // fix this to something more creative than naming it the file name :D
-      folder: game.folders.getName(folderName).id
+      folder: folderID
     });
   }
   

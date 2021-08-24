@@ -1,3 +1,8 @@
+# 0.4.2
+- Feet To SWADE gui
+- Images To Folder will create the folder for you
+- Vehicle Maneuvers
+
 # 0.4.1
 - fear table fix
 
