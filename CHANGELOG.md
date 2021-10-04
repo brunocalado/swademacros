@@ -1,3 +1,6 @@
+# 0.4.4
+- AE Builder auto name fix
+
 # 0.4.3
 - AE Builder supports Skills
 - Docs

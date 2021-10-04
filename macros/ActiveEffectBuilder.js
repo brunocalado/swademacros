@@ -3,7 +3,7 @@
 docs: https://gitlab.com/peginc/swade/-/wikis/active-effects#attribute-keys
 */
 
-const version = 'v1.2';
+const version = 'v1.3';
 const icon = "icons/magic/symbols/rune-sigil-green.webp";
 
 if ( canvas.tokens.controlled[0]===undefined && Array.from(game.user.targets)[0]===undefined ) {
@@ -217,6 +217,10 @@ function autoNaming(mykey) {
     return mykey.replace('data.initiative.has', '');
   } else if ( mykey.search('data.details.encumbrance')>-1 ) {                
     return toTitleCase( mykey.replace('data.details.', '').replace('.value', '').replace('.', ' ') );
+  } else if ( mykey.search('data.die.modifier')>-1 ) {                
+    return mykey.replace('}[data.die.modifier]', '').replace('@Skill{', '') + ' Mod' ;
+  } else if ( mykey.search('data.die.sides')>-1 ) {                    
+    return mykey.replace('}[data.die.sides]', '').replace('@Skill{', '') + ' Die';
   } else {
     return mykey;
   }  
