@@ -3,7 +3,7 @@
 docs: https://gitlab.com/peginc/swade/-/wikis/active-effects#attribute-keys
 */
 
-const version = 'v1.2';
+const version = 'v1.1';
 const icon = "icons/magic/symbols/rune-sigil-green.webp";
 
 if ( canvas.tokens.controlled[0]===undefined && Array.from(game.user.targets)[0]===undefined ) {
@@ -13,9 +13,7 @@ if ( canvas.tokens.controlled[0]===undefined && Array.from(game.user.targets)[0]
 }
 
 function main() {
-  let tokenD = canvas.tokens.controlled[0];
-  let skills = tokenSkillReaderLabel(tokenD);
-  
+
   let dialogue_content = `
     <form>
       <div class="form-group">
@@ -57,9 +55,6 @@ function main() {
           <option value="data.initiative.hasHesitant">Hesitant</option>         
           <option value="data.initiative.hasQuick">Quick</option>         
 
-          <option value="data.details.encumbrance.value">Encumbrance</option>         
-          <option value="data.details.encumbrance.max">Encumbrance Max</option>         
-
         </datalist>  
       </div>
       <div class="form-group">
@@ -67,22 +62,6 @@ function main() {
         <input id="aevalue" name="aevalue" type="text" value="2">
       </div>   
     </form>
-
-    <script>
-      var list = document.getElementById('aeTypes');
-      var skills2 = Array( ${skills} );
-    
-      skills2.forEach(function(item){
-         var option = document.createElement('option');
-         option.value = item + ' Skill Die';
-         list.appendChild(option);
-      });
-      skills2.forEach(function(item){
-         var option = document.createElement('option');
-         option.value = item + ' Skill Modifier';
-         list.appendChild(option);
-      });    
-    </script>
 `;
 
   let applyChanges = false;
@@ -116,14 +95,6 @@ async function applyActiveEffect(html) {
 
   let aemode = keyToMode(aekey);
   aevalue = keyToValue(aekey, aevalue);
-  let tagToKey = skillToKey(aekey);
-  if (tagToKey!=-1) {
-    aekey = tagToKey;
-  }
-
-  if ( aename=='effect 1') {
-    aename = autoNaming(aekey);
-  }
 
   let myActiveEffect = {icon: icon, label: aename, changes: [
     {key:aekey, value: aevalue, mode: aemode }
@@ -154,7 +125,7 @@ function keyToMode(mykey) {
 
 function keyToValue(mykey, myvalue) {
   //let aeTypeAdd = ['data.stats.toughness.armor', 'data.stats.size', 'data.stats.speed.value', 'data.stats.parry.value', 'data.stats.toughness.value' ];
-  let aeTypeOverride = [ 'data.status.isShaken', 'data.status.isDistracted', 'data.status.isVulnerable', 'data.status.isStunned', 'data.status.isEntangled', 'data.status.isBound', 'data.initiative.hasLevelHeaded', 'data.initiative.hasImpLevelHeaded', 'data.initiative.hasHesitant', 'data.initiative.hasQuick' ];
+  let aeTypeOverride = [ 'data.status.isShaken', 'data.status.isDistracted', 'data.status.isVulnerable', 'data.status.isStunned', 'data.status.isEntangled', 'data.status.isBound' ];
   let aeTypeSteps = ['data.attributes.agility.die.sides', 'data.attributes.smarts.die.sides', 'data.attributes.spirit.die.sides', 'data.attributes.strength.die.sides', 'data.attributes.vigor.die.sides' ];
 
   if ( aeTypeOverride.includes(mykey) ) {
@@ -168,65 +139,4 @@ function keyToValue(mykey, myvalue) {
   } else {
     return myvalue;
   }  
-}
-
-function skillToKey(mykey) {
-  let skillModifier = 'Skill Modifier';  
-  let skillDie = 'Skill Die';  
-
-  if ( mykey.search(skillModifier)>-1 ) {
-    return skillToModifier(mykey);
-  } else if ( mykey.search(skillDie)>-1 ) {
-    return skillToDie(mykey);
-  } else {
-    return -1;
-  }    
-}
-
-// return array skills
-function tokenSkillReaderLabel(tokenD) {
-  let items = tokenD.actor.data.items.filter(e => e.type==='skill');
-  let itemsLabel = [];
-  let itemsList = ""; //Display the Chat Card for the selected item
-  for (let item of items) {
-    itemsLabel.push("\"" + item.name + "\"");
-  }
-  return itemsLabel;
-}
-
-function skillToDie(skillName) {
-  skillName = skillName.replace(' Skill Die', '');
-  return '@Skill{'+ skillName + '}[data.die.sides]';
-}
-
-function skillToModifier(skillName) {
-  skillName = skillName.replace(' Skill Modifier', '');
-  return '@Skill{'+ skillName + '}[data.die.modifier]';
-}
-
-function autoNaming(mykey) {
-//  let standard = [ 'data.status.isShaken', 'data.status.isDistracted', 'data.status.isVulnerable', 'data.status.isStunned', 'data.status.isEntangled', 'data.status.isBound' ]; if ( aeTypeOverride.includes(mykey) ) {
-
-  if ( mykey.search('data.status.is')>-1 ) {
-    return mykey.replace('data.status.is', '');
-  } else if ( mykey.search('data.stats.')>-1 ) {    
-    return toTitleCase( mykey.replace('data.stats.', '').replace('.value', '').replace('.', ' ') );
-  } else if ( mykey.search('data.attributes.')>-1 ) {        
-    return toTitleCase( mykey.replace('data.attributes.', '').replace('.die.', ' ') );
-  } else if ( mykey.search('data.initiative.has')>-1 ) {            
-    return mykey.replace('data.initiative.has', '');
-  } else if ( mykey.search('data.details.encumbrance')>-1 ) {                
-    return toTitleCase( mykey.replace('data.details.', '').replace('.value', '').replace('.', ' ') );
-  } else {
-    return mykey;
-  }  
-}
-
-function toTitleCase(str) {
-  return str.replace(
-    /\w\S*/g,
-    function(txt) {
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    }
-  );
 }

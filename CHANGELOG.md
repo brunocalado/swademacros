@@ -1,3 +1,7 @@
+# 0.4.3
+- AE Builder supports Skills
+- Docs
+
 # 0.4.2
 - Feet To SWADE gui
 - Images To Folder will create the folder for you
