@@ -3,7 +3,7 @@
 docs: https://gitlab.com/peginc/swade/-/wikis/active-effects#attribute-keys
 */
 
-const version = 'v1.3';
+const version = 'v1.4';
 const icon = "icons/magic/symbols/rune-sigil-green.webp";
 
 if ( canvas.tokens.controlled[0]===undefined && Array.from(game.user.targets)[0]===undefined ) {
@@ -57,8 +57,7 @@ function main() {
           <option value="data.initiative.hasHesitant">Hesitant</option>         
           <option value="data.initiative.hasQuick">Quick</option>         
 
-          <option value="data.details.encumbrance.value">Encumbrance</option>         
-          <option value="data.details.encumbrance.max">Encumbrance Max</option>         
+          <option value="data.attributes.strength.encumbranceSteps">Encumbrance Steps</option>         
 
         </datalist>  
       </div>
@@ -205,26 +204,25 @@ function skillToModifier(skillName) {
 }
 
 function autoNaming(mykey) {
-//  let standard = [ 'data.status.isShaken', 'data.status.isDistracted', 'data.status.isVulnerable', 'data.status.isStunned', 'data.status.isEntangled', 'data.status.isBound' ]; if ( aeTypeOverride.includes(mykey) ) {
-
+console.log('PARTE: AAAAAAAAAAA ');
   if ( mykey.search('data.status.is')>-1 ) {
     return mykey.replace('data.status.is', '');
   } else if ( mykey.search('data.stats.')>-1 ) {    
     return toTitleCase( mykey.replace('data.stats.', '').replace('.value', '').replace('.', ' ') );
-  } else if ( mykey.search('data.attributes.')>-1 ) {        
-    return toTitleCase( mykey.replace('data.attributes.', '').replace('.die.', ' ') );
+  } else if ( mykey.search('data.attributes.strength.encumbranceSteps')>-1 ) {                
+    return 'Encumbrance Steps';
   } else if ( mykey.search('data.initiative.has')>-1 ) {            
     return mykey.replace('data.initiative.has', '');
-  } else if ( mykey.search('data.details.encumbrance')>-1 ) {                
-    return toTitleCase( mykey.replace('data.details.', '').replace('.value', '').replace('.', ' ') );
+  } else if ( mykey.search('data.attributes.')>-1 ) {        
+    return toTitleCase( mykey.replace('data.attributes.', '').replace('.die.', ' ') );
   } else if ( mykey.search('data.die.modifier')>-1 ) {                
     return mykey.replace('}[data.die.modifier]', '').replace('@Skill{', '') + ' Mod' ;
   } else if ( mykey.search('data.die.sides')>-1 ) {                    
     return mykey.replace('}[data.die.sides]', '').replace('@Skill{', '') + ' Die';
-  } else {
+  } else {    
     return mykey;
   }  
-}
+} // end autoNaming
 
 function toTitleCase(str) {
   return str.replace(

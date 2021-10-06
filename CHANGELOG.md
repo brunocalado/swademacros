@@ -1,3 +1,8 @@
+# 0.4.5
+- boost-lower-trait macro from @SirDiesalot#2922 
+- AE Builder auto name fix
+- AE Builder encumbrance steps
+
 # 0.4.4
 - AE Builder auto name fix
 
