@@ -1,110 +1,157 @@
-const version = 'v1.0';
+const version = 'v1.1';
 
 /*
 icon: /icons/svg/up.svg
 source: https://gist.githubusercontent.com/bloy/f82dcd44d949f820bd9375b1a790b3cc/raw/1e369a6ae01d89a50fd9a72aaa0daff7f8a30a2b/boost_lower_trait.js
 */
 
-main();
+const UPICON = "icons/magic/life/cross-embers-glow-yellow-purple.webp";
+const DOWNICON = "icons/magic/movement/chevrons-down-yellow.webp";
 
-const UPICON = "icons/magic/life/cross-embers-glow-yellow-purple.webp"
-const DOWNICON = "icons/magic/movement/chevrons-down-yellow.webp"
+if ( canvas.tokens.controlled[0]===undefined && Array.from(game.user.targets)[0]===undefined ) {
+  ui.notifications.error("Please, select or target a token."); // No Token is Selected
+} else {
+  main();
+}
 
 async function main() {
-    let tokens = []
-    game.user.targets.forEach(token => {tokens.push(token)})
-    if (tokens.length == 0) {
-        ui.notifications.error("No tokens targeted");
-        return;
-    }
-    let traits = {
-        "Agility": { 
-            type: "attribute",
-            name: "Agility",
-            modkey: "data.attributes.agility.die.modifier",
-            diekey: "data.attributes.agility.die.sides"
-        },
-        "Smarts": { 
-            type: "attribute",
-            name: "Smarts",
-            modkey: "data.attributes.smarts.die.modifier",
-            diekey: "data.attributes.smarts.die.sides"
-        },
-        "Sprit": { 
-            type: "attribute",
-            name: "Sprit",
-            modkey: "data.attributes.spirit.die.modifier",
-            diekey: "data.attributes.spirit.die.sides"
-        },
-        "Strength": { 
-            type: "attribute",
-            name: "Strength",
-            modkey: "data.attributes.strength.die.modifier",
-            diekey: "data.attributes.strength.die.sides"
-        },
-        "Vigor": { 
-            type: "attribute",
-            name: "Vigor",
-            modkey: "data.attributes.vigor.die.modifier",
-            diekey: "data.attributes.vigor.die.sides"
-        }
-    }
+  let tokens = [];
+  tokens = tokens.concat(Array.from(game.user.targets));
+  tokens = tokens.concat(canvas.tokens.controlled);
 
-    for (var token of tokens) {
-        let skills = token.actor.items.filter(e => e.type == "skill")
-        for (const skill of skills) {
-            let name = skill.data.name
-            traits[name] = { type: "skill", name: name, 
-                             modkey: `@Skill{${name}}[data.die.modifier]`, 
-                             diekey: `@Skill{${name}}[data.die.sides]` }
-        }
+  let traits = {
+    "Agility": { 
+      type: "attribute",
+      name: "Agility",
+      modkey: "data.attributes.agility.die.modifier",
+      diekey: "data.attributes.agility.die.sides"
+    },
+    "Smarts": { 
+      type: "attribute",
+      name: "Smarts",
+      modkey: "data.attributes.smarts.die.modifier",
+      diekey: "data.attributes.smarts.die.sides"
+    },
+    "Spirit": { 
+      type: "attribute",
+      name: "Spirit",
+      modkey: "data.attributes.spirit.die.modifier",
+      diekey: "data.attributes.spirit.die.sides"
+    },
+    "Strength": { 
+      type: "attribute",
+      name: "Strength",
+      modkey: "data.attributes.strength.die.modifier",
+      diekey: "data.attributes.strength.die.sides"
+    },
+    "Vigor": { 
+      type: "attribute",
+      name: "Vigor",
+      modkey: "data.attributes.vigor.die.modifier",
+      diekey: "data.attributes.vigor.die.sides"
     }
+  };
 
-    var traitoptions = `<select id="select-trait" name="select-trait">`
-    for (let trait in traits) {
-        traitoptions += `<option value="${trait}">${trait}</option>`
+  for (var token of tokens) {
+    let skills = token.actor.items.filter(e => e.type == "skill");
+    for (const skill of skills) {
+        let name = skill.data.name;
+        traits[name] = { type: "skill", name: name, 
+                         modkey: `@Skill{${name}}[data.die.modifier]`, 
+                         diekey: `@Skill{${name}}[data.die.sides]` };
     }
-    traitoptions += `</select>`
+  }
 
-    var applyChanges = false
-    var raise = false
-    new Dialog({
-        title: `Boost/Lower Trait - ${version}`,
-        content: `
-        <form>
-           <p><label>Which Trait?<br> ${traitoptions} </label></p>
-           <p><label>
-              Boost or Lower?</br>
-              <select id="select-direction" name="select-direction">
-                  <option value="Boost">Boost</option>
-                  <option value="Lower">Lower</option>
-              </select>
-            </label></p>
-        </form>
-        `,
-        buttons: {
-            apply: {
-                label: "Apply",
-                callback: () => {applyChanges = true; raise}
-            },
-            raise: {
-                label: "Apply with raise",
-                callback: () => {applyChanges = true; raise = true}
-            },
-            cancel: {
-                label: "Cancel"
-            }
-        },
-        default: "apply",
-        close: html => {
-            if (applyChanges) {
-                let direction = html.find('[name="select-direction"]')[0].value
-                let trait = html.find('[name="select-trait"]')[0].value
-                createEffect(tokens, traits, direction, trait, raise)
-            }
+  var traitoptions = `<select id="select-trait" name="select-trait">`;
+  for (let trait in traits) {
+    traitoptions += `<option value="${trait}">${trait}</option>`;
+  }
+  traitoptions += `</select>`;
+
+  var applyChanges = false;
+  var raise = false;
+  new Dialog({
+      title: `Boost/Lower Trait - ${version}`,
+      content: `
+      <style>
+        div.blueTable {
+          width: 100%;
+          text-align: center;
+          border-collapse: collapse;
         }
-    }).render(true)
-}
+        .divTable.blueTable .divTableCell, .divTable.blueTable .divTableHead {
+        }
+        .blueTable .tableFootStyle {
+          font-size: 14px;
+        }
+        .blueTable .tableFootStyle .links {
+           text-align: right;
+        }
+        .blueTable .tableFootStyle .links a{
+          display: inline-block;
+          background: #1C6EA4;
+          color: #FFFFFF;
+          padding: 2px 8px;
+          border-radius: 5px;
+        }
+        .blueTable.outerTableFooter {
+          border-top: none;
+        }
+        .blueTable.outerTableFooter .tableFootStyle {
+          padding: 3px 5px; 
+        }
+        /* DivTable.com */
+        .divTable{ display: table; }
+        .divTableRow { display: table-row; }
+        .divTableHeading { display: table-header-group;}
+        .divTableCell, .divTableHead { display: table-cell;}
+        .divTableHeading { display: table-header-group;}
+        .divTableFoot { display: table-footer-group;}
+        .divTableBody { display: table-row-group;}
+      </style>      
+      
+        <div class="divTable blueTable">
+        <div class="divTableBody">
+        <div class="divTableRow">
+        <div class="divTableCell"><b>Which Trait?</b></div>
+        <div class="divTableCell"><b>Boost or Lower?</b></div>
+        </div>
+        <div class="divTableRow">
+        <div class="divTableCell">${traitoptions}</div>
+        <div class="divTableCell">
+            <select id="select-direction" name="select-direction">
+                <option value="Boost">Boost</option>
+                <option value="Lower">Lower</option>
+            </select        
+        </div>
+        </div>
+        </div>
+        </div>
+        </br>
+      `,
+      buttons: {
+          apply: {
+              label: "Apply",
+              callback: () => {applyChanges = true; raise}
+          },
+          raise: {
+              label: "Apply with raise",
+              callback: () => {applyChanges = true; raise = true}
+          },
+          cancel: {
+              label: "Cancel"
+          }
+      },
+      default: "apply",
+      close: html => {
+          if (applyChanges) {
+              let direction = html.find('[name="select-direction"]')[0].value;
+              let trait = html.find('[name="select-trait"]')[0].value;
+              createEffect(tokens, traits, direction, trait, raise);
+          }
+      }
+  }).render(true);
+} // end main
 
 async function createEffect(tokens, traits, direction, trait, raise) {
     trait = traits[trait]
@@ -174,27 +221,11 @@ async function createEffect(tokens, traits, direction, trait, raise) {
     }
 }
 
-// TODO: update or remove
-async function removeNamedEffect(actor, effectData) {
-/*
-    // Look to see if there's already a Cover effect
-    const item = actor.data.effects.find(i =>i.label === effectData.label);
-    if (item != undefined) {
-        // Delete it if there is one
-        const deleted = await ageSystemActor.deleteEmbeddedEntity("ActiveEffect", item._id); // Deletes one EmbeddedEntity
-    }
-*/
-}
-
 // define applyUniqueEffect function
 async function applyUniqueEffect(actor, effectData) {
-    // Look to see if there's already a Cover effect
-    removeNamedEffect(actor, effectData);
-
     // Create a new fresh one with the new settings
     let activeEffectClass = getDocumentClass("ActiveEffect");
     const output = await activeEffectClass.create(effectData, {parent:actor});
-    //await actor.createEmbeddedEntity("ActiveEffect", effectData); 
 }
 
 

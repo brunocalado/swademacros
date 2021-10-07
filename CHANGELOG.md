@@ -1,3 +1,7 @@
+# 0.4.6
+- boost-lower-trait update and fix 
+- bug reporter
+
 # 0.4.5
 - boost-lower-trait macro from @SirDiesalot#2922 
 - AE Builder auto name fix
