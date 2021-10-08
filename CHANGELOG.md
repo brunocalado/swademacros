@@ -1,3 +1,7 @@
+# 0.4.7
+- Coin Manager for Savage Pathfinder
+- docs
+
 # 0.4.6
 - boost-lower-trait update and fix 
 - bug reporter
