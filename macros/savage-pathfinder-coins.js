@@ -3,12 +3,9 @@ source:
 icon: icons/commodities/currency/coins-plain-gold.webp
 
 TODO
-- send to chat
-- update to players
-- patch items, only one copy
 */
 
-const version = 'v1.0';
+const version = 'v1.1';
 const icon = "icons/commodities/currency/coins-plain-gold.webp";
 
 const iconCopper = "icons/commodities/currency/coins-assorted-mix-platinum.webp";
@@ -30,8 +27,8 @@ function main() {
   let playersNames = tokens.map((p=> p.data.name)); 
 
 
-  //let playerNameList = `<option value="everyone" selected>Everyone</option>`;
-  let playerNameList=``;
+  let playerNameList = `<option value="everyone" selected>Everyone</option>`;
+  //let playerNameList=``;
   for (var tokenD of tokens) {
     playerNameList += `<option value="${tokenD.actor.id}">${tokenD.name}</option>`;
   }  
@@ -139,30 +136,30 @@ async function coinManager(html) {
   let gold = html.find("#gold")[0].value; 
   let platinum = html.find("#platinum")[0].value; 
   
-  coinMessage(actorID, copper, silver, gold, platinum);
-  
-  if (playerName=='everyone') {    
-    //updateAllHerosCoins(heroPoints);
-    updateHeroCoins(actorID, copper, silver, gold, platinum);
+  console.log('Actor ID: ' + actorID)
+  if (actorID=='everyone') {    
+    console.log('-------------------')
+    
+    
+    let tokens = canvas.tokens.controlled;
+    for (var tokenD of tokens) {
+      let actorid = tokenD.actor.id;
+      console.log('Token ID: ' + actorid)
+      coinMessage(actorid, copper, silver, gold, platinum);
+      updateHeroCoins(actorid, copper, silver, gold, platinum);
+    }
   } else { 
+    coinMessage(actorID, copper, silver, gold, platinum);
     updateHeroCoins(actorID, copper, silver, gold, platinum);
   }  
 }
 
 async function updateHeroCoins(actorID, copper, silver, gold, platinum) {
-  let character = game.actors.contents.filter((t) => t.id === actorID)[0]; // actorID
+  let character = game.actors.get(actorID);
   let copperCurrent = getCoinsTotal(getCoins(actorID, 'Copper', true) );
   let silverCurrent = getCoinsTotal(getCoins(actorID, 'Silver', true) );
   let goldCurrent = getCoinsTotal(getCoins(actorID, 'Gold', true) );
   let platinumCurrent = getCoinsTotal(getCoins(actorID, 'Platinum', true) );  
-  
-  console.log('==============')
-  console.log(character)
-  console.log(copperCurrent)
-  console.log(silverCurrent)
-  console.log(goldCurrent)
-  console.log(platinumCurrent)
-  console.log('==============')
   
   // create missing coins + Patch actor
   await patchHeroCoins(actorID);
@@ -172,14 +169,6 @@ async function updateHeroCoins(actorID, copper, silver, gold, platinum) {
   updateCoins(actorID, silverCurrent, silver, 'Silver');
   updateCoins(actorID, goldCurrent, gold, 'Gold');
   updateCoins(actorID, platinumCurrent, platinum, 'Platinum');
-  
-  /*  
-  let character = game.actors.entities.filter((t) => t.data.type === "character").filter((v) => v.data.name === playerName)[0];
-  let currentHeroPoints = parseInt( character.data.data.attributes.coin.value);
-  let total = currentHeroPoints + parseInt( heroPoints );
-  await character.update({['data.attributes.coin.value']: total});
-  expMessage(character, heroPoints);
-  */
 }
 
 async function createCoin(actorID, coinName) { 
@@ -200,11 +189,14 @@ async function createCoin(actorID, coinName) {
       break;
   }  
   
+  rules += `<table><colgroup> <col/> <col/> <col/> <col/> <col/> </colgroup><tbody><tr><th class="main-heading" colspan="5">Coins &amp; exchange value</th></tr><tr><th class="sub-heading left">Coin</th><th class="sub-heading">CP</th><th class="sub-heading">SP</th><th class="sub-heading">GP</th><th class="sub-heading">PP</th></tr><tr><td>Copper (cp)</td><td class="centered">1</td><td class="centered">1/10</td><td class="centered">1/100</td><td class="centered">1/1,000</td></tr><tr><td>Silver (sp)</td><td class="centered">10</td><td class="centered">1</td><td class="centered">1/10</td><td class="centered">1/100</td></tr><tr><td>Gold (gp)</td><td class="centered">100</td><td class="centered">10</td><td class="centered">1</td><td class="centered">1/10</td></tr><tr><td>Platinum (pp)</td><td class="centered">1,000</td><td class="centered">100</td><td class="centered">10</td><td class="centered">1</td></tr></tbody></table>`; 
+  
   if (coreRules) {
-    rules = '@Compendium[swpf-core-rules.swpf-rules.orozFFWbzOxXU1hR]{1 Gear}';
+    rules += '</br>@Compendium[swpf-core-rules.swpf-rules.orozFFWbzOxXU1hR]{1 Gear}';
   }
   
-  let character = game.actors.contents.filter((t) => t.id === actorID)[0];  
+  //let character = game.actors.contents.filter((t) => t.id === actorID)[0];  
+  let character = game.actors.get(actorID);
   let data = [{
     name: coinName,
     type: 'gear',
@@ -219,7 +211,8 @@ async function createCoin(actorID, coinName) {
 
 async function updateCoins(actorID, currentCoins, newCoins, coinType) {
   if (newCoins!=0) {
-    let character = game.actors.contents.filter((t) => t.id === actorID)[0];  
+    //let character = game.actors.contents.filter((t) => t.id === actorID)[0];  
+    let character = game.actors.get(actorID);
     let coinsTotal = parseInt(currentCoins)+parseInt(newCoins);
     let coin = getCoins(actorID, coinType, true)[0];            
     
@@ -235,11 +228,8 @@ async function updateCoins(actorID, currentCoins, newCoins, coinType) {
 }
 
 async function patchHeroCoins(actorID) {
-  let character = game.actors.contents.filter((t) => t.id === actorID)[0];  
-  //
-  //
-  //
-//  that said, i think you can do game.actors.get(actorId) instead of your filter there
+  let character = game.actors.get(actorID);  
+
   // Add missing coins
   if (getCoins(actorID, 'Copper').length==0) await createCoin(actorID, 'Copper');   
   if (getCoins(actorID, 'Silver').length==0) await createCoin(actorID, 'Silver');
@@ -267,7 +257,7 @@ async function patchHeroCoins(actorID) {
 }
 
 async function patchCoin(actorID, coinType, coinsTotal) {
-  let character = game.actors.contents.filter((t) => t.id === actorID)[0];  
+  let character = game.actors.get(actorID);
   
   let coins = getCoins(actorID, coinType, true);  
   coins = coins.splice(1);
@@ -281,7 +271,7 @@ async function patchCoin(actorID, coinType, coinsTotal) {
 }
 
 function getCoins(actorID, coinType, isActor=false) {
-  let character = game.actors.contents.filter((t) => t.id === actorID)[0];  
+  let character = game.actors.get(actorID);
   
   let coins=0;
   if (coinType=='Copper') {
@@ -305,7 +295,6 @@ function getCoinsTotal(coins) {
   }  
 }
 
-
 function coinMessage(actorID, copper, silver, gold, platinum) {
   let message = ``;
   let copperCurrent = getCoinsTotal(getCoins(actorID, 'Copper', true) );
@@ -323,7 +312,7 @@ function coinMessage(actorID, copper, silver, gold, platinum) {
   `;  
 
   let chatData = {
-    user: game.user._id,
+    user: game.user.id,
     speaker: ChatMessage.getSpeaker(),
     content: message
   };  
@@ -331,6 +320,7 @@ function coinMessage(actorID, copper, silver, gold, platinum) {
 }
 
 // debug
+/*
 function debugme() {
   let tokenD = canvas.tokens.controlled[0].actor.id  
   console.log('Copper: ' + getCoinsTotal(getCoins(tokenD, 'Copper') ));
@@ -367,6 +357,4 @@ function debugme() {
   //let character = game.actors.contents.filter((t) => t.data.type === "character").filter((v) => v.data.name === playerName)[0];
   //let character = game.actors.contents.filter((t) => t.id === tokenD.actor.id);
 }
-
-
-
+*/

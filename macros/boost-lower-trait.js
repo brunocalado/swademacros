@@ -1,4 +1,4 @@
-const version = 'v1.1';
+const version = 'v1.2';
 
 /*
 icon: /icons/svg/up.svg
@@ -154,79 +154,90 @@ async function main() {
 } // end main
 
 async function createEffect(tokens, traits, direction, trait, raise) {
-    trait = traits[trait]
-    for (var token of tokens) {
-        let currentdie = 0;
-        let currentmod = 0;
-        if (trait["type"] == "attribute") {
-            var part
-            let value = token.actor.data
-            for (part of trait["diekey"].split(".")) {
-                value = value[part]
-            }
-            currentdie = value
-            value = token.actor.data
-            for (part of trait["modkey"].split(".")) {
-                value = value[part]
-            }
-            currentmod = value
-        } else {
-            let skill = token.actor.items.filter(s => s.type == "skill").find(s => s.data.name == trait["name"])
-            if (skill) {
-                currentdie = skill.data.data.die.sides
-                currentmod = skill.data.data.die.modifier
-            } 
-        }
-        if (currentdie == 0) {
-            continue
-        }
-        if (currentdie == 4 && direction == "Lower") {
-            continue
-        }
-        let diemod = 2
-        let modmod = 0
-        if (direction == "Lower") {
-            diemod = -2
-        }
-        if (currentdie == 6 && direction == "Lower" && raise) {
-            diemod = -1
-        } else if (currentdie == 12 && direction == "Boost") {
-            diemod = 0
-            modmod = 1
-        }
-        if (raise) {
-            diemod *= 2
-            modmod *= 2
-        }
-        if (currentdie == 10 && direction == "Boost" && raise) {
-            diemod = 2
-            modmod = 1
-        }
-        var effectData = {
-            label: `${raise ? "major" : "minor"} ${direction} ${trait.name}`,
-            icon: direction == "Lower" ? DOWNICON : UPICON,
-            changes: [{                    
-                "key": trait["diekey"],
-                "mode": 2,
-                "value": diemod,
-                "priority": 0
-            },{
-                "key": trait["modkey"],
-                "mode": 2,
-                "value": modmod,
-                "priority": 0
-            }]
-        }
-        applyUniqueEffect(token.actor, effectData)
+  trait = traits[trait];
+  for (var tokenD of tokens) {
+    let currentdie = 0;
+    let currentmod = 0;
+    if (trait["type"] == "attribute") {
+      var part;
+      let value = tokenD.actor.data;
+      for (part of trait["diekey"].split(".")) {
+          value = value[part];
+      }
+      currentdie = value
+      value = tokenD.actor.data
+      for (part of trait["modkey"].split(".")) {
+          value = value[part];
+      }
+      currentmod = value;
+    } else {
+      let skill = tokenD.actor.items.filter(s => s.type == "skill").find(s => s.data.name == trait["name"])
+      if (skill) {
+        currentdie = skill.data.data.die.sides;
+        currentmod = skill.data.data.die.modifier;
+      } 
     }
+    if (currentdie == 0) {
+      continue;
+    }
+    if (currentdie == 4 && direction == "Lower") {
+      continue;
+    }
+    let diemod = 2;
+    let modmod = 0;
+    if (direction == "Lower") {
+      diemod = -2;
+    }
+    if (currentdie == 6 && direction == "Lower" && raise) {
+      diemod = -1;
+    } else if (currentdie == 12 && direction == "Boost") {
+      diemod = 0;
+      modmod = 1;
+    }
+    if (raise) {
+      diemod *= 2;
+      modmod *= 2;
+    }
+    if (currentdie == 10 && direction == "Boost" && raise) {
+      diemod = 2;
+      modmod = 1;
+    }
+    var effectData = {
+      label: `${raise ? "major" : "minor"} ${direction} ${trait.name}`,
+      icon: direction == "Lower" ? DOWNICON : UPICON,
+      changes: [{                    
+        "key": trait["diekey"],
+        "mode": 2,
+        "value": diemod,
+        "priority": 0
+      },{
+        "key": trait["modkey"],
+        "mode": 2,
+        "value": modmod,
+        "priority": 0
+      }]
+    };
+    boostMessage(tokenD.name, direction, trait.name, raise ? "major" : "minor");
+    applyUniqueEffect(tokenD.actor, effectData);
+  }
 }
 
 // define applyUniqueEffect function
 async function applyUniqueEffect(actor, effectData) {
-    // Create a new fresh one with the new settings
-    let activeEffectClass = getDocumentClass("ActiveEffect");
-    const output = await activeEffectClass.create(effectData, {parent:actor});
+  // Create a new fresh one with the new settings
+  let activeEffectClass = getDocumentClass("ActiveEffect");
+  const output = await activeEffectClass.create(effectData, {parent:actor});
 }
 
+function boostMessage(tokenD, direction, traitName, raise) {
+  let message = ``;
+  message += `<h2>${direction}</h2>
+    ${tokenD} will ${raise} ${direction} ${traitName}.`;  
 
-    
+  let chatData = {
+    user: game.user.id,
+    speaker: ChatMessage.getSpeaker(),
+    content: message
+  };  
+  ChatMessage.create(chatData, {});
+}

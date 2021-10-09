@@ -1,3 +1,7 @@
+# 0.4.8
+- everyone + more reliable code for Coin Manager for Savage Pathfinder 
+- boost-lower-trait reliable + chat message
+
 # 0.4.7
 - Coin Manager for Savage Pathfinder
 - docs
