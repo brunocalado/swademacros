@@ -1,3 +1,7 @@
+# 0.5.0
+- Equip-Unequip-Sets fix
+- docs
+
 # 0.4.9
 - Equip-Unequip-Sets
 - docs
