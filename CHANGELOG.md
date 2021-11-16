@@ -1,3 +1,7 @@
+# 0.5.1
+- Spellbook Manager
+- docs
+
 # 0.5.0
 - Equip-Unequip-Sets fix
 - docs
