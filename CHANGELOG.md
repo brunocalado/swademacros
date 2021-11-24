@@ -1,3 +1,6 @@
+# 0.5.3
+- adventure card improved by kristianserrano
+
 # 0.5.2
 - unshaken unstun improved
 - adventure card
