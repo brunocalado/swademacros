@@ -1,4 +1,4 @@
-const version = 'v1.6';
+const version = 'v1.8';
 
 /* Unshaken
 
@@ -7,16 +7,16 @@ icon: icons/magic/control/fear-fright-white.webp
 */
 
 const chatimage = "icons/magic/control/fear-fright-white.webp";
-let coreRules = sm.isModuleOn("swade-core-rules");
-const coreRulesLink = '@Compendium[swade-core-rules.swade-rules.30TJKevSbgxK6jQy]{Shaken}';
 let tokenD=canvas.tokens.controlled[0];
-
+const myTitle = `<img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Shaken`;
+let message1 = ``;
+let message2 = ``;
+  
 if (tokenD===undefined) {
   ui.notifications.error("Please select a token."); // No Token is Selected
 } else {
-  tokenD = canvas.tokens.controlled[0];
   main();
-}
+} 
 
 async function main() {
   if (tokenD.actor.data.data.status.isShaken === true) {
@@ -24,62 +24,38 @@ async function main() {
   } else if (tokenD) {
     let message=``;
     await tokenD.actor.update({ "data.status.isShaken": true });
-    if (coreRules) {
-      message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> ${coreRulesLink}</h2></div>`;
-    } else {
-      message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Shaken</h2>`;
-    }
-    message+=`<p><b style="color:red">${tokenD.name}</b> is Shaken now!</p>`;
-    ChatMessage.create({
-      user: game.user.id,      
-      content: message,
-    });        
-  }
+    sm.styledChatMessage(myTitle, `<b">${tokenD.name}</b> is <b>shaken</b> now!`, '');       
+  }  
 }
 
 async function rollUnshake() {
-  const edgeNames = ['combat reflexes', 'demon', 'undead', 'construct', 'undead (harrowed)'];
-  let message = ``;
-  let rolled = await tokenD.actor.rollAttribute('spirit');    // ROLL SPIRIT AND CHECK COMBAT REFLEXES
+  let rolled = await tokenD.actor.rollAttribute('spirit');    // ROLL SPIRIT
   
-  const edges = tokenD.actor.data.items.filter(function (item) {
-    return edgeNames.includes(item.name.toLowerCase()) && (item.type === "edge" || item.type === "ability");
-  });
-
-  let rollWithEdge = rolled.total;
-  let edgeText = "";
-  for (let edge of edges) {
-    rollWithEdge += 2;
-    edgeText += `<br/><i>+ ${edge.name}</i>`;
-  }
-
-  if (coreRules) {
-    message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> ${coreRulesLink}</h2></div>`;
-  } else {
-    message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Shaken</h2>`;
-  }
-
-  message += `${tokenD.name} rolled <b style="color:blue"> ${rollWithEdge} </b>`;
-  
-  // Checking for a Critical Failure.
-  if ( sm.isCritical(rolled) ) {
-    ui.notifications.notify("You've rolled a Critical Failure!");
-    message += `<b>${tokenD.name}</b> rolled a <b style="color: red; font-size:150%">Critical Failure!</b>!`;    
-  } else {
-    if (rollWithEdge <= 3) {
-      message += ` and remains Shaken.`;
-      if ( (sm.checkBennies(tokenD)>0) ) {
-        var unshakenFunction = async function(tokenD) { 
-          await tokenD.actor.update({ "data.status.isShaken": false });
-        };        
-        sm.useBenny(tokenD, unshakenFunction);
+  if (rolled!=null) {  
+    let rollWithEdge = rolled.total;
+   
+    message1 = `<b>${tokenD.name}</b> rolled <b>${rollWithEdge}</b>.`;
+    
+    // Checking for a Critical Failure.
+    if ( sm.isCritical(rolled) ) {
+      ui.notifications.notify("You've rolled a Critical Failure!");
+      message2 = `<b>${tokenD.name}</b> rolled a <b>Critical Failure!</b>!`;    
+    } else {
+      if (rollWithEdge <= 3) {
+        message2 = `${tokenD.name} will remain Shaken.`;
+        if ( (sm.checkBennies(tokenD)>0) ) {
+          sm.addEventListenerOnHtmlElement("#swademacrosbutton", 'click', async (e) => {    
+            sm.spendBenny(tokenD);
+            await tokenD.actor.update({ "data.status.isShaken": false });              
+            sm.styledChatMessage(myTitle, `<b>${tokenD.name}</b> spent a benny and is no longer <b>shaken</b>.`);
+          });            
+          message2+=`<button style="background:#d10000;color:white" id="swademacrosbutton">Use Benny</button>`;  
+        }
+      } else if (rollWithEdge >= 4) {
+        await tokenD.actor.update({ "data.status.isShaken": false });
+        message2 = `<b>${tokenD.name}</b> is no longer <b>shaken</b> and may act normally.`;
       }
-    } else if (rollWithEdge >= 4) {
-      message += `, is no longer Shaken and may act normally.`;
-      await tokenD.actor.update({ "data.status.isShaken": false });
     }
-    message += ` ${edgeText}`;
+    sm.styledChatMessage(myTitle, message1, message2);
   }
-  ChatMessage.create({ content: message });
 }
-

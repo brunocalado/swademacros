@@ -1,4 +1,4 @@
-const version = 'v1.1';
+const version = 'v1.3';
 
 /* Unstun
 
@@ -6,14 +6,14 @@ source:
 icon: icons/magic/symbols/symbol-lightning-bolt.webp
 */
 const chatimage = "icons/magic/symbols/symbol-lightning-bolt.webp";
-let coreRules = sm.isModuleOn("swade-core-rules");
-const coreRulesLink = '@Compendium[swade-core-rules.swade-rules.nHbnnGpaM8CgA5SI]{Stunned}';
 let tokenD=canvas.tokens.controlled[0];
+const myTitle = `<img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Stunned`;
+let message1 = ``;
+let message2 = ``;
 
 if (tokenD===undefined) {
   ui.notifications.error("Please select a token."); // No Token is Selected
 } else {
-  tokenD = canvas.tokens.controlled[0];
   main();
 }
 
@@ -32,71 +32,48 @@ async function main() {
     };
     await tokenD.actor.update({ "data.status.isDistracted": true });
     await tokenD.actor.update({ "data.status.isVulnerable": true });
-
-    if (coreRules) {
-      message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> ${coreRulesLink}</h2></div>`;
-    } else {
-      message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Stunned</h2>`;      
-    }
-    
-    message += `<p><b style="color:red">${tokenD.name}</b> is <b>stunned</b> now!</p>`
-    ChatMessage.create({
-      user: game.user.id,      
-      content: message,
-    });        
+     
+    sm.styledChatMessage(myTitle, `<b>${tokenD.name}</b> is <b>stunned</b> now!`, '');        
   }
 }
 
 async function rollUnstun() {
-  const edgeNames = ['combat reflexes'];
   let message = ``;
   let rolled = await tokenD.actor.rollAttribute('vigor');
   
-  const edges = tokenD.actor.data.items.filter(function (item) {
-    return edgeNames.includes(item.name.toLowerCase()) && (item.type === "edge" || item.type === "ability");
-  });
-  
-  let rollWithEdge = rolled.total;
-  let edgeText = "";
-  for (let edge of edges) {
-    rollWithEdge += 2;
-    edgeText += `<br/><i>+ ${edge.name}</i>`;
-  }
+  if (rolled!=null) {  
+    let rollWithEdge = rolled.total;
 
-  if (coreRules) {
-    message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> ${coreRulesLink}</h2></div>`;
-  } else {
-    message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Stunned</h2>`;
-  }
-
-  message += `<p>${tokenD.name} rolled <b style="color:blue"> ${rollWithEdge}.</b></p>`;
-  
-  // Checking for a Critical Failure.
-  if ( sm.isCritical(rolled) ) {
-    ui.notifications.notify("You've rolled a Critical Failure!");
-    message += `<b>${tokenD.name}</b> rolled a <b style="color: red; font-size:150%">Critical Failure!</b>!`;    
-  } else {
-    if (rollWithEdge > 3 && rollWithEdge <= 7) {
-      message += `<p>${tokenD.name} is no longer Stunned.</p>`;
-      message += `<ul><li>remains Vulnerable until end of next turn.</li>`;
-      message += `<li>remains Distracted until end of this turn.</li></ul>`;
-      await tokenD.actor.update({ "data.status.isVulnerable": true });
-      await tokenD.actor.update({ "data.status.isStunned": false });
-    } else if (rollWithEdge >= 8) {
-      message += `<p>${tokenD.name} is no longer Stunned and looses Vulnerable/Distracted.</p>`;
-      await tokenD.actor.update({ "data.status.isDistracted": false });
-      await tokenD.actor.update({ "data.status.isStunned": false });
-      await tokenD.actor.update({ "data.status.isVulnerable": false });
+    message1 = `<b>${tokenD.name}</b> rolled <b>${rollWithEdge}</b>.`;
+    
+    // Checking for a Critical Failure.
+    if ( sm.isCritical(rolled) ) {
+      ui.notifications.notify("You've rolled a Critical Failure!");
+      message2 = `<b>${tokenD.name}</b> rolled a <b style="color: red;">Critical Failure!</b>!`;    
     } else {
-      message += `<p>${tokenD.name} remains Stunned.</p>`;
-      if ( (sm.checkBennies(tokenD)>0) ) {
-        var unstunFunction = async function() { 
-          sm.macroRun('Unstun');
-        };        
-        sm.useBenny(tokenD, unstunFunction);
-      }      
+      if (rollWithEdge > 3 && rollWithEdge <= 7) {
+        message2 = `<b>${tokenD.name}</b> is no longer <b>Stunned</b>.`;
+        message2 += `<ul><li>Vulnerable until end of next turn.</li>`;
+        message2 += `<li>Distracted until end of this turn.</li></ul>`;
+        await tokenD.actor.update({ "data.status.isVulnerable": true });
+        await tokenD.actor.update({ "data.status.isStunned": false });
+      } else if (rollWithEdge >= 8) {
+        message2 = `<b>${tokenD.name}</b> is no longer <b>Stunned</b> and looses <b>Vulnerable/Distracted</b>.`;
+        await tokenD.actor.update({ "data.status.isDistracted": false });
+        await tokenD.actor.update({ "data.status.isStunned": false });
+        await tokenD.actor.update({ "data.status.isVulnerable": false });
+      } else {
+        message2 = `<b>${tokenD.name}</b> remains <b>Stunned</b>.`;
+        if ( (sm.checkBennies(tokenD)>0) ) {
+          sm.addEventListenerOnHtmlElement("#swademacrosbutton", 'click', async (e) => {    
+            sm.macroRun('Unstun');
+            sm.styledChatMessage(myTitle, `<b>${tokenD.name}</b> spent a benny to roll again.`);
+          });            
+          message2+=`<button style="background:#d10000;color:white" id="swademacrosbutton">Use Benny</button>`;     
+        }
+      }
     }
-    message += ` ${edgeText}`;
+    sm.styledChatMessage(myTitle, message1, message2);
   }
-  ChatMessage.create({ content: message });
 }
+

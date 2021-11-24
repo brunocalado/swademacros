@@ -1,3 +1,9 @@
+# 0.5.2
+- unshaken unstun improved
+- adventure card
+- docs
+- api
+
 # 0.5.1
 - Spellbook Manager
 - docs
