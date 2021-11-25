@@ -1,3 +1,6 @@
+# 0.5.4
+- adventure card improved fix
+
 # 0.5.3
 - adventure card improved by kristianserrano
 
