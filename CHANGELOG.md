@@ -1,3 +1,9 @@
+# 0.5.5
+- adventure card renamed to Adventure Deck
+- adventure card improved fix 2
+- swade macros option to adventure deck
+- docs
+
 # 0.5.4
 - adventure card improved fix
 

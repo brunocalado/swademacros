@@ -1,13 +1,14 @@
-/* Adventure Card
+/* Adventure Deck
 source:
 icon: icons/sundries/gaming/playing-cards-grey.webp
 
 */
-const version = 'v1.2';
+const version = 'v1.4';
 const icon = 'icons/sundries/gaming/playing-cards-grey.webp';
 const adventureCardName = 'Adventure Card';
 const flagType = 'Adventure Card'
 const showTableDrawToChat = false;
+const defaultTable = game.settings.get("swademacros", "adventuredecktable");
 let tableToDrawAdventureCards = 'Action Cards';
 
 if (canvas.tokens.controlled[0] === undefined) {
@@ -24,9 +25,13 @@ function main() {
     playerNameList += `<option value="${tokenD.actor.id}">${tokenD.name}</option>`;
   }
 
-  let tableNameList = ``;
+  let tableNameList = ``;  
   Array.from(game.tables).map((t) => {
-    tableNameList += `<option value="${t.data.name}">${t.data.name}</option>`;
+    if (defaultTable==t.data.name) {
+      tableNameList += `<option value="${t.data.name}" selected>${t.data.name}</option>`;
+    } else {
+      tableNameList += `<option value="${t.data.name}">${t.data.name}</option>`;
+    }
   });
 
   let template = `
@@ -168,10 +173,12 @@ async function cardMessage(actorID) {
 
 async function getAdventureCardsToDraw(actorID) {
   const character = await game.actors.get(actorID);
+  const cardsByRank = await getCardsByRank(actorID);
+  
   if (character.data.data.additionalStats.adventurecards != undefined) {
     return parseInt(character.data.data.additionalStats.adventurecards.value);
-  } else if (getCardsByRank(actorID) != 0) {
-    return getCardsByRank(actorID);
+  } else if (  cardsByRank != 0) {
+    return cardsByRank;
   } else {
     return 1;
   }
@@ -191,7 +198,6 @@ async function getCardsByRank(actorID) {
     case 'Legendary':
       return 5;
     default:
-      ui.notifications.error("I couldn't identify your rank.");
       return 0;
   }
 }
