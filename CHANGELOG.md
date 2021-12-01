@@ -1,3 +1,6 @@
+# 0.5.7
+- alchemy docs
+
 # 0.5.6
 - alchemy
 
