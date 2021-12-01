@@ -1,3 +1,6 @@
+# 0.5.6
+- alchemy
+
 # 0.5.5
 - adventure card renamed to Adventure Deck
 - adventure card improved fix 2

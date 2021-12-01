@@ -3,7 +3,7 @@
   "title": "Macros for SWADE",
   "description": "Macros for SWADE",   
   "author": "Mestre Digital",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "minimumCoreVersion": "0.8.6",
   "compatibleCoreVersion":"0.8.9",
   "scripts": [
@@ -38,7 +38,14 @@
       "path": "packs/scenes-for-macros.db",
       "entity": "Scene",
       "module": "swademacros"
-    }      
+    },
+    {
+      "name": "items-for-macros",
+      "label": "Items - Macros for SWADE",
+      "path": "packs/items-for-macros.db",
+      "entity": "Scene",
+      "module": "swademacros"
+    }       
   ],
   "system": "swade",
   "dependencies": [
