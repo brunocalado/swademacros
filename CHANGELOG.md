@@ -1,3 +1,7 @@
+# 0.5.8
+- api docs
+- alchemy fix and improve
+
 # 0.5.7
 - alchemy docs
 

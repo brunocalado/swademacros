@@ -1,14 +1,14 @@
-const potionName = 'Potion of Healing';
+const itemName = 'Potion of Healing';
 
 /* 
 source: 
 icon: 
 */
-const version = 'v0.1';
+const version = 'v0.2';
 let tokenD=canvas.tokens.controlled[0];
 const myTitle = `Potion`;
 let message1 = ``;
-let message2 = potionName;
+let message2 = itemName;
   
 if (tokenD===undefined) {
   ui.notifications.error("Please select a token."); // No Token is Selected
@@ -18,29 +18,22 @@ if (tokenD===undefined) {
 
 // Modified from a macro by spacemandev
 async function main() {
-  let myPotion = actor.items.find(item => item.data.name == potionName);
-  if(myPotion == null || myPotion == undefined) {
-    sm.styledChatMessage(potionName, '', `You don't have any of them.`);       
-    return;
+  let myItem = await sm.getItem(tokenD, itemName);
+  if(undefined == myItem) {
+    return; 
   }
   
   //If token is max health if so, don't do anything
-  if(actor.data.data.wounds.value == 0) {
-    sm.styledChatMessage(potionName, '', `You are not injured.`);       
+  if( sm.getWounds(tokenD) == 0 ) {
+    sm.styledChatMessage(itemName, '', `You are not injured.`)       
     return;
   }
 
-  //Subtract a health potion
-  await myPotion.update({"data.quantity": myPotion.data.data.quantity - 1})
-  if(myPotion.data.data.quantity < 1){
-    myPotion.delete();
-  }
+  //Subtract item
+  await sm.useItem(tokenD, itemName);
   
-  //// remove 1 current wound   ////// If so, we want the new health to max 
-  let newHealth = actor.data.data.wounds.value - 1;
+  // remove 1 current wound
+  sm.applyWounds(tokenD, -1);
 
-  //update the actor health
-  await actor.update({"data.wounds.value": newHealth});
-
-  sm.styledChatMessage(potionName, '', `${tokenD.actor.name} drank a ${potionName} and cured 1 wound.`);
+  sm.styledChatMessage(itemName, '', `${tokenD.actor.name} used a ${itemName} and cured 1 wound.`);
 }

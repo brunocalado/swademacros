@@ -213,13 +213,7 @@ class sm {
       return rolled.terms[0].rolls[0].total;
     }
   }
-
-  // ---------------------------------------------------------------
-  // ??
-  static hasItem(itemName, itemType=['edge']) {
-    return item.name.toLowerCase() === edge.toLowerCase() && item.type === "edge";
-  }
-  
+ 
   // ---------------------------------------------------------------
   // Helper
   static async macroRun(macroName, compendiumName='swademacros.macros-for-swade') {  
@@ -272,7 +266,46 @@ class sm {
     if (game.modules.get(moduleName)?.active) { return true; }
     else { return false; }
   }
-   
+
+  // ---------------------------------------------------------------
+  // Alchemy
+  static async getItem(tokenD, itemName) {    
+    const myItem = await tokenD.actor.items.getName(itemName);
+    if (myItem==undefined) {
+      this.styledChatMessage(itemName, '', `You don't have any <b>${itemName}</b>.`);       
+    }
+    return myItem;  
+  }
+
+  static async useItem(tokenD, itemName) {    
+    const myItem = await tokenD.actor.items.getName(itemName);  
+    await myItem.update({"data.quantity": myItem.data.data.quantity - 1})
+    if(myItem.data.data.quantity < 1){
+      myItem.delete();
+    }      
+  }
+
+  // ---------------------------------------------------------------
+  // Active Effets
+  static getActiveEffect(tokenD, activeEffectLabel) {    
+    const activeEffect = tokenD.actor.effects.find(e => e.data.label === activeEffectLabel);
+    return activeEffect;
+    //await token.toggleEffect(effect, { active: false });
+  }
+  
+  static async removeActiveEffect(tokenD, activeEffectLabel) {    
+    const activeEffect = tokenD.actor.effects.find(e => e.data.label === activeEffectLabel);
+    if (activeEffect!=undefined) {
+      this.styledChatMessage('Active Effect', '', `${activeEffectLabel} removed.`);       
+      activeEffect.delete();      
+    }
+  }  
+
+  static async addActiveEffect(tokenD, activeEffectData) {    
+    let activeEffectClass = getDocumentClass("ActiveEffect");
+    const output = await activeEffectClass.create(activeEffectData, {parent:tokenD.actor});  
+  }
+  
   // ---------------------------------------------------------------
   // Debug
   static debug(message) {
