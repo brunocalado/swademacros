@@ -1,3 +1,6 @@
+# 0.5.9
+- more alchemy 
+
 # 0.5.8
 - api docs
 - alchemy fix and improve
