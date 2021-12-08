@@ -1,4 +1,5 @@
-const version = 'v1.7';
+const version = 'v1.8';
+const defaultTable = game.settings.get("swademacros", "chasedecktable");
 
 /* Chase
 Features
@@ -111,7 +112,11 @@ function main() {
 
     let cardsList = ``;
     Array.from(game.tables).map((t) => {
+      if (defaultTable==t.data.name) {
+        cardsList += `<option value="${t.data.name}" selected>${t.data.name}</option>`;
+      } else {
         cardsList += `<option value="${t.data.name}">${t.data.name}</option>`;
+      }
     });
 
     const template = `

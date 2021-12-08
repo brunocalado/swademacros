@@ -1,5 +1,12 @@
-# 0.5.9
+# 0.6.0
 - more alchemy 
+- settings fix for Adventure Deck
+- settings for chase and chase macro can have a default
+- TODO falling damage macro
+- docs
+
+# 0.5.9
+- more alchemy
 
 # 0.5.8
 - api docs
