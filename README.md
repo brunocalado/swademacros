@@ -36,6 +36,9 @@ Search **Macros for SWADE** in modules.
 1. Go to **Modules** and paste this link: 
 Use this: https://raw.githubusercontent.com/brunocalado/swademacros/main/module.json
 
+## !! WARNING !! - v8
+These macros will only be updated for v9+. If you need the v8 macros download [this](https://exemplo.com/) compressed file and add manually to the **modules** folder.
+
 # How To
 
 There is a Journal in the compendium. Read it! All instructions in there.

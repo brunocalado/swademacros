@@ -1,3 +1,10 @@
+# 0.6.1
+- v9 - no longer works on v8
+- token vision ok
+- 3D Measure ok
+- Deviation ok
+- docs
+
 # 0.6.0
 - more alchemy 
 - settings fix for Adventure Deck

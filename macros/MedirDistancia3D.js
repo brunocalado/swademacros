@@ -1,5 +1,4 @@
-
-const version = '0.1';
+const version = '0.2';
 const icon = 'icons/tools/navigation/sextant-steel-blue.webp';
 
 /* Medir distância v0.1 / Measure distance between two 3d coordinates
@@ -109,19 +108,15 @@ function computeDistances(token, targets)
 /*
  * Print results to chat
  */
-function showResults(token, distances)
-{
+function showResults(token, distances) {
   let content = '';
-  message = `<h3><img style="vertical-align:middle" src=${icon} width="28" height="28"> Distance From <b>${token.name}</b></h3>`;
+  message = `<h3><img style="vertical-align:middle" src=${icon} width="28" height="28"> Distance from <b>${token.name}</b></h3>`;
   
   for(const d of distances) {
     message += `<p><b>${d.name}</b>: <b style="color: red">${d.distance}</b></p>`;
   };    
 
-  ChatMessage.create({
-    content: message,
-    type: CONST.CHAT_MESSAGE_TYPES.OOC
-  });
+  sm.styledChatMessage(`Distance`, '', message);
 }
 
 /*

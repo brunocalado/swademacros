@@ -1,13 +1,4 @@
-/*
-// Open a dialog for quickly changing token vision parameters of the controlled tokens.
-// This macro was originally written by @Sky#9453
-// https://github.com/Sky-Captain-13/foundry
-// SWADE (this) version by SalieriC
-
-// Since return only works in functions, the sole purpose of the main() function is to stop the macro from executing if no token is selected.
-*/
-
-const version = 'v1.1';
+const version = 'v1.2';
 const chatimage = "icons/sundries/lights/torch-brown-lit.webp";
 
 if (canvas.tokens.controlled[0]===undefined) {
@@ -148,9 +139,9 @@ async function changeVision(html) {
       case "nochange":
         break;
       default:
-        dimLight = tokenD.data.dimLight;
-        brightLight = tokenD.data.brightLight;
-        lightAngle = tokenD.data.lightAngle;
+        dimLight = tokenD.data.light.dim;
+        brightLight = tokenD.data.light.bright;
+        lightAngle = tokenD.data.light.angle;
         lockRotation = tokenD.data.lockRotation;
         break;
     }
@@ -159,9 +150,11 @@ async function changeVision(html) {
       vision: true,
       dimSight: dimSight,
       brightSight: brightSight,
-      dimLight: dimLight,
-      brightLight: brightLight,
-      lightAngle: lightAngle,
+      light: {
+        dim: dimLight,
+        bright: brightLight,
+        angle: lightAngle
+      },
       lockRotation: lockRotation
     });
 
@@ -177,3 +170,13 @@ async function changeVision(html) {
     sm.styledChatMessage(myTitle, '', message); // send message
   }  // end for     
 } // end changeVision
+
+
+/*
+// Open a dialog for quickly changing token vision parameters of the controlled tokens.
+// This macro was originally written by @Sky#9453
+// https://github.com/Sky-Captain-13/foundry
+// SWADE (this) version by SalieriC
+
+// Since return only works in functions, the sole purpose of the main() function is to stop the macro from executing if no token is selected.
+*/
