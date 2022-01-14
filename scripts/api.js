@@ -30,11 +30,12 @@ class sm {
   // rollSkill(myActor, skill)
   // myActor = token
   // attribute = notice, athletics, etc
-  static async rollSkill(token, skill) {
-    let actorSkill = token.actor.data.items.find(i => (i.name.toLowerCase().includes(skill.toLowerCase())) );
+  static async rollSkill(tokenD, skill) {
+    let actorSkill = tokenD.actor.data.items.filter(i => (i.type==='skill' )).find(i => (i.name.toLowerCase().includes(skill.toLowerCase())) );
+    
     let skillName; 
     if (!actorSkill) {
-      actorSkill = token.actor.data.items.find(i => (i.name === 'Untrained' || i.name === 'Unskilled Attempt' ) );
+      actorSkill = tokenD.actor.data.items.find(i => (i.name === 'Untrained' || i.name === 'Unskilled Attempt' ) );
     }
     skillName = actorSkill.name;
     return await game.swade.rollItemMacro(skillName);
@@ -252,12 +253,21 @@ class sm {
   });            
   message+=`<p>If you click the button this adventure will be posted in a journal.</p>`;
   message+=`<button style="background:#d10000;color:white" id="createAdventure">Create Adventure</button>`;  
-  */  
+  */
+  static addEventListenerOnHtmlElement(element, event, func){    
+    Hooks.on("renderChatMessage", (chatItem, html, data) => {
+      if( html[0].querySelector(element) !== null ) {
+        html[0].querySelector(element).addEventListener(event, func);
+      }
+    });
+  }  
+/*  
   static addEventListenerOnHtmlElement(element, event, func) {    
     Hooks.once("renderChatMessage", (chatItem, html) => { // Use Hook to add event to chat message html element
         html[0].querySelector(element).addEventListener(event, func);        
     });
   } // end addEventListenerOnHtmlElement
+*/  
 
 
   // ---------------------------------------------------------------
@@ -290,7 +300,6 @@ class sm {
   static getActiveEffect(tokenD, activeEffectLabel) {    
     const activeEffect = tokenD.actor.effects.find(e => e.data.label === activeEffectLabel);
     return activeEffect;
-    //await token.toggleEffect(effect, { active: false });
   }
   
   static async removeActiveEffect(tokenD, activeEffectLabel) {    

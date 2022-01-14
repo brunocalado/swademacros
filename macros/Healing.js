@@ -7,7 +7,7 @@ icon: icons/magic/life/cross-area-circle-green-white.webp
 */
 
 let tokenD;
-const version = 'v1.5';
+const version = 'v1.6';
 const chatimage = "icons/magic/life/cross-area-circle-green-white.webp";
 let coreRules = false;
 if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
@@ -72,12 +72,8 @@ async function naturalHeal(html) {
   r = rollWithEdge;
   
   // Roll Vigor including +2 if Fast Healer is present and another +2 if this is a reroll.
-  let message;
-  if (coreRules) {
-    message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> @Compendium[swade-core-rules.swade-rules.gCrNh35pUQHaVN4J]{Healing}</h2></div>`;
-  } else {
-    message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Healing</h2>`;
-  }
+  let message='';
+  let myTitle = `<img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Healing`;
 
   // Checking for a Critical Failure.  
   if ( sm.isCritical(rolled) ) {
@@ -99,9 +95,10 @@ async function naturalHeal(html) {
     message += ` ${edgeText}`;
   }
 
-  message += `<ul><li>This roll can be done every five day</li></ul>`;
+  message += `<ul><li>This roll can be done every five days</li></ul>`;
 
-  ChatMessage.create({ content: message });
+  //ChatMessage.create({ content: message });
+  sm.styledChatMessage(myTitle, '', message);
 }
 
 async function skillHealSelector(html) {
@@ -123,12 +120,8 @@ async function skillHeal(html) {
   let rolled = r;
   let startingWounds = sm.getWounds(tokenD);
   
-  let message;
-  if (coreRules) {
-    message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> @Compendium[swade-core-rules.swade-rules.gCrNh35pUQHaVN4J]{Healing}</h2></div>`;
-  } else {
-    message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Healing</h2>`;
-  }
+  let message='';
+  let myTitle = `<img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Healing`;
 
   r = r.total;
 
@@ -157,7 +150,8 @@ async function skillHeal(html) {
   <li><b>Subtract 1</b> from Healing rolls without a basic First Aid kit or similar supplies.</li>
   <li>This attempt required <b>${startingWounds*10}</b> minutes</li></ul>`;
   
-  ChatMessage.create({ content: message });
+  //ChatMessage.create({ content: message });
+  sm.styledChatMessage(myTitle, '', message);
 }
 
 /*
@@ -170,12 +164,8 @@ async function skillHealTarget(html, tokenTarget) {
   let rolled = r;
   let startingWounds = sm.getWounds(tokenTarget);
 
-  let message;
-  if (coreRules) {
-    message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> @Compendium[swade-core-rules.swade-rules.gCrNh35pUQHaVN4J]{Healing}</h2></div>`;
-  } else {
-    message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Healing</h2>`;
-  }
+  let message='';
+  let myTitle = `<img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Healing`;
 
   r = r.total;
 
@@ -202,5 +192,6 @@ async function skillHealTarget(html, tokenTarget) {
   <li><b>Subtract 1</b> from Healing rolls without a basic First Aid kit or similar supplies.</li>
   <li>This attempt required <b>${startingWounds*10}</b> minutes</li></ul>`;
   
-  ChatMessage.create({ content: message });
+  //ChatMessage.create({ content: message });
+  sm.styledChatMessage(myTitle, '', message);
 }
