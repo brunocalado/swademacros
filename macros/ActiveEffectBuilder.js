@@ -3,7 +3,7 @@
 docs: https://gitlab.com/peginc/swade/-/wikis/active-effects#attribute-keys
 */
 
-const version = 'v1.4';
+const version = 'v1.6';
 const icon = "icons/magic/symbols/rune-sigil-green.webp";
 
 if ( canvas.tokens.controlled[0]===undefined && Array.from(game.user.targets)[0]===undefined ) {
@@ -15,6 +15,11 @@ if ( canvas.tokens.controlled[0]===undefined && Array.from(game.user.targets)[0]
 function main() {
   let tokenD = canvas.tokens.controlled[0];
   let skills = tokenSkillReaderLabel(tokenD);
+
+  let aeExpirationBehavior = `<select id="select-aeExpirationBehavior" name="select-aeExpirationBehavior">`;
+  aeExpirationBehavior += `<option value="startOfTheTurn">Start of the Turn</option>`;
+  aeExpirationBehavior += `<option value="EndOfTheTurn" selected="selected">End of the Turn</option>`;
+  aeExpirationBehavior += `</select>`;
   
   let dialogue_content = `
     <form>
@@ -57,14 +62,23 @@ function main() {
           <option value="data.initiative.hasHesitant">Hesitant</option>         
           <option value="data.initiative.hasQuick">Quick</option>         
 
-          <option value="data.attributes.strength.encumbranceSteps">Encumbrance Steps</option>         
-
+          <option value="data.attributes.strength.encumbranceSteps">Encumbrance Steps</option>                   
         </datalist>  
       </div>
       <div class="form-group">
         <label>Value:</label>
         <input id="aevalue" name="aevalue" type="text" value="2">
       </div>   
+
+      <div class="form-group">
+        <label>Turns:</label>
+        <input id="aeturns" name="aeturns" type="text" value="0">
+      </div>
+      
+      <div class="form-group">
+        <label>Expiration Behavior:</label>
+        ${aeExpirationBehavior}
+      </div>      
     </form>
 
     <script>
@@ -112,6 +126,10 @@ async function applyActiveEffect(html) {
   let aename = html.find('[name="aename"]')[0].value;
   let aekey = html.find("#aeType")[0].value;
   let aevalue = html.find('[name="aevalue"]')[0].value;
+  let aeturns = html.find('[name="aeturns"]')[0].value;
+  let aeExpirationBehavior = html.find('[name="select-aeExpirationBehavior"]')[0].value;
+
+  let myActiveEffect;
 
   let aemode = keyToMode(aekey);
   aevalue = keyToValue(aekey, aevalue);
@@ -124,9 +142,33 @@ async function applyActiveEffect(html) {
     aename = autoNaming(aekey);
   }
 
-  let myActiveEffect = {icon: icon, label: aename, changes: [
-    {key:aekey, value: aevalue, mode: aemode }
-  ]};
+  if ( aeturns!=0) {
+    myActiveEffect = { // AE!!!
+      icon: icon, 
+      label: aename, 
+      changes: [{
+        key:aekey, 
+        value: aevalue, mode: aemode 
+      }],
+      duration: {
+        "rounds": 5
+      },
+      flags: {
+        swade: {
+          "expiration": expirationBehaviorCode(aeExpirationBehavior)
+        }
+      }      
+    };    
+  } else {
+    myActiveEffect = { // AE!!!
+      icon: icon, 
+      label: aename, 
+      changes: [{
+        key:aekey, 
+        value: aevalue, mode: aemode 
+      }]
+    };
+  }
 
   for (let tokenD of canvas.tokens.controlled) {
     let activeEffectClass = getDocumentClass("ActiveEffect");
@@ -182,6 +224,18 @@ function skillToKey(mykey) {
   }    
 }
 
+// Expiration
+/* 1 start prompt
+// 3 end promt
+*/
+function expirationBehaviorCode(expirationBehavior) {
+  if ( expirationBehavior=='startOfTheTurn' ) {
+    return 1;
+  } else {
+    return 3;
+  }    
+}
+
 // return array skills
 function tokenSkillReaderLabel(tokenD) {
   let items = tokenD.actor.data.items.filter(e => e.type==='skill');
@@ -204,7 +258,7 @@ function skillToModifier(skillName) {
 }
 
 function autoNaming(mykey) {
-console.log('PARTE: AAAAAAAAAAA ');
+
   if ( mykey.search('data.status.is')>-1 ) {
     return mykey.replace('data.status.is', '');
   } else if ( mykey.search('data.stats.')>-1 ) {    

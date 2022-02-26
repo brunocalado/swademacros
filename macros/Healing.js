@@ -192,6 +192,5 @@ async function skillHealTarget(html, tokenTarget) {
   <li><b>Subtract 1</b> from Healing rolls without a basic First Aid kit or similar supplies.</li>
   <li>This attempt required <b>${startingWounds*10}</b> minutes</li></ul>`;
   
-  //ChatMessage.create({ content: message });
   sm.styledChatMessage(myTitle, '', message);
 }

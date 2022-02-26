@@ -1,3 +1,8 @@
+# 0.6.3
+- chat style removed
+- boost macro ae timed
+- ae builder timed
+
 # 0.6.2
 - healing fix
 

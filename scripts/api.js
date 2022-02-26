@@ -242,7 +242,11 @@ class sm {
   static async styledChatMessage(myTitle, message1, message2='') {
     let chatData = {
       speaker: null,
-      content: `<div style="position:relative; background: #ddd9d5;padding: 0.5rem; margin-left:-7px;margin-right:-7px;margin-bottom:-7px;margin-top:-27px"><label class="titulo" style="font-size:35px; color: #b02b2e;">${myTitle}</label><div style="position: absolute;top: 0;right: 0;width: 50px;height:50px;background: linear-gradient(45deg, #00000000 50%, #000000 50%);"></div><br><label style="font-size: 15px">${message1}</label><div style="margin-top:5px ;height: 5px;width: 100%;background: linear-gradient(20deg,  #000000 70%, #ddd9d500 70%);"></div><p>${message2}</p></div>`};
+      content: `<label class="titulo" style="font-size:35px; color: #b02b2e;">${myTitle}</label>
+      <br><label style="font-size: 15px">${message1}</label>
+      <div style="margin-top:5px ;height: 5px;width: 100%;background: linear-gradient(20deg,  #000000 70%, #ddd9d500 70%);"></div>
+      <p>${message2}</p>
+      </div>`};
     ChatMessage.create(chatData, {});
   }
 

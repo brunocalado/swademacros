@@ -1,4 +1,4 @@
-const version = 'v1.2';
+const version = 'v1.3';
 
 /*
 icon: /icons/svg/up.svg
@@ -215,7 +215,19 @@ async function createEffect(tokens, traits, direction, trait, raise) {
         "mode": 2,
         "value": modmod,
         "priority": 0
-      }]
+      }],
+      duration: {
+        "startTime": 0,
+        "startRound": 0,
+        "startTurn": 0,
+        "rounds": 5
+      },
+      flags: {
+        swade: {
+          "expiration": 3,
+          "loseTurnOnHold": false
+        }
+      },      
     };
     boostMessage(tokenD.name, direction, trait.name, raise ? "major" : "minor");
     applyUniqueEffect(tokenD.actor, effectData);
