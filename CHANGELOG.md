@@ -1,3 +1,6 @@
+# 0.6.4
+- boost macro fix
+
 # 0.6.3
 - chat style removed
 - boost macro ae timed

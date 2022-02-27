@@ -1,4 +1,4 @@
-const version = 'v1.3';
+const version = 'v1.4';
 
 /*
 icon: /icons/svg/up.svg
@@ -220,7 +220,7 @@ async function createEffect(tokens, traits, direction, trait, raise) {
         "startTime": 0,
         "startRound": 0,
         "startTurn": 0,
-        "rounds": 5
+        "rounds": direction == "Lower" ? 0 : 5
       },
       flags: {
         swade: {
