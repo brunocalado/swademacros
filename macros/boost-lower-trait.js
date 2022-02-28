@@ -1,4 +1,4 @@
-const version = 'v1.4';
+const version = 'v1.5';
 
 /*
 icon: /icons/svg/up.svg
@@ -52,7 +52,7 @@ async function main() {
     }
   };
 
-  for (var token of tokens) {
+  for (let token of tokens) {
     let skills = token.actor.items.filter(e => e.type == "skill");
     for (const skill of skills) {
         let name = skill.data.name;
@@ -62,14 +62,14 @@ async function main() {
     }
   }
 
-  var traitoptions = `<select id="select-trait" name="select-trait">`;
+  let traitoptions = `<select id="select-trait" name="select-trait">`;
   for (let trait in traits) {
     traitoptions += `<option value="${trait}">${trait}</option>`;
   }
   traitoptions += `</select>`;
 
-  var applyChanges = false;
-  var raise = false;
+  let applyChanges = false;
+  let raise = false;
   new Dialog({
       title: `Boost/Lower Trait - ${version}`,
       content: `
@@ -155,21 +155,21 @@ async function main() {
 
 async function createEffect(tokens, traits, direction, trait, raise) {
   trait = traits[trait];
-  for (var tokenD of tokens) {
+  for (let tokenD of tokens) {
     let currentdie = 0;
     let currentmod = 0;
     if (trait["type"] == "attribute") {
-      var part;
-      let value = tokenD.actor.data;
+      let part;
+      let val = tokenD.actor.data;
       for (part of trait["diekey"].split(".")) {
-          value = value[part];
+          val = val[part];
       }
-      currentdie = value
-      value = tokenD.actor.data
+      currentdie = val
+      val = tokenD.actor.data
       for (part of trait["modkey"].split(".")) {
-          value = value[part];
+          val = val[part];
       }
-      currentmod = value;
+      currentmod = val;
     } else {
       let skill = tokenD.actor.items.filter(s => s.type == "skill").find(s => s.data.name == trait["name"])
       if (skill) {
@@ -202,7 +202,8 @@ async function createEffect(tokens, traits, direction, trait, raise) {
       diemod = 2;
       modmod = 1;
     }
-    var effectData = {
+
+    const effectData = {
       label: `${raise ? "major" : "minor"} ${direction} ${trait.name}`,
       icon: direction == "Lower" ? DOWNICON : UPICON,
       changes: [{                    
@@ -217,21 +218,18 @@ async function createEffect(tokens, traits, direction, trait, raise) {
         "priority": 0
       }],
       duration: {
-        "startTime": 0,
-        "startRound": 0,
-        "startTurn": 0,
-        "rounds": direction == "Lower" ? 0 : 5
+        "rounds": direction == "Lower" ? 1 : 5
       },
       flags: {
         swade: {
           "expiration": 3,
-          "loseTurnOnHold": false
         }
       },      
     };
-    boostMessage(tokenD.name, direction, trait.name, raise ? "major" : "minor");
-    applyUniqueEffect(tokenD.actor, effectData);
-  }
+
+    boostMessage(tokenD.name, direction, trait.name, raise ? "major" : "minor"); // chat message
+    await applyUniqueEffect(tokenD.actor, effectData);    
+  } // LOOP - END FOR 
 }
 
 // define applyUniqueEffect function

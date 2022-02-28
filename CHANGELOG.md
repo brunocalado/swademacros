@@ -1,3 +1,7 @@
+# 0.6.5
+- docs
+- boost macro fix 2
+
 # 0.6.4
 - boost macro fix
 
