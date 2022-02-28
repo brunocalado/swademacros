@@ -38,7 +38,7 @@ class sm {
       actorSkill = tokenD.actor.data.items.find(i => (i.name === 'Untrained' || i.name === 'Unskilled Attempt' ) );
     }
     skillName = actorSkill.name;
-    return await game.swade.rollItemMacro(skillName);
+    return await tokenD.actor.rollSkill(skillName);
   }
 
 
