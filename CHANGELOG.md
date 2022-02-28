@@ -1,3 +1,8 @@
+# 0.6.6
+- support fix
+- test fix
+- fix filipe swade tools
+
 # 0.6.5
 - docs
 - boost macro fix 2

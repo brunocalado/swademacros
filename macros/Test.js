@@ -1,4 +1,4 @@
-const version = 'v1.1';
+const version = 'v1.2';
 const chatimage = 'icons/sundries/gaming/dice-pair-white-green.webp';
 let coreRules = sm.isModuleOn("swade-core-rules");
 if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
@@ -35,115 +35,37 @@ function main() {
   });
 
   let template = `  
-    <style type="text/css">
-      div.purpleHorizon {
-        border: 4px solid #ff0000;
-        background-color: #000000;
-        width: 100%;
-        text-align: center;
-        border-collapse: collapse;
-      }
-      .divTable.purpleHorizon .divTableCell, .divTable.purpleHorizon .divTableHead {
-        border: 0px solid #550000;
-        padding: 5px 2px;
-      }
-      .divTable.purpleHorizon .divTableBody .divTableCell {
-        font-size: 13px;
-        font-weight: bold;
-        color: #FFFFFF;
-      }
-      
-      .divTable{ display: table; }
-      .divTableRow { display: table-row; }
-      .divTableHeading { display: table-header-group;}
-      .divTableCell, .divTableHead { display: table-cell;}
-      .divTableHeading { display: table-header-group;}
-      .divTableFoot { display: table-footer-group;}
-      .divTableBody { display: table-row-group;}
-
-      /* HIDE RADIO */
-      [type=radio] { 
-      position: absolute;
-      opacity: 0;
-      width: 0;
-      height: 0;
-      }
-
-      /* IMAGE STYLES */
-      [type=radio] + img {
-      cursor: pointer;
-      }
-
-      /* CHECKED STYLES */
-      [type=radio]:checked + img {
-      outline: 4px solid #f00;
-      }
-      
-      .container {
-        position: relative;
-        text-align: center;
-        color: white;
-      }
-      /* Centered text */
-      .centered {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 18px;
-      }    
-
-      #kultcss .window-content {    
-        background: #000000;
-      }     
-      #kultcss .dialog-button {
-        height: 40px;
-        background: #000000;
-        color: #ffffff;
-        justify-content: space-evenly;
-        align-items: center;
-        cursor: pointer;
-        border: none;    
-      }  
-      #kultcss header {
-        background: #000000;
-        border-radius: 0;    
-        border: none;    
-        margin-bottom: 2px;
-        font-size: .75rem;
-      }
-    </style>    
-    
-    <h2 style="text-align:center; color:white">${supporter.name} will try to Test ${target.name}!</h2>
+    <h2>${supporter.name} will try to Test ${target.name}!</h2>
     
     <div class="divTable purpleHorizon">
     <div class="divTableBody">
     
-    <div class="divTableRow">
+    <div class="divTableRow" align="center">
     <div class="divTableCell">
-        <p>Supporter Skill (Choose)</p>
-        <select id="skillAttacker" type="text" style="width: 100px; box-sizing: border-box;border: none;background-color: #ff0000;color: white; text-align: center;">
+        <b>Skill (Choose):</b> 
+        <select id="skillAttacker" type="text">
           ${supporterSkillsList}
         </select>      
-    </div>
+    </div>    
     </div>
     
     </div>
     </div>    
-
-    <h2 style="text-align:center; color:white">Options</h2>
+    
+    <br>
+    <h2>Options</h2>
     <div class="divTable purpleHorizon">
     <div class="divTableBody">
     
     <div class="divTableRow">
     <div class="divTableCell">
-        <input type="checkbox" id="creativecombat" style="background-color: #ff0000; color: white;"/>Creative Combat
+        <input type="checkbox" id="creativecombat"/>Creative Combat
     </div>
     </div>
     
     </div>
     </div> 
-    
+    <br>
   `;
   
   new Dialog({
@@ -175,17 +97,17 @@ async function testTarget(html) {
   let word2 = 'Vulnerable';
   let word3 = 'Shaken';
   if (coreRules) {
-    word1 = '@Compendium[swade-core-rules.swade-rules.vuud75GDkKL3NW10]{Distracted}';
-    word2 = '@Compendium[swade-core-rules.swade-rules.vuud75GDkKL3NW10]{Vulnerable}';
-    word3 = '@Compendium[swade-core-rules.swade-rules.30TJKevSbgxK6jQy]{Shaken}';
+    word1 = '@Compendium[swade-core-rules.swade-rules.R5Zjq1jL3Xc5VkcH]{Distracted}';
+    word2 = '@Compendium[swade-core-rules.swade-rules.R5Zjq1jL3Xc5VkcH]{Vulnerable}';
+    word3 = '@Compendium[swade-core-rules.swade-rules.HM1iVVbYciEa7X57]{Shaken}';
   }
-  
-  if (coreRules) {
-      message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> ${coreRulesLink}</h2><div>`;
-  } else {
-     message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Push</h2>`;
-  }    
 
+  if (coreRules) {
+    message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> @Compendium[swade-core-rules.swade-rules.qxPv5O5AJdAKbVFi]{Test}</h2><div>`;
+  } else {
+    message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Push</h2>`;
+  }   
+  
   supporterRolled = await sm.rollSkill(supporter, skillSupporter);  
   total = supporterRolled.total;
 
@@ -193,17 +115,18 @@ async function testTarget(html) {
 
   message_temp += `<p><b style="color:darkred">${target.name}</b> should roll <b style="color:red">${total}</b> or higher.</p>`;  
   message_temp += `<h3>Outcomes</h3>`;
-  message_temp += `<ul><li><b style="color:darkred">${supporter.name}</b> succeeded: <b style="color:darkblue">${supporter.name}</b> can add ${word1} or ${word2} to <b style="color:darkred">${target.name}</b></li>`;
+  message_temp += `<ul><li><b style="color:darkred">${supporter.name}</b> succeeded: <b style="color:darkblue">${supporter.name}</b> can add ${word1} or ${word2} to <b style="color:darkred">${target.name}</b></li></ul>`;
   if (creativecombat==false) {
-    message_temp += `<li><b style="color:darkred">${supporter.name}</b> raised: <b style="color:darkblue">${supporter.name}</b> can add ${word1} or ${word2} to <b style="color:darkred">${target.name}</b> and <b style="color:darkred">${target.name}</b> is ${word3}.</li></ul>`; 
+    message_temp += `<ul><li><b style="color:darkred">${supporter.name}</b> raised: <b style="color:darkblue">${supporter.name}</b> can add ${word1} or ${word2} to <b style="color:darkred">${target.name}</b> and <b style="color:darkred">${target.name}</b> is ${word3}.</li></ul>`; 
   }
   
   if ( sm.isCritical(supporterRolled) ) {
-    message += `<p><b style="color:darkblue">${supporter.name}</b> rolled a <b style="color: red; font-size:150%">Critical Failure!</b>!</p>`;
+    message += `<p><b style="color:darkblue">${supporter.name}</b> rolled a <b style="color: red;">Critical Failure!</b>!</p>`;
   } else if ( total>=4 ) {
     message += `<p><b style="color:darkblue">${supporter.name}</b> rolled <b style="color: red;">${total}</b>!</p>`;
     message += message_temp;
     if (creativecombat==true) {
+      message += `<br>`;
       message += await creativeCombatMessage();    
     }
   } else {
@@ -226,7 +149,8 @@ async function creativeCombatMessage() {
   let output = await tableCreativeCombat.roll();
   let result = output.results[0].data.text;
   
+  message += `<h3>Creative Combat</h3>`;
   message += `<p>If you got a raise, this will happen:</p>`;
   message += `<p>${result}</p>`;
-  return message;
+  return `${message}`;
 }
