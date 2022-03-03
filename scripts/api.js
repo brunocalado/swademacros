@@ -33,12 +33,10 @@ class sm {
   static async rollSkill(tokenD, skill) {
     let actorSkill = tokenD.actor.data.items.filter(i => (i.type==='skill' )).find(i => (i.name.toLowerCase().includes(skill.toLowerCase())) );
     
-    let skillName; 
     if (!actorSkill) {
       actorSkill = tokenD.actor.data.items.find(i => (i.name === 'Untrained' || i.name === 'Unskilled Attempt' ) );
     }
-    skillName = actorSkill.name;
-    return await tokenD.actor.rollSkill(skillName); //REPLACE ==> return await game.swade.rollItemMacro(skillName);   
+    return await tokenD.actor.rollSkill(actorSkill.id); //REPLACE ==> return await game.swade.rollItemMacro(skillName);   
   }
 
   // rollSkill(myActor, skill)

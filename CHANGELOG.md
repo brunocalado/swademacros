@@ -1,3 +1,6 @@
+# 0.6.7
+- fix fix filipe swade tools
+
 # 0.6.6
 - support fix
 - test fix
