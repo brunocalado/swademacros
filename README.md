@@ -71,6 +71,7 @@ You can see changes at [CHANGELOG](CHANGELOG.md).
 - https://github.com/spacemandev-git/swade-macros-simple
 - Kristian Serrano [Savaged.us](https://savaged.us/)
 - @grendel111111#1603 
+- @mxzf#5874
 
 # License
 Code license at [LICENSE](LICENSE).
