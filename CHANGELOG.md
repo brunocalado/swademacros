@@ -1,3 +1,6 @@
+# 0.6.8
+- fix auto update macros
+
 # 0.6.7
 - fix fix filipe swade tools
 

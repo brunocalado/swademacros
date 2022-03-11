@@ -31,12 +31,12 @@ class sm {
   // myActor = token
   // attribute = notice, athletics, etc
   static async rollSkill(tokenD, skill) {
-    let actorSkill = tokenD.actor.data.items.filter(i => (i.type==='skill' )).find(i => (i.name.toLowerCase().includes(skill.toLowerCase())) );
-    
+    let actorSkill = tokenD.actor.data.items.find(i => ( i.type==='skill' && i.name.toLowerCase().includes(skill.toLowerCase()) ) );    
     if (!actorSkill) {
-      actorSkill = tokenD.actor.data.items.find(i => (i.name === 'Untrained' || i.name === 'Unskilled Attempt' ) );
-    }
-    return await tokenD.actor.rollSkill(actorSkill.id); //REPLACE ==> return await game.swade.rollItemMacro(skillName);   
+      return await tokenD.actor.makeUnskilledAttempt();
+    } else {
+      return await actorSkill.roll(); //return await tokenD.actor.rollSkill(actorSkill.id); //REPLACE ==> return await game.swade.rollItemMacro(skillName);   
+    }      
   }
 
   // rollSkill(myActor, skill)
@@ -214,10 +214,21 @@ class sm {
  
   // ---------------------------------------------------------------
   // Helper
-  static async macroRun(macroName, compendiumName='swademacros.macros-for-swade') {  
+  static async macroRun2(macroName, compendiumName='swademacros.macros-for-swade') {  
     let pack = game.packs.get(compendiumName);
     let macro = ( await pack.getDocuments() ).find(i => (i.data.name==macroName) );
     await macro.execute();    
+  }
+
+  static async macroRun(macroName, compendiumName='swademacros.macros-for-swade') {  
+    let pack = game.packs.get(compendiumName);
+    const macro = ( await pack.getDocuments() ).find(i => (i.data.name==macroName) );
+
+    // Get the data from the macro in the compendium in a JS object form
+    let macro_data = macro.toObject();
+    let temp_macro = new Macro(macro_data);
+    temp_macro.data.permission.default = 3;
+    await temp_macro.execute();
   }
 
   // ---------------------------------------------------------------
