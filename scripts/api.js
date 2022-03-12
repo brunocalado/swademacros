@@ -111,6 +111,31 @@ class sm {
     return tokenD.actor.data.data.fatigue.max;
   }
 
+  // WOUNDS - Not Owned
+  static async applyWoundsForNotOwnedToken(tokenD, val) {
+    let currentWounds = this.getWounds(tokenD);
+    let maxWounds = this.getMaxWounds(tokenD);
+    let finalWounds;
+
+    if ( (currentWounds+val)>maxWounds ) {
+      finalWounds = maxWounds;
+    } else if ( (currentWounds+val)<0 ) {
+      finalWounds = 0;
+    } else {
+      finalWounds = (currentWounds+val);
+    }
+    const activeEffectData = {
+      actor: {
+        data: {
+          wounds: {
+            "value": finalWounds
+          }
+        }          
+      }
+    };
+    const output = await warpgate.mutate(tokenD.document, activeEffectData, {}, {permanent: true});      
+  }  
+
   // SKill List
   static listSkills(tokenD) {
     return tokenD.actor.data.items.filter(i => (i.type === 'skill') ).map(i => (i.name));  
@@ -214,12 +239,6 @@ class sm {
  
   // ---------------------------------------------------------------
   // Helper
-  static async macroRun2(macroName, compendiumName='swademacros.macros-for-swade') {  
-    let pack = game.packs.get(compendiumName);
-    let macro = ( await pack.getDocuments() ).find(i => (i.data.name==macroName) );
-    await macro.execute();    
-  }
-
   static async macroRun(macroName, compendiumName='swademacros.macros-for-swade') {  
     let pack = game.packs.get(compendiumName);
     const macro = ( await pack.getDocuments() ).find(i => (i.data.name==macroName) );
@@ -266,21 +285,13 @@ class sm {
   message+=`<p>If you click the button this adventure will be posted in a journal.</p>`;
   message+=`<button style="background:#d10000;color:white" id="createAdventure">Create Adventure</button>`;  
   */
-  static addEventListenerOnHtmlElement(element, event, func){    
+  static addEventListenerOnHtmlElement(element, event, func) {    
     Hooks.on("renderChatMessage", (chatItem, html, data) => {
       if( html[0].querySelector(element) !== null ) {
         html[0].querySelector(element).addEventListener(event, func);
       }
     });
   }  
-/*  
-  static addEventListenerOnHtmlElement(element, event, func) {    
-    Hooks.once("renderChatMessage", (chatItem, html) => { // Use Hook to add event to chat message html element
-        html[0].querySelector(element).addEventListener(event, func);        
-    });
-  } // end addEventListenerOnHtmlElement
-*/  
-
 
   // ---------------------------------------------------------------
   // GENERAL
@@ -309,12 +320,12 @@ class sm {
 
   // ---------------------------------------------------------------
   // Active Effets
-  static getActiveEffect(tokenD, activeEffectLabel) {    
+  static getActiveEffect(tokenD, activeEffectLabel) {   // not working - use warpgate 
     const activeEffect = tokenD.actor.effects.find(e => e.data.label === activeEffectLabel);
     return activeEffect;
   }
   
-  static async removeActiveEffect(tokenD, activeEffectLabel) {    
+  static async removeActiveEffect(tokenD, activeEffectLabel) {    // not working - use warpgate
     const activeEffect = tokenD.actor.effects.find(e => e.data.label === activeEffectLabel);
     if (activeEffect!=undefined) {
       this.styledChatMessage('Active Effect', '', `${activeEffectLabel} removed.`);       
@@ -322,9 +333,39 @@ class sm {
     }
   }  
 
+  /* 
+    const activeEffectData = {
+      embedded: {
+        ActiveEffect:{ 
+          label: {
+            label: `${raise ? "major" : "minor"} ${direction} ${trait.name}`,
+            icon: direction == "Lower" ? DOWNICON : UPICON,
+            changes: [{                    
+              "key": trait["diekey"],
+              "mode": 2,
+              "value": diemod,
+              "priority": 0
+            },{
+              "key": trait["modkey"],
+              "mode": 2,
+              "value": modmod,
+              "priority": 0
+            }],
+            duration: {
+              "rounds": direction == "Lower" ? 1 : 5
+            },
+            flags: {
+              swade: {
+                "expiration": 3,
+              }
+            }
+          }
+        }
+      }      
+    };  
+  */
   static async addActiveEffect(tokenD, activeEffectData) {    
-    let activeEffectClass = getDocumentClass("ActiveEffect");
-    const output = await activeEffectClass.create(activeEffectData, {parent:tokenD.actor});  
+    const output = await warpgate.mutate(tokenD.document, activeEffectData, {}, {permanent: true});      
   }
   
   // ---------------------------------------------------------------

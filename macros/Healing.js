@@ -7,7 +7,7 @@ icon: icons/magic/life/cross-area-circle-green-white.webp
 */
 
 let tokenD;
-const version = 'v1.6';
+const version = 'v1.7';
 const chatimage = "icons/magic/life/cross-area-circle-green-white.webp";
 let coreRules = false;
 if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
@@ -139,7 +139,7 @@ async function skillHeal(html) {
       message += ` and is <b style="color:red">unable to heal</b> any Wounds.</p>`;
     } else if ( r>=4 && r<8 ) {
       message += ` and heals <b style="color:darkgreen">1</b> of his ${startingWounds} Wounds.</p>`;      
-      sm.applyWounds(tokenD, -1);
+      sm.applyWounds(tokenD, -1);      
     } else if ( r>8 ) {
       message += ` and heals <b style="color:darkgreen">2</b> of his ${startingWounds} Wounds.</p>`;      
       sm.applyWounds(tokenD, -2);
@@ -172,7 +172,7 @@ async function skillHealTarget(html, tokenTarget) {
   // Checking for a Critical Failure.
   if ( sm.isCritical(rolled) ) {
     message += `${tokenD.name} rolled a <b style="color: red; font-size:150%">Critical Failure!</b> and <b style="color: red;">${tokenTarget.name}</b> takes another Wound!`;    
-    sm.applyWounds(tokenD, 1);
+    sm.applyWoundsForNotOwnedToken(tokenTarget, 1);
   } else {
     let skill = 'Healing'.toLowerCase();
     let actorSkill = tokenD.actor.data.items.find(i => (i.name.toLowerCase() === skill) );
@@ -183,8 +183,10 @@ async function skillHealTarget(html, tokenTarget) {
       message += ` and is <b style="color:red">unable to heal</b> any Wounds from <b style="color: red;">${tokenTarget.name}</b>.</p>`;
     } else if ( r>=4 && r<8 ) {
       message += ` and heals <b style="color:darkgreen">1</b> from <b style="color: red;">${tokenTarget.name}</b>.</p>`;            
+      sm.applyWoundsForNotOwnedToken(tokenTarget, -1);      
     } else if ( r>8 ) {
-      message += ` and heals <b style="color:darkgreen">2</b> from <b style="color: red;">${tokenTarget.name}</b>.</p>`;            
+      message += ` and heals <b style="color:darkgreen">2</b> from <b style="color: red;">${tokenTarget.name}</b>.</p>`;   
+      sm.applyWoundsForNotOwnedToken(tokenTarget, -2);      
     }
   }
 

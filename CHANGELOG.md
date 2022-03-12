@@ -1,3 +1,6 @@
+# 0.7.0
+- healing can update target wound
+
 # 0.6.9
 - boost macro ok
 - active effect builder ok
