@@ -3,7 +3,7 @@
 docs: https://gitlab.com/peginc/swade/-/wikis/active-effects#attribute-keys
 */
 
-const version = 'v1.6';
+const version = 'v1.7';
 const icon = "icons/magic/symbols/rune-sigil-green.webp";
 
 if ( canvas.tokens.controlled[0]===undefined && Array.from(game.user.targets)[0]===undefined ) {
@@ -144,40 +144,53 @@ async function applyActiveEffect(html) {
 
   if ( aeturns!=0) {
     myActiveEffect = { // AE!!!
-      icon: icon, 
-      label: aename, 
-      changes: [{
-        key:aekey, 
-        value: aevalue, mode: aemode 
-      }],
-      duration: {
-        "rounds": 5
-      },
-      flags: {
-        swade: {
-          "expiration": expirationBehaviorCode(aeExpirationBehavior)
+      embedded: {
+        ActiveEffect: { 
+          aename:{
+            label: aename,
+            icon : icon,
+            changes: [{
+              "key": aekey,
+              "value": aevalue, mode: aemode 
+            }],
+            duration: {
+              "rounds": 5
+            },
+            flags: {
+              swade: {
+                "expiration": expirationBehaviorCode(aeExpirationBehavior)
+              }
+            }  
+          }
         }
       }      
     };    
   } else {
     myActiveEffect = { // AE!!!
-      icon: icon, 
-      label: aename, 
-      changes: [{
-        key:aekey, 
-        value: aevalue, mode: aemode 
-      }]
-    };
+      embedded: {
+        ActiveEffect:{ 
+          aename: {
+            label: aename,
+            icon : icon,
+            changes: [{
+              "key": aekey,
+              "value": aevalue, mode: aemode 
+            }]
+          }
+        }
+      }
+    }
   }
 
+  //----------------------------------
   for (let tokenD of canvas.tokens.controlled) {
     let activeEffectClass = getDocumentClass("ActiveEffect");
-    const output = await activeEffectClass.create(myActiveEffect, {parent:tokenD.actor});
+    const output = await warpgate.mutate(tokenD.document, myActiveEffect, {}, {permanent: true});
   }
 
   for (let tokenD of Array.from(game.user.targets)) {
     let activeEffectClass = getDocumentClass("ActiveEffect");
-    const output = await activeEffectClass.create(myActiveEffect, {parent:tokenD.actor});
+    const output = await warpgate.mutate(tokenD.document, myActiveEffect, {}, {permanent: true});
   }
   
 }
@@ -238,6 +251,7 @@ function expirationBehaviorCode(expirationBehavior) {
 
 // return array skills
 function tokenSkillReaderLabel(tokenD) {
+  if (tokenD===undefined) return;
   let items = tokenD.actor.data.items.filter(e => e.type==='skill');
   let itemsLabel = [];
   let itemsList = ""; //Display the Chat Card for the selected item
@@ -245,8 +259,8 @@ function tokenSkillReaderLabel(tokenD) {
     itemsLabel.push("\"" + item.name + "\"");
   }
   return itemsLabel;
-}
-
+} //return tokenD.actor.data.items.filter(i => (i.type === 'skill') ).map(i => (i.name));  
+  
 function skillToDie(skillName) {
   skillName = skillName.replace(' Skill Die', '');
   return '@Skill{'+ skillName + '}[data.die.sides]';

@@ -3,7 +3,7 @@
   "title": "Macros for SWADE",
   "description": "Macros for SWADE",   
   "author": "Mestre Digital",
-  "version": "0.6.8",
+  "version": "0.6.9",
   "minimumCoreVersion": "9",
   "compatibleCoreVersion":"9",
   "scripts": [
@@ -58,7 +58,12 @@
       "type": "module",
       "name": "compendium-folders",
       "manifest": "https://raw.githubusercontent.com/earlSt1/vtt-compendium-folders/master/module.json"
-    }    
+    },
+    {
+      "type": "module",
+      "name": "warpgate",
+      "manifest": "https://github.com/trioderegion/warpgate/releases/latest/download/module.json"
+    }     
   ],
   
   "url": "https://github.com/brunocalado/swademacros",

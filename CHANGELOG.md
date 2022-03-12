@@ -1,3 +1,7 @@
+# 0.6.9
+- boost macro ok
+- active effect builder ok
+
 # 0.6.8
 - fix auto update macros
 

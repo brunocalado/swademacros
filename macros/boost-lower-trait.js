@@ -1,4 +1,4 @@
-const version = 'v1.5';
+const version = 'v1.6';
 
 /*
 icon: /icons/svg/up.svg
@@ -204,39 +204,44 @@ async function createEffect(tokens, traits, direction, trait, raise) {
     }
 
     const effectData = {
-      label: `${raise ? "major" : "minor"} ${direction} ${trait.name}`,
-      icon: direction == "Lower" ? DOWNICON : UPICON,
-      changes: [{                    
-        "key": trait["diekey"],
-        "mode": 2,
-        "value": diemod,
-        "priority": 0
-      },{
-        "key": trait["modkey"],
-        "mode": 2,
-        "value": modmod,
-        "priority": 0
-      }],
-      duration: {
-        "rounds": direction == "Lower" ? 1 : 5
-      },
-      flags: {
-        swade: {
-          "expiration": 3,
+      embedded: {
+        ActiveEffect:{ 
+          label: {
+            label: `${raise ? "major" : "minor"} ${direction} ${trait.name}`,
+            icon: direction == "Lower" ? DOWNICON : UPICON,
+            changes: [{                    
+              "key": trait["diekey"],
+              "mode": 2,
+              "value": diemod,
+              "priority": 0
+            },{
+              "key": trait["modkey"],
+              "mode": 2,
+              "value": modmod,
+              "priority": 0
+            }],
+            duration: {
+              "rounds": direction == "Lower" ? 1 : 5
+            },
+            flags: {
+              swade: {
+                "expiration": 3,
+              }
+            }
+          }
         }
-      },      
+      }      
     };
 
     boostMessage(tokenD.name, direction, trait.name, raise ? "major" : "minor"); // chat message
-    await applyUniqueEffect(tokenD.actor, effectData);    
+    await applyUniqueEffect(tokenD, effectData);    
   } // LOOP - END FOR 
 }
 
 // define applyUniqueEffect function
-async function applyUniqueEffect(actor, effectData) {
-  // Create a new fresh one with the new settings
+async function applyUniqueEffect(tokenD, myActiveEffect) {
   let activeEffectClass = getDocumentClass("ActiveEffect");
-  const output = await activeEffectClass.create(effectData, {parent:actor});
+  const output = await warpgate.mutate(tokenD.document, myActiveEffect, {}, {permanent: true});  
 }
 
 function boostMessage(tokenD, direction, traitName, raise) {
