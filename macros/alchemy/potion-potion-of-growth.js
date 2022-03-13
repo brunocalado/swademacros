@@ -1,17 +1,25 @@
-const version = 'v0.2';
-const itemName = 'Potion of Giant Strength';
+const version = 'v0.1';
+const itemName = 'Potion of Growth';
+const icon = 'icons/consumables/potions/potion-flask-corked-cyan.webp';
 
 const myActiveEffect = {
-  changes: [{"key":"data.attributes.strength.die.sides", "mode":CONST.ACTIVE_EFFECT_MODES.ADD, "value":"4"}],
-  icon: 'icons/consumables/potions/bottle-round-corked-blue.webp',
-  label: itemName
+  changes: [{
+    "key": "data.stats.size",
+    "mode": CONST.ACTIVE_EFFECT_MODES.ADD,
+    "value": "2"
+  }],
+  icon: icon,
+  label: itemName,
+  duration: {
+    seconds: 30,
+    rounds: 5,
+  }  
 }  
 
 /* 
 source: 
 icon: 
 */
-
 let tokenD=canvas.tokens.controlled[0];
 const myTitle = `Potion`;
 let message1 = ``;

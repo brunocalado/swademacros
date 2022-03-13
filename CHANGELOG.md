@@ -1,3 +1,9 @@
+# 0.7.2
+- fixed alchemy
+- docs
+- alchemy: added potion-potion-of-growth 
+- mass roll creds
+
 # 0.7.1
 - falling damage macro ripped from swin modified/fixed
 - vehicle_maneuvers removed css

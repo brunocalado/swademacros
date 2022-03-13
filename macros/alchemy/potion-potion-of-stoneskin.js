@@ -1,3 +1,4 @@
+const version = 'v0.2';
 const itemName = 'Potion of Stoneskin';
 
 const myActiveEffect = {
@@ -10,7 +11,6 @@ const myActiveEffect = {
 source: 
 icon: 
 */
-const version = 'v0.1';
 let tokenD=canvas.tokens.controlled[0];
 const myTitle = `Potion`;
 let message1 = ``;
@@ -41,7 +41,7 @@ async function main() {
   await sm.useItem(tokenD, itemName);
   
   // Item does stuff
-  sm.addActiveEffect(tokenD, myActiveEffect); 
+  sm.addActiveEffectToOwnedToken(tokenD, myActiveEffect); 
 
   // message
   sm.styledChatMessage(itemName, '', `${tokenD.actor.name} used a ${itemName}.`);

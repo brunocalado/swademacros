@@ -368,6 +368,11 @@ class sm {
     const output = await warpgate.mutate(tokenD.document, activeEffectData, {}, {permanent: true});      
   }
   
+  static async addActiveEffectToOwnedToken(tokenD, activeEffectData) {    
+    let activeEffectClass = getDocumentClass("ActiveEffect");
+    const output = await activeEffectClass.create(activeEffectData, {parent:tokenD.actor});  
+  }
+  
   // ---------------------------------------------------------------
   // Debug
   static debug(message) {

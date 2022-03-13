@@ -1,4 +1,4 @@
-const version = 'v1.0';
+const version = 'v1.1';
 const icon = 'icons/sundries/gaming/dice-pair-white-green.webp';
 
 var personas = canvas.tokens.controlled;
@@ -327,3 +327,7 @@ async function styledChatMessage(message, flavor) {
   };
   ChatMessage.create(chatData, {});
 }
+
+/*
+devs: lipefl#5425 Reef#9327
+*/
