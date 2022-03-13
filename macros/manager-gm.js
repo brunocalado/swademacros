@@ -1,5 +1,5 @@
 
-const version = '0.6';
+const version = '0.7';
 
 /*
   GM Menu
@@ -18,8 +18,10 @@ const managerType = 'GM - Macro Manager';
     "Chase",
     "Deviation",
     "Dramatic Tasks",
+    "Falling Damage Calculator",    
     "Interludes",
     "Mass Battle",
+    "Mass Roll",
     "Raise Calculator",
     "Size/Scale Calculator",
     "Quick Combat"    

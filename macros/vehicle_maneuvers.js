@@ -1,23 +1,13 @@
-
 /* vehicle_maneuvers
 icon: icons/tools/nautical/steering-wheel.webp
 */
 
 let tokenD;
-const version = 'v1.0';
+const version = 'v1.1';
 const chatimage = "icons/tools/nautical/steering-wheel.webp";
 let coreRules = false;
 let rules = '@Compendium[swade-core-rules.swade-rules.nB1vsvPTn5jSRG6v]{Chases and Vehicles}';
 if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
-
-/*
-if (canvas.tokens.controlled[0]===undefined) {
-  ui.notifications.error("Please, select a token."); // No Token is Selected
-} else {
-  tokenD = canvas.tokens.controlled[0];
-  main();
-}
-*/
 
 main();
   
@@ -35,7 +25,7 @@ async function main(){
     content: `
     <h2>Maneuvers</h2>
     <p>
-      <select id="maneuversOptionsID" type="text" style="width: 100%; box-sizing: border-box;border: none;background-color: #ff0000;color: white; text-align: center;">
+      <select id="maneuversOptionsID" type="text" style="width: 100%; box-sizing: border-box;border: none; text-align: center;">
         ${maneuversOptionsList}
       </select>      
     </p>

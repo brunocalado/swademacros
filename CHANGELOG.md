@@ -1,3 +1,10 @@
+# 0.7.1
+- falling damage macro ripped from swin modified/fixed
+- vehicle_maneuvers removed css
+- docs
+- manager-gm updated
+- mass roll
+
 # 0.7.0
 - healing can update target wound
 

@@ -1,5 +1,5 @@
-const version = 'v1.2';
-const chatimage = 'icons/sundries/gaming/dice-pair-white-green.webp';
+const version = 'v1.3';
+const chatimage = 'icons/skills/ranged/arrow-strike-apple-orange.webp';
 let coreRules = sm.isModuleOn("swade-core-rules");
 if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
 
