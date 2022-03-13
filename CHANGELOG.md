@@ -1,3 +1,6 @@
+# 0.7.3
+- mass roll secret
+
 # 0.7.2
 - fixed alchemy
 - docs

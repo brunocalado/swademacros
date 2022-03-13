@@ -1,4 +1,4 @@
-const version = 'v1.1';
+const version = 'v1.2';
 const icon = 'icons/sundries/gaming/dice-pair-white-green.webp';
 
 var personas = canvas.tokens.controlled;
@@ -11,7 +11,8 @@ if (personas.length <= 0) {
 function tokenDialog() {
   let template = ``;
   template += `<div style="background:#00b0ff;color:white;padding:3px">There are tokens selected. To ignore tokens and choose rolled dice, click the Choose Dice button</div>`;
-  template += `<p>Trait: <select id="caract">`;
+ 
+  template += `<br><p>Trait: <select id="caract">`;
   template += `<optgroup label="Attributes">`;
   template += `<option value="Agility">Agility</option>`;
   template += `<option value="Smarts">Smarts</option>`;
@@ -34,27 +35,38 @@ function tokenDialog() {
   template += `</optgroup>`;
   template += `</select></p>`;
 
-  template += `<p>Modifier: <input type="text" id="modificador" value="" style="width:50px" /></p>`;
-  template += `<p>Target Number: <input type="text" id="targetnum" value="4" style="width:50px" /></p>`;
-
+  
+  template += `
+    <br>
+    <table>
+    <tbody>
+    <tr>
+    <td style="text-align: center;">Modifier: <input type="text" id="modificador" value="" style="width:50px" /></td>
+    <td>&nbsp;</td>
+    <td style="text-align: center;">Target Number: <input type="text" id="targetnum" value="4" style="width:50px" /></td>
+    <td>&nbsp;</td>
+    <td style="text-align: center;"><input type="checkbox" id="secret" style="margin:0;vertical-align:middle" /> Secret</label></td>
+    </tr>
+    </tbody>
+    </table>  
+  `;
 
   new Dialog({
     title: 'Token Roll',
     content: template,
     buttons: {
-      cancel: {
-        label: `Choose Dice`,
-        callback: function(html) {
-          simpleDialog();
-        }
-      },
       ok: {
         label: `Roll`,
         callback: function(html) {
           applyFormOptionsToken(html);
         }
-      },
-
+      },      
+      cancel: {
+        label: `Choose Dice`,
+        callback: function(html) {
+          simpleDialog();
+        }
+      }
     }
   }).render(true);
 
@@ -66,21 +78,38 @@ function simpleDialog() {
   if (personas.length <= 0) {
     template += `<div style="background:#00b0ff;color:white;padding:3px">No tokens selected. </div>`;
   }
-  template += `<p>Dice: <select id="dice">`
-
-  template += `<option value="d4">d4</option>`;
-  template += `<option value="d6">d6</option>`;
-  template += `<option value="d8">d8</option>`;
-  template += `<option value="d10">d10</option>`;
-  template += `<option value="d12">d12</option>`;
-
-  template += `</select></p>`;
-
-  template += `<p><label style="font-size:16px"><input type="checkbox" id="wild" value="1" checked style="margin:0;vertical-align:middle" /> Wild Card</label></p>`;
-  template += `<p>Modifier: <input type="text" id="modificador" value="" style="width:50px" /></p>`;
-  template += `<p>Target Number: <input type="text" id="targetnum" value="4" style="width:50px" /></p>`;
-
-  template += `<p>Roll: <input type="text" id="repetir" value="1" style="width:50px" /> time(s)</p>`;
+  template += `
+    <br>
+    <table>
+    <tbody>
+    <tr>
+    <td>
+      <p>Dice: <select id="dice">
+        <option value="d4">d4</option>
+        <option value="d6">d6</option>
+        <option value="d8">d8</option>
+        <option value="d10">d10</option>
+        <option value="d12">d12</option>
+      </select></p>
+    </td>
+    <td><label style="font-size:16px"><input type="checkbox" id="wild" value="1" checked style="margin:0;vertical-align:middle" /> Wild Card</label></td>
+    <td><label style="font-size:16px"><input type="checkbox" id="secret" value="false" style="margin:0;vertical-align:middle" /> Secret</label></td>    
+    </tr>
+    </tbody>
+    </table>  
+  <br>`;
+  
+  template += `
+    <table>
+    <tbody>
+    <tr">
+    <td style="text-align: center;border:1px;">Modifier:<br><input type="number" id="modificador" value="" style="width:50px" /></td>
+    <td style="text-align: center;border:1px;">Target Number:<br><input type="number" id="targetnum" value="4" style="width:50px" /></td>
+    <td style="text-align: center;border:1px;">Roll:<br><input type="number" id="repetir" value="1" style="width:50px" /> time(s)</td>
+    </tr>
+    </tbody>
+    </table>  
+  `;
 
   new Dialog({
     title: 'Simple Roll',
@@ -101,6 +130,8 @@ function applyFormOptionsToken(html) {
   let caractName = html.find("#caract")[0].value;
   let targetNumber = parseInt(html.find("#targetnum")[0].value);
   let modificador = Number(html.find("#modificador")[0].value);
+  let isSecret=html.find("#secret")[0].checked;
+  
   let contentText = ``;
 
 
@@ -167,13 +198,14 @@ function applyFormOptionsToken(html) {
 
   }
 
-  styledChatMessage(contentText);
+  styledChatMessage(contentText,isSecret); // CHECK!
 }
 
 
 function applyFormOptionsSimpleRoll(html) {
   let dice = html.find("#dice")[0].value;
   let isWCard = html.find("#wild")[0].checked;
+  let isSecret=html.find("#secret")[0].checked;
   let targetNumber = parseInt(html.find("#targetnum")[0].value);
   let repeat = parseInt(html.find("#repetir")[0].value);
   let modificador = Number(html.find("#modificador")[0].value);
@@ -192,21 +224,21 @@ function applyFormOptionsSimpleRoll(html) {
   }
 
   if (isWCard) {
-    flavor += ` (CS)`
+    flavor += ` (WC)`
   }
 
   if (repeat > 1) {
     flavor += ' x' + repeat;
   }
 
-  flavor += ' NA:' + String(targetNumber);
+  flavor += ' | TN:' + String(targetNumber);
 
 
   for (let i = 1; i <= repeat; i++) {
     contentText += resultInfo(dice, targetNumber, modificador, isWCard);
   }
 
-  styledChatMessage(contentText, flavor);
+  styledChatMessage(contentText,isSecret, flavor);
   
 }
 
@@ -290,13 +322,13 @@ function resultInfo(mainDie, targetNumber, modifier = 0, isWCard = true, wilddie
       if (raise) {
         //    raiseStr=1;
 
-        let raiseNum = Math.floor(finalResult / 4);
-        let wordAmp = 'Raise';
-        if (raiseNum > 1) {
-          wordAmp = 'Raises';
-        }
-        tag = raiseNum + ' ' + wordAmp;
-        textColor = 'purple';
+        let raiseNum=Math.floor(finalResult/4) - 1;
+            let wordAmp='Raise';
+            if (raiseNum>1){
+                wordAmp='Raises';
+            } 
+            tag='Success! and '+raiseNum+' '+wordAmp;
+            textColor='purple';
 
       } else {
         tag = 'Success!';
@@ -317,7 +349,7 @@ function resultInfo(mainDie, targetNumber, modifier = 0, isWCard = true, wilddie
   return contentText;
 }
 
-async function styledChatMessage(message, flavor) {
+async function styledChatMessage(message, isSecret, flavor='') {
   let finalMessage = `<h2><img style="border: 0;vertical-align:middle;" src=${icon} width="28" height="28"> Mass Roll</h2>`;
   finalMessage+=message;
   let chatData = {
@@ -325,9 +357,13 @@ async function styledChatMessage(message, flavor) {
     speaker: null,
     content: finalMessage
   };
+  if(isSecret){
+    chatData['whisper'] = [game.user.id];
+    chatData['type'] =  CONST.CHAT_MESSAGE_TYPES.WHISPER;
+  }  
   ChatMessage.create(chatData, {});
 }
 
 /*
-devs: lipefl#5425 Reef#9327
+devs: lipefl#5425 Reef#9327 Laslo#5711
 */
