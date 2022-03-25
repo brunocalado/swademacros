@@ -1,4 +1,4 @@
-const version = 'v1.4';
+const version = 'v1.5';
 const chatimage = "icons/environment/people/charge.webp";
 let coreRules = false;
 if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
@@ -337,15 +337,29 @@ async function massbattle(html){
   </ul>`;
   
   message += winnerCheck(result1, result2, name1, name2, force1, force2);
+  
+  // 3D Dice
+  commander1Dice.toMessage({flavor: `${name1}`, whisper : ChatMessage.getWhisperRecipients("GM") });
+  commander2Dice.toMessage({flavor: `${name2}`, whisper : ChatMessage.getWhisperRecipients("GM") });
+  
+  // Create Journal on Click
+  const buttonID = Math.floor(Math.random(0.1)*1000000000);
+  sm.addEventListenerOnHtmlElement("#createJournalEntry_"+buttonID, 'click', (e) => {    
+    let data = {
+      name: 'Mass Battle',
+      content: message
+    };  
+    createJournalEntry(data);
+  });  
 
+  message+=`<p>Click the button to create a journal with this data.</p>`;
+  message+=`<button style="background:#d10000;color:white" id="createJournalEntry_${buttonID}">Create Journal</button>`;  
+  
   let chatData = {
     content: message,
     whisper : ChatMessage.getWhisperRecipients("GM")
   };  
   ChatMessage.create(chatData, {});  
-  
-  commander1Dice.toMessage({flavor: `${name1}`, whisper : ChatMessage.getWhisperRecipients("GM") });
-  commander2Dice.toMessage({flavor: `${name2}`, whisper : ChatMessage.getWhisperRecipients("GM") });
 }
 
 function forceBonus(force1, force2) {
@@ -408,3 +422,7 @@ function winnerCheck(result1, result2, name1, name2, force1, force2) {
   return message;
 }
 
+async function createJournalEntry(data) {  
+  const instantAdventure = await JournalEntry.create(data);
+  await instantAdventure.sheet.render(true);    
+}

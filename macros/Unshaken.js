@@ -1,4 +1,4 @@
-const version = 'v1.8';
+const version = 'v1.9';
 
 /* Unshaken
 
@@ -8,7 +8,7 @@ icon: icons/magic/control/fear-fright-white.webp
 
 const chatimage = "icons/magic/control/fear-fright-white.webp";
 let tokenD=canvas.tokens.controlled[0];
-const myTitle = `<img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Shaken`;
+const myTitle = `Shaken`;
 let message1 = ``;
 let message2 = ``;
   
@@ -24,7 +24,7 @@ async function main() {
   } else if (tokenD) {
     let message=``;
     await tokenD.actor.update({ "data.status.isShaken": true });
-    sm.styledChatMessage(myTitle, `<b">${tokenD.name}</b> is <b>shaken</b> now!`, '');       
+    sm.styledChatMessageSimple(myTitle, `<b">${tokenD.name}</b> is <b>shaken</b> now!`, chatimage);       
   }  
 }
 
@@ -43,19 +43,20 @@ async function rollUnshake() {
     } else {
       if (rollWithEdge <= 3) {
         message2 = `${tokenD.name} will remain Shaken.`;
+        const buttonID = Math.floor(Math.random(0.1)*1000000000);
         if ( (sm.checkBennies(tokenD)>0) ) {
-          sm.addEventListenerOnHtmlElement("#swademacrosbutton", 'click', async (e) => {    
+          sm.addEventListenerOnHtmlElement("#swadeMacrosUnshakenButton_"+buttonID, 'click', async (e) => {    
             sm.spendBenny(tokenD);
             await tokenD.actor.update({ "data.status.isShaken": false });              
-            sm.styledChatMessage(myTitle, `<b>${tokenD.name}</b> spent a benny and is no longer <b>shaken</b>.`);
+            sm.styledChatMessageSimple(myTitle, `<b>${tokenD.name}</b> spent a benny and is no longer <b>shaken</b>.`, chatimage);
           });            
-          message2+=`<button style="background:#d10000;color:white" id="swademacrosbutton">Use Benny</button>`;  
+          message2+=`<button style="background:#d10000;color:white" id="swadeMacrosUnshakenButton_${buttonID}">Use Benny</button>`;  
         }
       } else if (rollWithEdge >= 4) {
         await tokenD.actor.update({ "data.status.isShaken": false });
         message2 = `<b>${tokenD.name}</b> is no longer <b>shaken</b> and may act normally.`;
       }
     }
-    sm.styledChatMessage(myTitle, message1, message2);
+    sm.styledChatMessageSimple(myTitle, message1 + `<br>` + message2, chatimage);
   }
 }

@@ -1,4 +1,4 @@
-const version = 'v1.3';
+const version = 'v1.4';
 
 /* Unstun
 
@@ -7,7 +7,7 @@ icon: icons/magic/symbols/symbol-lightning-bolt.webp
 */
 const chatimage = "icons/magic/symbols/symbol-lightning-bolt.webp";
 let tokenD=canvas.tokens.controlled[0];
-const myTitle = `<img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Stunned`;
+const myTitle = `Stunned`;
 let message1 = ``;
 let message2 = ``;
 
@@ -33,7 +33,7 @@ async function main() {
     await tokenD.actor.update({ "data.status.isDistracted": true });
     await tokenD.actor.update({ "data.status.isVulnerable": true });
      
-    sm.styledChatMessage(myTitle, `<b>${tokenD.name}</b> is <b>stunned</b> now!`, '');        
+    sm.styledChatMessageSimple(myTitle, `<b>${tokenD.name}</b> is <b>stunned</b> now!`, chatimage);        
   }
 }
 
@@ -63,17 +63,19 @@ async function rollUnstun() {
         await tokenD.actor.update({ "data.status.isStunned": false });
         await tokenD.actor.update({ "data.status.isVulnerable": false });
       } else {
-        message2 = `<b>${tokenD.name}</b> remains <b>Stunned</b>.`;
+        message2 = `<b>${tokenD.name}</b> remains <b>Stunned</b>.`;        
         if ( (sm.checkBennies(tokenD)>0) ) {
-          sm.addEventListenerOnHtmlElement("#swademacrosbutton", 'click', async (e) => {    
+          const buttonID = Math.floor(Math.random(0.1)*1000000000);
+          sm.addEventListenerOnHtmlElement("#swadeMacrosUnstunButton_"+buttonID, 'click', async (e) => {                
+            sm.spendBenny(tokenD);
+            sm.styledChatMessageSimple(myTitle, `<b>${tokenD.name}</b> spent a benny to roll again.`);
             sm.macroRun('Unstun');
-            sm.styledChatMessage(myTitle, `<b>${tokenD.name}</b> spent a benny to roll again.`);
           });            
-          message2+=`<button style="background:#d10000;color:white" id="swademacrosbutton">Use Benny</button>`;     
+          message2+=`<button style="background:#d10000;color:white" id="swadeMacrosUnstunButton_${buttonID}">Use Benny</button>`;     
         }
       }
     }
-    sm.styledChatMessage(myTitle, message1, message2);
+    sm.styledChatMessageSimple(myTitle, message1 + `<br>` + message2, chatimage);
   }
 }
 

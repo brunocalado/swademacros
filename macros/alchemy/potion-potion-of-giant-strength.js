@@ -1,4 +1,4 @@
-const version = 'v0.2';
+const version = 'v0.3';
 const itemName = 'Potion of Giant Strength';
 
 const myActiveEffect = {
@@ -14,8 +14,6 @@ icon:
 
 let tokenD=canvas.tokens.controlled[0];
 const myTitle = `Potion`;
-let message1 = ``;
-let message2 = itemName;
   
 if (tokenD===undefined) {
   ui.notifications.error("Please select a token."); // No Token is Selected
@@ -33,8 +31,7 @@ async function main() {
   // Active Effect On?
   const temp = sm.getActiveEffect(tokenD, itemName);
   if( temp != undefined ) {
-    console.log(sm.getActiveEffect(tokenD, itemName));
-    sm.styledChatMessage(itemName, '', `You already used it.`)       
+    sm.styledChatMessageSimple(itemName, `You already used it.`)       
     return;
   }
 
@@ -45,5 +42,5 @@ async function main() {
   sm.addActiveEffectToOwnedToken(tokenD, myActiveEffect); 
 
   // message
-  sm.styledChatMessage(itemName, '', `${tokenD.actor.name} used a ${itemName}.`);
+  sm.styledChatMessageSimple(itemName, `${tokenD.actor.name} used a ${itemName}.`);
 }

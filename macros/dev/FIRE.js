@@ -1,4 +1,4 @@
-const version = 'v1.1';
+const version = 'v1.0';
 const chatimage = 'icons/skills/wounds/bone-broken-marrow-red.webp';
 /*
 Failing Damage
@@ -24,7 +24,7 @@ if (tokens.length === 0) {
   return ui.notifications.error("Select or target one or more tokens first.");
 }
 
-let messageContent = `<h2><img style="border: 0;vertical-align:middle;" src=${this.data.img} width="28" height="28"> Damage from Falling</h2>`;
+let messageContent = `<div class="swade-core"><h2><img style="border: 0;vertical-align:middle;" src=${this.data.img} width="28" height="28"> Damage from Falling</h2>`;
 const options = `<option value="na">n/a</option><option value="success">Success</option><option value="raise">Raise</option>`;
 
 main();

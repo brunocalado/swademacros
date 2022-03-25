@@ -4,11 +4,9 @@ const itemName = 'Potion of Invigoration';
 source: 
 icon: 
 */
-const version = 'v0.2';
+const version = 'v0.3';
 let tokenD=canvas.tokens.controlled[0];
 const myTitle = `Potion`;
-let message1 = ``;
-let message2 = itemName;
   
 if (tokenD===undefined) {
   ui.notifications.error("Please select a token."); // No Token is Selected
@@ -25,7 +23,7 @@ async function main() {
   
   //If token is max health if so, don't do anything
   if( sm.getFatigue(tokenD) == 0 ) {
-    sm.styledChatMessage(itemName, '', `You are not fatigued.`)       
+    sm.styledChatMessageSimple(itemName, `You are not fatigued.`)       
     return;
   }
 
@@ -35,5 +33,5 @@ async function main() {
   // remove 1 
   sm.applyFatigue(tokenD, -1);
 
-  sm.styledChatMessage(itemName, '', `${tokenD.actor.name} used a ${itemName} and removed 1 level of fatigue.`);
+  sm.styledChatMessageSimple(itemName, `${tokenD.actor.name} used a ${itemName} and removed 1 level of fatigue.`);
 }

@@ -277,6 +277,22 @@ class sm {
     ChatMessage.create(chatData, {});
   }
 
+  static async styledChatMessageSimple(myTitle, message, chatIcon='') {
+    let titleContent;
+    if (chatIcon=='') {
+      titleContent = `<h2>${myTitle}</h2>`;
+    } else {
+      titleContent = `<h2><img style="border: 0;vertical-align:middle;" src=${chatIcon} width="28" height="28"> ${myTitle}</h2>`;
+    }    
+    let chatData = {
+      speaker: null,
+      content: `
+      ${titleContent}
+      ${message}
+      `};
+    ChatMessage.create(chatData, {});
+  }
+
   // Create a chat button 
   /* Example
   addEventListenerOnHtmlElement("#createAdventure", 'click', (e) => {    
@@ -364,8 +380,13 @@ class sm {
       }      
     };  
   */
-  static async addActiveEffect(tokenD, activeEffectData) {    
-    const output = await warpgate.mutate(tokenD.document, activeEffectData, {}, {permanent: true});      
+  static async addActiveEffect(tokenD, activeEffectData, type=true) {    
+    if (type) { // WARPGATE Model
+      const output = await warpgate.mutate(tokenD.document, activeEffectData, {}, {permanent: true});      
+    } else { // Core Foundry VTT Model
+      let activeEffectClass = getDocumentClass("ActiveEffect");
+      const output = await activeEffectClass.create(activeEffectData, {parent:tokenD.actor});        
+    }
   }
   
   static async addActiveEffectToOwnedToken(tokenD, activeEffectData) {    

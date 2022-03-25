@@ -1,4 +1,4 @@
-const version = 'v0.2';
+const version = 'v0.3';
 const itemName = 'Potion of Flight';
 
 const myActiveEffect = {
@@ -34,8 +34,7 @@ async function main() {
   // Active Effect On?
   const temp = sm.getActiveEffect(tokenD, itemName);
   if( temp != undefined ) {
-    console.log(sm.getActiveEffect(tokenD, itemName));
-    sm.styledChatMessage(itemName, '', `You already used it.`)       
+    sm.styledChatMessageSimple(itemName, `You already used it.`)       
     return;
   }
 
@@ -43,8 +42,8 @@ async function main() {
   await sm.useItem(tokenD, itemName);
   
   // Item does stuff
-  sm.addActiveEffectToOwnedToken(tokenD, myActiveEffect); 
+  sm.addActiveEffect(tokenD, myActiveEffect, false); 
 
   // message
-  sm.styledChatMessage(itemName, '', `${tokenD.actor.name} used a ${itemName}.`);
+  sm.styledChatMessageSimple( itemName, `${tokenD.actor.name} used a ${itemName}.` );
 }

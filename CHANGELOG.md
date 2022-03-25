@@ -1,3 +1,11 @@
+# 0.7.4
+- Mass Battle button to create journal
+- alchemy chat message
+- falling damage update
+- docs
+- unshaken update
+- unstun update
+
 # 0.7.3
 - mass roll secret
 
