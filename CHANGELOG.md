@@ -1,3 +1,6 @@
+# 0.7.6
+- adventure deck fix
+
 # 0.7.5
 - adventure deck for decks
 
