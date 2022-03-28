@@ -2,8 +2,18 @@ Hooks.once('init', function() {
 
   // call this with: game.settings.get("swademacros", "adventuredecktable")
   game.settings.register('swademacros', 'adventuredecktable', {
-    name: 'Adventure Deck',
-    hint: 'Default name of the table where you want the macro Adventure Deck to drawn.',
+    name: 'Adventure Deck using Table',
+    hint: 'Default name of the table where you want the macro Adventure Deck - Table to drawn.',
+    scope: 'world',
+    config: true,
+    default: 'Adventure Deck',
+    type: String
+  });
+
+  // call this with: game.settings.get("swademacros", "adventuredeckdeck")
+  game.settings.register('swademacros', 'adventuredeckdeck', {
+    name: 'Adventure Deck using a Deck',
+    hint: 'Default name of the deck where you want the macro Adventure Deck - Deck to drawn.',
     scope: 'world',
     config: true,
     default: 'Adventure Deck',
@@ -19,5 +29,6 @@ Hooks.once('init', function() {
     default: 'Action Cards',
     type: String
   });
+
 
 });

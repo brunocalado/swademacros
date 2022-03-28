@@ -1,5 +1,5 @@
 
-const version = '0.7';
+const version = '0.8';
 
 /*
   GM Menu
@@ -15,6 +15,7 @@ const managerType = 'GM - Macro Manager';
 (()=>{
   const macros = [
     "Active Effect Builder",
+    "Adventure Deck - Deck",    
     "Chase",
     "Deviation",
     "Dramatic Tasks",

@@ -1,3 +1,6 @@
+# 0.7.5
+- adventure deck for decks
+
 # 0.7.4
 - Mass Battle button to create journal
 - alchemy chat message
