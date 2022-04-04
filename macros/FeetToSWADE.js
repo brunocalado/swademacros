@@ -63,7 +63,7 @@ async function patchScene(html) {
   let newUnit = html.find("#newUnit")[0].value;    
   
   await canvas.lighting.updateAll((i) => ({
-    bright : Math.round( i.data.bright / lightMulti ) , dim : Math.round( i.data.dim / lightMulti ) 
+    "config.bright" : Math.round( i.data.config.bright / lightMulti ) , "config.dim" : Math.round( i.data.config.dim / lightMulti ) 
   }));
   
   await canvas.scene.update({gridDistance: newDistance, gridUnits: newUnit});
