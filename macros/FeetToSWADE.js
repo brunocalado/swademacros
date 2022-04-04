@@ -6,7 +6,7 @@ source:
 icon: icons/tools/navigation/map-chart-tan.webp 
 */
 
-const version = 'v1.0';
+const version = 'v1.1';
 
 main()
 

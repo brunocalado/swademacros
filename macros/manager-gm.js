@@ -1,5 +1,5 @@
 
-const version = '0.8';
+const version = '0.9';
 
 /*
   GM Menu
@@ -25,7 +25,8 @@ const managerType = 'GM - Macro Manager';
     "Mass Roll",
     "Raise Calculator",
     "Size/Scale Calculator",
-    "Quick Combat"    
+    "Quick Combat",
+    "Token Disposition Changer"
   ];
 
   let buttons = {}, dialog, content = `<div sytle="width:100%;text-align:center;><h2>Choose Macro</h2></div>`;

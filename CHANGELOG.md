@@ -1,3 +1,9 @@
+# 0.7.7
+- SalieriC fixed feettoswade
+- Token Disposition Changer
+- manager-gm
+- docs
+
 # 0.7.6
 - adventure deck fix
 
