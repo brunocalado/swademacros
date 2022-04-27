@@ -1,3 +1,6 @@
+# 0.7.9
+- Removed Remove branding option for core. Custom CSS Module is the  alternative
+
 # 0.7.8
 - ImageFolder2Deck macro
 - Remove branding option for core. 
