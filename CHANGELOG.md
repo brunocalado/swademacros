@@ -1,3 +1,7 @@
+# 0.7.8
+- ImageFolder2Deck macro
+- Remove branding option for core. 
+
 # 0.7.7
 - SalieriC fixed feettoswade
 - Token Disposition Changer
