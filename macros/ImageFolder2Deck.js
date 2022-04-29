@@ -1,4 +1,4 @@
-const version = '1.0';
+const version = '1.1';
 const defaultPath = 'modules/swadecore/images/adventure-deck';
 
 main();
@@ -7,11 +7,12 @@ async function main() {
   new Dialog({
     title: `Images To Deck - ${version}`,
     content: `
-    <h3>Important</h3>
+    <h2>Important!</h2>
     <ul>
       <li>To get the folder path right, you can drop a tile from it in the canvas and copy the path.</li>
+      <li>Leave Card Back Image blank if you don't want to add the Card Back Image.</li>
     </ul>
-    <h3>Form</h3>
+    <h2>Configuration</h2>
     <div>
       <p>Deck Name: </p>
       <input type="text" id="folderName" value='The Office'/>
@@ -20,6 +21,11 @@ async function main() {
       <p>Folder Path: </p>
       <input type="text" id="folderPath" value=${defaultPath}/>
     </div>    
+    <div>
+      <p>Card Back Image (optional): </p>
+      <input type="text" id="cardBackImg" value=''/>
+    </div>    
+    <br>
     `,
     buttons: {
       roll: {
@@ -38,6 +44,7 @@ async function main() {
 async function createDeck(html) {
   const deckName = html.find("#folderName")[0].value;  
   const folderPath = html.find("#folderPath")[0].value;  
+  const cardBackImg = html.find("#cardBackImg")[0].value;  
 
   let {files} = await FilePicker.browse("data", folderPath);
   
@@ -64,13 +71,18 @@ async function createDeck(html) {
     const imageName = splitPath(file);
     return {
       name: imageName,
-      type: 'poker',
+      type: 'base',
       faces: [
         {
           img: imagePath,
           name: imageName,
         },
       ],
+      back: {
+        name: '',
+        text: '',
+        img: cardBackImg
+      },      
       face: 0,
       origin: deck?.id,
     };

@@ -1,3 +1,10 @@
+# 0.8.0
+- Image to Folder macro decodeURI
+- Image Folder to Deck img back
+- action Cards Rank tip, press q
+- journal with Savage Worlds Success Rate Calculator
+- char summary removed
+
 # 0.7.9
 - Removed Remove branding option for core. Custom CSS Module is the  alternative
 

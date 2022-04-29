@@ -2,7 +2,7 @@
 source: 
 icon: icons/sundries/gaming/rune-card.webp
 */
-const version = '1.1';
+const version = '1.2';
 main();
 
 async function main() {
@@ -46,9 +46,14 @@ async function createImageFolder(html) {
 
   let {files} = await FilePicker.browse("data", folderPath);
   
+  // Name Cleaning
   var splitPath = function (str) {
     let imageName = str.split('\\').pop().split('/').pop(); // remove path
-    return imageName.split('.').slice(0, -1).join('.'); // remove extension
+    imageName = imageName.split('.').slice(0, -1).join('.'); // remove extension
+    imageName = imageName.replace(/_/g, " ");
+    imageName = imageName.replace(/-/g, " ");
+    imageName = decodeURI( imageName )
+    return imageName;
   }
   
   for (let img of files) {
