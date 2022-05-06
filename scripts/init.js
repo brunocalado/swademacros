@@ -32,6 +32,16 @@ Hooks.once('init', function() {
     type: String
   });
 
+  // call this with: game.settings.get("swademacros", "feartablepath")
+  game.settings.register(moduleName, 'feartablepath', {
+    name: 'Fear Table',
+    hint: 'If you have the oficial modules type SWADE or SWPF. If you want to use your table type the name of a table in your world.',
+    scope: 'world',
+    config: true,
+    default: 'SWADE',
+    type: String
+  });
+
   // --------------------------------------------------
   // Keybinding
   game.keybindings.register(moduleName, "cardsTip", {

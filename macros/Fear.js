@@ -4,14 +4,34 @@ icon: icons/magic/death/undead-ghost-scream-teal.webp
 */
 
 let tokenD;
-const version = 'v1.4';
+const version = 'v1.5';
 const chatimage = "icons/magic/death/undead-ghost-scream-teal.webp";
 let coreRules = false;
 let rules = '@Compendium[swade-core-rules.swade-rules.jaYcLBJnBk1ai5EH]{Fear}';
 if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
 
+// ------------------------
+// Select the table
+let tableFearID;
+let fearTable;
+
+let fearTablePath = game.settings.get("swademacros", "feartablepath");
+if (fearTablePath=='SWADE') {
+  fearTablePath = "swade-core-rules.swade-tables";
+  tableFearID = await game.packs.get(fearTablePath).index.find(el => el.name == "Fear Table")._id;
+  fearTable = await game.packs.get(fearTablePath).getDocument( tableFearID );    
+} else if (fearTablePath=='SWPF') {
+  fearTablePath = "swpf-core-rules.swpf-tables";
+  tableFearID = await game.packs.get(fearTablePath).index.find(el => el.name == "Fear")._id;
+  fearTable = await game.packs.get(fearTablePath).getDocument( tableFearID );        
+} else {
+  fearTable = await game.tables.getName('fearTablePath');  
+}
+
 if (canvas.tokens.controlled[0]===undefined) {
   ui.notifications.error("Please, select a token."); // No Token is Selected
+} else if (fearTable==undefined) {
+  ui.notifications.error("Please, choose a valid table in Macros for SWADE settings"); // check the table
 } else {
   tokenD = canvas.tokens.controlled[0];
   main();
@@ -53,11 +73,7 @@ async function main(){
 async function rollFearTable(html) {
   let mod = html.find("#fearPenalty")[0].value;  
   const fearType = html.find('input[name="feartype"]:checked').val();
-
   let message=``;
-  let tableFearID = await game.packs.get("swade-core-rules.swade-tables").index.find(el => el.name == "Fear Table")._id;
-  let fearTable = await game.packs.get("swade-core-rules.swade-tables")
-    .getDocument( tableFearID );
 
   const rollOutcome = await rollSpirit();
   let shouldRollFearTable = false;

@@ -1,3 +1,7 @@
+# 0.8.1
+- fear macro can work with anything now
+- v10
+
 # 0.8.0
 - Image to Folder macro decodeURI
 - Image Folder to Deck img back
