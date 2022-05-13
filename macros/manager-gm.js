@@ -15,7 +15,7 @@ const managerType = 'GM - Macro Manager';
 (()=>{
   const macros = [
     "Active Effect Builder",
-    "Adventure Deck - Deck",    
+    "Adventure Deck - Deck",
     "Chase",
     "Deviation",
     "Dramatic Tasks",

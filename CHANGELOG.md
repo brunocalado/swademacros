@@ -1,3 +1,7 @@
+# 0.8.2
+- summon actor macro
+- docs 
+
 # 0.8.1
 - fear macro can work with anything now
 - v10
