@@ -1,5 +1,6 @@
-const version = '0.2';
+const version = '0.3';
 const icon = 'icons/tools/navigation/sextant-steel-blue.webp';
+const sm = game.modules.get('swademacros')?.api.sm;
 
 /* Medir distância v0.1 / Measure distance between two 3d coordinates
 How to
@@ -110,13 +111,13 @@ function computeDistances(token, targets)
  */
 function showResults(token, distances) {
   let content = '';
-  message = `<h3><img style="vertical-align:middle" src=${icon} width="28" height="28"> Distance from <b>${token.name}</b></h3>`;
-  
+  message = `<h3>Distance from <b>${token.name}</b></h3>`;
+  message += `<ul>`;
   for(const d of distances) {
-    message += `<p><b>${d.name}</b>: <b style="color: red">${d.distance}</b></p>`;
+    message += `<li><b>${d.name}</b>: <b style="color: red">${d.distance}</b></li>`;
   };    
-
-  sm.styledChatMessage(`Distance`, '', message);
+  message += `</ul>`;
+  sm.styledChatMessageSimple(`Distance`, message, icon);
 }
 
 /*

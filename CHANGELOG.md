@@ -1,3 +1,19 @@
+# 0.8.3
+WARNING!!! AUTO UPDATE MACROS MUST BE IMPORTED AGAIN! THIS IS A ONE TIME THING.
+- esmodules: better for future
+- 3DMeasure chat fix
+- Token Vision
+- chase table ok 
+- Falling Damage Calculator ok
+- Interludes use a deck + settings for the deck
+- Mass Battle clean journal
+- healing chat message
+- Power Point Management chat 
+- test fixed text, settings for creative combat
+- sprawlrunners_slowburn_options removed css
+- docs 
+- folder organization
+
 # 0.8.2
 - summon actor macro
 - docs 

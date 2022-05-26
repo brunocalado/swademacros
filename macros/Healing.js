@@ -7,10 +7,9 @@ icon: icons/magic/life/cross-area-circle-green-white.webp
 */
 
 let tokenD;
-const version = 'v1.7';
+const version = 'v1.8';
+const sm = game.modules.get('swademacros')?.api.sm;
 const chatimage = "icons/magic/life/cross-area-circle-green-white.webp";
-let coreRules = false;
-if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
 
 if (canvas.tokens.controlled[0]===undefined) {
   ui.notifications.error("Please, select a token."); // No Token is Selected
@@ -73,7 +72,7 @@ async function naturalHeal(html) {
   
   // Roll Vigor including +2 if Fast Healer is present and another +2 if this is a reroll.
   let message='';
-  let myTitle = `<img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Healing`;
+  let myTitle = `Healing`;
 
   // Checking for a Critical Failure.  
   if ( sm.isCritical(rolled) ) {
@@ -97,8 +96,8 @@ async function naturalHeal(html) {
 
   message += `<ul><li>This roll can be done every five days</li></ul>`;
 
-  //ChatMessage.create({ content: message });
-  sm.styledChatMessage(myTitle, '', message);
+  sm.styledChatMessageSimple(myTitle, message, chatimage);
+
 }
 
 async function skillHealSelector(html) {
@@ -121,7 +120,7 @@ async function skillHeal(html) {
   let startingWounds = sm.getWounds(tokenD);
   
   let message='';
-  let myTitle = `<img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Healing`;
+  let myTitle = `Healing`;
 
   r = r.total;
 
@@ -149,9 +148,9 @@ async function skillHeal(html) {
   message += `<ul>
   <li><b>Subtract 1</b> from Healing rolls without a basic First Aid kit or similar supplies.</li>
   <li>This attempt required <b>${startingWounds*10}</b> minutes</li></ul>`;
+
+  sm.styledChatMessageSimple(myTitle, message, chatimage);
   
-  //ChatMessage.create({ content: message });
-  sm.styledChatMessage(myTitle, '', message);
 }
 
 /*
@@ -193,6 +192,6 @@ async function skillHealTarget(html, tokenTarget) {
   message += `<ul>
   <li><b>Subtract 1</b> from Healing rolls without a basic First Aid kit or similar supplies.</li>
   <li>This attempt required <b>${startingWounds*10}</b> minutes</li></ul>`;
-  
-  sm.styledChatMessage(myTitle, '', message);
+
+  sm.styledChatMessageSimple(myTitle, message, chatimage);
 }

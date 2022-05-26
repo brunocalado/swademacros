@@ -5,7 +5,8 @@ icon: icons/commodities/currency/coins-plain-gold.webp
 TODO
 */
 
-const version = 'v1.1';
+const version = 'v1.3';
+const sm = game.modules.get('swademacros')?.api.sm;
 const icon = "icons/commodities/currency/coins-plain-gold.webp";
 
 const iconCopper = "icons/commodities/currency/coins-assorted-mix-platinum.webp";
@@ -144,7 +145,7 @@ async function coinManager(html) {
     let tokens = canvas.tokens.controlled;
     for (var tokenD of tokens) {
       let actorid = tokenD.actor.id;
-      console.log('Token ID: ' + actorid)
+      //console.log('Token ID: ' + actorid)
       coinMessage(actorid, copper, silver, gold, platinum);
       updateHeroCoins(actorid, copper, silver, gold, platinum);
     }
@@ -192,7 +193,7 @@ async function createCoin(actorID, coinName) {
   rules += `<table><colgroup> <col/> <col/> <col/> <col/> <col/> </colgroup><tbody><tr><th class="main-heading" colspan="5">Coins &amp; exchange value</th></tr><tr><th class="sub-heading left">Coin</th><th class="sub-heading">CP</th><th class="sub-heading">SP</th><th class="sub-heading">GP</th><th class="sub-heading">PP</th></tr><tr><td>Copper (cp)</td><td class="centered">1</td><td class="centered">1/10</td><td class="centered">1/100</td><td class="centered">1/1,000</td></tr><tr><td>Silver (sp)</td><td class="centered">10</td><td class="centered">1</td><td class="centered">1/10</td><td class="centered">1/100</td></tr><tr><td>Gold (gp)</td><td class="centered">100</td><td class="centered">10</td><td class="centered">1</td><td class="centered">1/10</td></tr><tr><td>Platinum (pp)</td><td class="centered">1,000</td><td class="centered">100</td><td class="centered">10</td><td class="centered">1</td></tr></tbody></table>`; 
   
   if (coreRules) {
-    rules += '</br>@Compendium[swpf-core-rules.swpf-rules.orozFFWbzOxXU1hR]{1 Gear}';
+    rules += '</br>@Compendium[swpf-core-rules.swpf-rules.7STCq0HPoAlaoOZ7]{1 Gear}';
   }
   
   //let character = game.actors.contents.filter((t) => t.id === actorID)[0];  

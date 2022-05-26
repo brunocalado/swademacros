@@ -1,4 +1,5 @@
-const version = 'v1.2';
+const version = 'v1.3';
+const sm = game.modules.get('swademacros')?.api.sm;
 const icon = 'icons/sundries/gaming/dice-pair-white-green.webp';
 
 var personas = canvas.tokens.controlled;

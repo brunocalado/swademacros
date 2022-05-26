@@ -1,4 +1,5 @@
-const version = '1.0';
+const version = '1.1';
+const sm = game.modules.get('swademacros')?.api.sm;
 // icon: modules/deadlands-core-rules/assets/icons/deadlands-logo.webp
 
 main();

@@ -1,4 +1,5 @@
-const version = 'v1.2';
+const version = 'v1.3';
+const sm = game.modules.get('swademacros')?.api.sm;
 const chatimage = "icons/commodities/treasure/puzzle-box-glowing-blue.webp";
 const rule = '@Compendium[sprawl-core-rules.sprawl-rules.jhEs3al7qA4sAwaa]{Logistics Points}';
 let coreRules = false;

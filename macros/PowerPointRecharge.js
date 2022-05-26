@@ -1,11 +1,11 @@
-
 /* Power Point Management
 - 
 
 icon: icons/magic/symbols/elements-air-earth-fire-water.webp
 */
 
-const version = 'v1.0';
+const version = 'v1.1';
+const sm = game.modules.get('swademacros')?.api.sm;
 const chatimage = "icons/magic/symbols/elements-air-earth-fire-water.webp";
 const rule = '@Compendium[swade-core-rules.swade-rules.6SGCG8rZNklN3U6w]{Recharging}';
 let coreRules = sm.isModuleOn("swade-core-rules");
@@ -85,18 +85,12 @@ Recharging p151
 A character recovers 5 Power Points per hour spent resting, meditating, etc.
 */
 async function naturalRecover(html) {  
-  let message;
+  let message = '';
   
-  if (coreRules) {
-    message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> ${rule}</h2></div>`;
-  } else {
-    message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Recharging</h2>`;
-  }
-
   await changePowerPoints(tokenD, 5);
   message += `<p><b style="color:red;">${tokenD.name}</b> recovered 5 Power Points after 1 hour. The current power points are: <b>${tokenD.actor.data.data.powerPoints.value}</b> </p>`;
 
-  ChatMessage.create({ content: message });
+  sm.styledChatMessageSimple('Recharging', message, chatimage);
 }
 
 /*

@@ -1,5 +1,5 @@
-
-const version = '0.9';
+const version = '1.0';
+const sm = game.modules.get('swademacros')?.api.sm;
 
 /*
   GM Menu

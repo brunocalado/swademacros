@@ -1,4 +1,5 @@
-const version = 'v1.4';
+const version = 'v1.5';
+const sm = game.modules.get('swademacros')?.api.sm;
 
 /* Unstun
 

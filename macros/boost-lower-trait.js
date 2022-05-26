@@ -1,4 +1,5 @@
-const version = 'v1.6';
+const version = 'v1.7';
+const sm = game.modules.get('swademacros')?.api.sm;
 
 /*
 icon: /icons/svg/up.svg

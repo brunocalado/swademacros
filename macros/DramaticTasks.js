@@ -1,4 +1,5 @@
-const version = 'v1.0';
+const version = 'v1.1';
+const sm = game.modules.get('swademacros')?.api.sm;
 const chatimage = 'icons/commodities/tech/detonator-timer.webp';
 const coreRulesLink = '@Compendium[swade-core-rules.swade-rules.G9H6LoPoQu10TI4R]{Dramatic Tasks}';
 let coreRules = sm.isModuleOn("swade-core-rules");

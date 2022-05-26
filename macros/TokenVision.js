@@ -1,4 +1,5 @@
-const version = 'v1.2';
+const version = 'v1.3';
+const sm = game.modules.get('swademacros')?.api.sm;
 const chatimage = "icons/sundries/lights/torch-brown-lit.webp";
 
 if (canvas.tokens.controlled[0]===undefined) {
@@ -160,14 +161,15 @@ async function changeVision(html) {
 
     // chat
     let message=``;    
-    const myTitle = `<img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Illumination`;      
+    const myTitle = `Illumination`;      
     message += `<p><b>${tokenD.name}</b> made changes to vision/illumination.</p>`;
     message += `<ul><li>Dim Sight: ${dimSight}</li>`;
     message += `<li>Bright Sight: ${brightSight}</li>`;
     message += `<li>Dim Light: ${dimLight}</li>`;
     message += `<li>Bright Light: ${brightLight}</li>`;
     message += `<li>Light Angle: ${lightAngle}</li></ul>`;
-    sm.styledChatMessage(myTitle, '', message); // send message
+    sm.styledChatMessageSimple(myTitle, message, chatimage); // send message
+    
   }  // end for     
 } // end changeVision
 

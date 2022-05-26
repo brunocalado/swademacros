@@ -3,7 +3,8 @@ icon: icons/tools/nautical/steering-wheel.webp
 */
 
 let tokenD;
-const version = 'v1.1';
+const version = 'v1.2';
+const sm = game.modules.get('swademacros')?.api.sm;
 const chatimage = "icons/tools/nautical/steering-wheel.webp";
 let coreRules = false;
 let rules = '@Compendium[swade-core-rules.swade-rules.nB1vsvPTn5jSRG6v]{Chases and Vehicles}';

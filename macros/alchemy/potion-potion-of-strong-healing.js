@@ -4,7 +4,8 @@ const itemName = 'Potion of Strong Healing';
 source: 
 icon: 
 */
-const version = 'v0.3';
+const version = 'v0.4';
+const sm = game.modules.get('swademacros')?.api.sm;
 let tokenD=canvas.tokens.controlled[0];
   
 if (tokenD===undefined) {

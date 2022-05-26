@@ -1,2 +1,3 @@
-- manager check
-- support improve
+- easy shape change
+- Quick apply skill to powers
+- 

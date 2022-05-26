@@ -1,4 +1,5 @@
-const version = 'v0.2';
+const version = 'v0.3';
+const sm = game.modules.get('swademacros')?.api.sm;
 const itemName = 'Potion of Growth';
 const icon = 'icons/consumables/potions/potion-flask-corked-cyan.webp';
 

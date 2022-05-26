@@ -2,7 +2,9 @@
 source: 
 icon: icons/sundries/gaming/rune-card.webp
 */
-const version = '1.2';
+const version = '1.3';
+const sm = game.modules.get('swademacros')?.api.sm;
+
 main();
 
 async function main() {

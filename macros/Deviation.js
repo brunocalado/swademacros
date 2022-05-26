@@ -1,4 +1,5 @@
 const version = 'v1.4';
+const sm = game.modules.get('swademacros')?.api.sm;
 const chatimage = "https://raw.githubusercontent.com/brunocalado/mestre-digital/master/Foundry%20VTT/Macros/Savage%20Worlds/icons/clock.webp";
 
 /* Deviation p99 SWADE

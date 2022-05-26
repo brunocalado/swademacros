@@ -1,4 +1,20 @@
-class sm {
+import { shape_changer_gm } from './sm_modules/shape_changer.js';
+import { shape_changer_script } from './sm_modules/shape_changer.js';
+
+export class sm {
+
+  // ---------------------------------------------
+  // Shortcuts  
+  static async shapeChangeGM(data) {
+    shape_changer_gm(data);
+  }
+  
+  static async shapeChange() {
+    shape_changer_script();
+  }  
+  
+  // ---------------------------------------------
+  // Functions
   
   // rollAttribute(myActor, attribute)
   // myActor = token

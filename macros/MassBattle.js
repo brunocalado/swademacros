@@ -1,4 +1,5 @@
-const version = 'v1.5';
+const version = 'v1.6';
+const sm = game.modules.get('swademacros')?.api.sm;
 const chatimage = "icons/environment/people/charge.webp";
 let coreRules = false;
 if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
@@ -337,6 +338,7 @@ async function massbattle(html){
   </ul>`;
   
   message += winnerCheck(result1, result2, name1, name2, force1, force2);
+  let cleanMessage = message;
   
   // 3D Dice
   commander1Dice.toMessage({flavor: `${name1}`, whisper : ChatMessage.getWhisperRecipients("GM") });
@@ -347,7 +349,7 @@ async function massbattle(html){
   sm.addEventListenerOnHtmlElement("#createJournalEntry_"+buttonID, 'click', (e) => {    
     let data = {
       name: 'Mass Battle',
-      content: message
+      content: cleanMessage
     };  
     createJournalEntry(data);
   });  

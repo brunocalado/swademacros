@@ -16,7 +16,8 @@ icon: icons/sundries/books/book-embossed-spiral-purple-white.webp
 */
 
 let tokenD;
-const version = 'v0.1';
+const version = 'v0.2';
+const sm = game.modules.get('swademacros')?.api.sm;
 const chatimage = "icons/sundries/books/book-embossed-spiral-purple-white.webp";
 
 if (canvas.tokens.controlled[0]===undefined) {

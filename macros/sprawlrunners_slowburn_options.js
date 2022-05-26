@@ -1,7 +1,7 @@
+const version = 'v1.2';
+const sm = game.modules.get('swademacros')?.api.sm;
+
 const skillToRoll = 'Hacking';
-
-
-const version = 'v1.1';
 const chatimage = 'icons/commodities/tech/antenna-powered-purple.webp';
 let coreRules = false;
 const coreRulesLink = '@Compendium[sprawl-core-rules.sprawl-rules.YlzlYF4w9OiFgHTG]{Cyberspace Actions}';
@@ -38,96 +38,17 @@ function main() {
     inActionsList += `<option value="${t}">${t}</option>`;
   });
   
-  let template = `  
-    <style type="text/css">
-      div.purpleHorizon {
-        border: 4px solid #ff0000;
-        background-color: #000000;
-        width: 100%;
-        text-align: center;
-        border-collapse: collapse;
-      }
-      .divTable.purpleHorizon .divTableCell, .divTable.purpleHorizon .divTableHead {
-        border: 0px solid #550000;
-        padding: 5px 2px;
-      }
-      .divTable.purpleHorizon .divTableBody .divTableCell {
-        font-size: 13px;
-        font-weight: bold;
-        color: #FFFFFF;
-      }
-      
-      .divTable{ display: table; }
-      .divTableRow { display: table-row; }
-      .divTableHeading { display: table-header-group;}
-      .divTableCell, .divTableHead { display: table-cell;}
-      .divTableHeading { display: table-header-group;}
-      .divTableFoot { display: table-footer-group;}
-      .divTableBody { display: table-row-group;}
-
-      /* HIDE RADIO */
-      [type=radio] { 
-      position: absolute;
-      opacity: 0;
-      width: 0;
-      height: 0;
-      }
-
-      /* IMAGE STYLES */
-      [type=radio] + img {
-      cursor: pointer;
-      }
-
-      /* CHECKED STYLES */
-      [type=radio]:checked + img {
-      outline: 4px solid #f00;
-      }
-      
-      .container {
-        position: relative;
-        text-align: center;
-        color: white;
-      }
-      /* Centered text */
-      .centered {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 18px;
-      }    
-
-      #kultcss .window-content {    
-        background: #000000;
-      }     
-      #kultcss .dialog-button {
-        height: 40px;
-        background: #000000;
-        color: #ffffff;
-        justify-content: space-evenly;
-        align-items: center;
-        cursor: pointer;
-        border: none;    
-      }  
-      #kultcss header {
-        background: #000000;
-        border-radius: 0;    
-        border: none;    
-        margin-bottom: 2px;
-        font-size: .75rem;
-      }
-    </style>    
+  let template = `    
+    <h1>ACTIONS</h1>
     
-    <h1 style="text-align:center; color:white">ACTIONS</h1>
-    
-    <h2 style="text-align:center; color:white">INSIDE/OUTSIDE SYSTEMS NODES</h2>
+    <h2>INSIDE/OUTSIDE SYSTEMS NODES</h2>
     
     <div class="divTable purpleHorizon">
     <div class="divTableBody">
     
     <div class="divTableRow">
     <div class="divTableCell">
-        <select id="inoutActionsList" type="text" style="width: 340px; box-sizing: border-box;border: none;background-color: #ff0000;color: white; text-align: center;">
+        <select id="inoutActionsList" type="text">
           ${inoutActionsList}
         </select>      
     </div>
@@ -136,14 +57,14 @@ function main() {
     </div>
     </div>    
     
-    <h2 style="text-align:center; color:white">OUTSIDE OF SYSTEMS/NODES</h2>
+    <h2>OUTSIDE OF SYSTEMS/NODES</h2>
 
     <div class="divTable purpleHorizon">
     <div class="divTableBody">
     
     <div class="divTableRow">
     <div class="divTableCell">
-        <select id="outActionsList" type="text" style="width: 340px; box-sizing: border-box;border: none;background-color: #ff0000;color: white; text-align: center;">
+        <select id="outActionsList" type="text">
           ${outActionsList}
         </select>      
     </div>
@@ -152,14 +73,14 @@ function main() {
     </div>
     </div>  
 
-    <h2 style="text-align:center; color:white">WITHIN SYSTEMS/NODES</h2>
+    <h2>WITHIN SYSTEMS/NODES</h2>
     
     <div class="divTable purpleHorizon">
     <div class="divTableBody">
     
     <div class="divTableRow">
     <div class="divTableCell">
-        <select id="inActionsList" type="text" style="width: 340px; box-sizing: border-box;border: none;background-color: #ff0000;color: white; text-align: center;">
+        <select id="inActionsList" type="text">
           ${inActionsList}
         </select>      
     </div>

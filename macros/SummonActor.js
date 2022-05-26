@@ -3,7 +3,8 @@ const folderName = 'Bestiary'; // Replace Bestiary for your folder name.
 
 
 // -----------------------------------------
-const version = '1.0';
+const version = '1.1';
+const sm = game.modules.get('swademacros')?.api.sm;
 const myFolder = game.folders.getName(folderName);
 
 if (myFolder==undefined && myFolder.content.length>0) {

@@ -1,4 +1,5 @@
-const version = 'v1.4';
+const version = 'v1.5';
+const sm = game.modules.get('swademacros')?.api.sm;
 const chatimage = "icons/skills/social/diplomacy-unity-alliance.webp";
 let coreRules = false;
 const coreRulesLink = '@Compendium[swade-core-rules.swade-rules.L8ifBUyo8n9IDqSc]{Support}';

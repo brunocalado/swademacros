@@ -1,4 +1,5 @@
-const version = 'v1.6';
+const version = 'v1.7';
+const sm = game.modules.get('swademacros')?.api.sm;
 const chatimage = "icons/creatures/mammals/wolf-shadow-black.webp";
 const rules = '@Compendium[swade-core-rules.swade-rules.hdXOHCe38O8KGyUz]{Ganging Up}';
 let coreRules = false;

@@ -4,7 +4,8 @@ const itemName = 'Potion of Invigoration';
 source: 
 icon: 
 */
-const version = 'v0.3';
+const version = 'v0.4';
+const sm = game.modules.get('swademacros')?.api.sm;
 let tokenD=canvas.tokens.controlled[0];
 const myTitle = `Potion`;
   

@@ -1,4 +1,5 @@
-const version = 'v1.1';
+const version = 'v1.2';
+const sm = game.modules.get('swademacros')?.api.sm;
 const chatimage = 'icons/skills/wounds/bone-broken-marrow-red.webp';
 /*
 Failing Damage
@@ -91,7 +92,7 @@ async function main() {
     `<div>
         <details>
           <summary>Fall Calculation (click to expand)</summary>
-          <p>Provide a falling depth in &rdquo; (squares on the tabletop; each equals 2 yards &cong; 2 meters).</p>
+          <p>Provide a falling depth in &rdquo; (squares on the tabletop; each equals 2 yards &cong; 2 meters &cong; 10 feet).</p>
           <p>Snow and other soft ground reduces the damage. Provide a depth in feet (&cong; 30 cm) if applicable or leave it at 0 if not.</p>
           <p>Falling in water allows an Athletics roll. If applicable provide the degree of success. If not applicable or if the roll was failed, leave it at "n/a".</p>
         </details> <br>

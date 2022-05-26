@@ -1,4 +1,5 @@
-const version = 'v0.3';
+const version = 'v0.4';
+const sm = game.modules.get('swademacros')?.api.sm;
 const itemName = 'Potion of Speed';
 const icon = 'icons/consumables/potions/bottle-conical-corked-purple.webp';
 

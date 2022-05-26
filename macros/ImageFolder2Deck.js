@@ -1,4 +1,5 @@
-const version = '1.1';
+const version = '1.2';
+const sm = game.modules.get('swademacros')?.api.sm;
 const defaultPath = 'modules/swadecore/images/adventure-deck';
 
 main();

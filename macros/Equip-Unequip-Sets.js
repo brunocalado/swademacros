@@ -5,7 +5,8 @@ Macros for SWADE
 const setName1 = '#equipSet1';
 const setName2 = '#equipSet2';
 
-const version = 'v0.2';
+const version = 'v0.3';
+const sm = game.modules.get('swademacros')?.api.sm;
 
 let tokenD;
 if (canvas.tokens.controlled[0]===undefined) {

@@ -5,6 +5,7 @@ docs: https://gitlab.com/peginc/swade/-/wikis/active-effects#attribute-keys
 
 const version = 'v1.7';
 const icon = "icons/magic/symbols/rune-sigil-green.webp";
+const sm = game.modules.get('swademacros')?.api.sm;
 
 if ( canvas.tokens.controlled[0]===undefined && Array.from(game.user.targets)[0]===undefined ) {
   ui.notifications.error("Please, select or target a token."); // No Token is Selected
@@ -88,11 +89,13 @@ function main() {
       skills2.forEach(function(item){
          var option = document.createElement('option');
          option.value = item + ' Skill Die';
+         option.textContent = item;
          list.appendChild(option);
       });
       skills2.forEach(function(item){
          var option = document.createElement('option');
          option.value = item + ' Skill Modifier';
+         option.textContent = item;
          list.appendChild(option);
       });    
     </script>

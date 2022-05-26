@@ -1,4 +1,7 @@
 
+const version = '1.0';
+const sm = game.modules.get('swademacros')?.api.sm;
+
 const iconSize = 45;
 const icon = 'icons/skills/movement/arrow-upward-yellow.webp';
 const failureIcon = 'icons/magic/death/bones-crossed-orange.webp';

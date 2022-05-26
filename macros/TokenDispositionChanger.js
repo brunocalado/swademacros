@@ -1,4 +1,5 @@
-const version = '1.0';
+const version = '1.1';
+const sm = game.modules.get('swademacros')?.api.sm;
 let tokens = [...new Set([...canvas.tokens.controlled, ...game.user.targets])]; //use deduplication to get rid of those which are both, selected and targeted:
 let applyChanges = false;
 

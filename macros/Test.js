@@ -1,4 +1,5 @@
-const version = 'v1.3';
+const version = 'v1.4';
+const sm = game.modules.get('swademacros')?.api.sm;
 const chatimage = 'icons/skills/ranged/arrow-strike-apple-orange.webp';
 let coreRules = sm.isModuleOn("swade-core-rules");
 if (game.modules.get("swade-core-rules")?.active) { coreRules = true; }
@@ -96,17 +97,8 @@ async function testTarget(html) {
   let word1 = 'Distracted';
   let word2 = 'Vulnerable';
   let word3 = 'Shaken';
-  if (coreRules) {
-    word1 = '@Compendium[swade-core-rules.swade-rules.R5Zjq1jL3Xc5VkcH]{Distracted}';
-    word2 = '@Compendium[swade-core-rules.swade-rules.R5Zjq1jL3Xc5VkcH]{Vulnerable}';
-    word3 = '@Compendium[swade-core-rules.swade-rules.HM1iVVbYciEa7X57]{Shaken}';
-  }
 
-  if (coreRules) {
-    message = `<div class="swade-core"><h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> @Compendium[swade-core-rules.swade-rules.qxPv5O5AJdAKbVFi]{Test}</h2><div>`;
-  } else {
-    message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Push</h2>`;
-  }   
+  message = `<h2><img style="vertical-align:middle" src=${chatimage} width="28" height="28"> Test</h2>`;
   
   supporterRolled = await sm.rollSkill(supporter, skillSupporter);  
   total = supporterRolled.total;
@@ -142,9 +134,25 @@ async function testTarget(html) {
 }
 
 async function creativeCombatMessage() {
+  // ------------------------
+  // Select the table
+  let tableCreativeCombatID;
+  let tableCreativeCombat;
+
+  let myTablePath = game.settings.get("swademacros", "creativecombattablepath");
+  if (myTablePath=='SWADE') {
+    myTablePath = "swade-core-rules.swade-tables";
+    tableCreativeCombatID = await game.packs.get(myTablePath).index.find(el => el.name == "Creative Combat")._id;
+    tableCreativeCombat = await game.packs.get(myTablePath).getDocument( tableCreativeCombatID );    
+  } else if (myTablePath=='SWPF') {
+    myTablePath = "swpf-core-rules.swpf-tables";
+    tableCreativeCombatID = await game.packs.get(myTablePath).index.find(el => el.name == "Creative Combat")._id;
+    tableCreativeCombat = await game.packs.get(myTablePath).getDocument( tableCreativeCombatID );        
+  } else {
+    tableCreativeCombat = await game.tables.getName('myTablePath');  
+  }  
+  
   let message=``;
-  const tableCreativeCombatID = await game.packs.get("swade-core-rules.swade-tables").index.find(el => el.name == "Creative Combat")._id;
-  let tableCreativeCombat = await game.packs.get("swade-core-rules.swade-tables").getDocument( tableCreativeCombatID );
 
   let output = await tableCreativeCombat.roll();
   let result = output.results[0].data.text;

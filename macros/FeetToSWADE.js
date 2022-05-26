@@ -6,9 +6,10 @@ source:
 icon: icons/tools/navigation/map-chart-tan.webp 
 */
 
-const version = 'v1.1';
+const version = 'v1.2';
+const sm = game.modules.get('swademacros')?.api.sm;
 
-main()
+main();
 
 async function main() {
   new Dialog({

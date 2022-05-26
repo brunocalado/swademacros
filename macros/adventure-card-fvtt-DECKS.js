@@ -1,4 +1,4 @@
-/* Adventure Deck
+/* Adventure Deck for Decks
 source:
 icon: icons/sundries/gaming/playing-cards-grey.webp
 
@@ -6,8 +6,9 @@ SNIPPETS: https://gitlab.com/peginc/swade/-/blob/develop/src/module/chaseUtils.t
 API: https://foundryvtt.com/api/Cards.html#_drawCards
 */
 
-const version = 'v1.0';
+const version = 'v1.1';
 const icon = 'icons/sundries/gaming/playing-cards-grey.webp';
+const sm = game.modules.get('swademacros')?.api.sm;
 const adventureCardName = 'Adventure Card';
 const flagType = 'Adventure Card'
 const showTableDrawToChat = false;

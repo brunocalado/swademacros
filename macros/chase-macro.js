@@ -1,4 +1,5 @@
-const version = 'v1.8';
+const version = 'v1.9';
+const sm = game.modules.get('swademacros')?.api.sm;
 const defaultTable = game.settings.get("swademacros", "chasedecktable");
 
 /* Chase
@@ -9,6 +10,8 @@ Features
 source:
 icon: icons/sundries/gaming/playing-cards.webp
 */
+
+main();
 
 async function makeTiles(html) {
     let spacingX = parseInt(html.find('#spacing-x')[0].value);
@@ -220,4 +223,3 @@ function main() {
     }).render(true);
 }
 
-main();

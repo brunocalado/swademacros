@@ -1,5 +1,5 @@
 # Macros for SWADE
-Simple macros for SWADE.
+Simple macros for Savage Worlds Adventure Edition (SWADE).
 
 <table>
 <thead>
@@ -27,7 +27,7 @@ Simple macros for SWADE.
 </thead>
 </table> 
 
-# Instalation
+# Installation
 
 ## Foundry VTT
 Search **Macros for SWADE** in modules.
@@ -43,7 +43,7 @@ These macros will only be updated for v9+. If you need the v8 macros download [t
 
 There is a Journal in the compendium. Read it! All instructions in there.
 
-# Macros
+## Macros
 
 There is a journal with the module with instructions for each macro.
 

@@ -1,10 +1,11 @@
-/* Adventure Deck
+/* Adventure Deck for Tables
 source:
 icon: icons/sundries/gaming/playing-cards-grey.webp
 
 */
-const version = 'v1.4';
+const version = 'v1.5';
 const icon = 'icons/sundries/gaming/playing-cards-grey.webp';
+const sm = game.modules.get('swademacros')?.api.sm;
 const adventureCardName = 'Adventure Card';
 const flagType = 'Adventure Card'
 const showTableDrawToChat = false;

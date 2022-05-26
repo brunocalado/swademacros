@@ -4,7 +4,8 @@ icon: icons/magic/death/undead-ghost-scream-teal.webp
 */
 
 let tokenD;
-const version = 'v1.5';
+const version = 'v1.6';
+const sm = game.modules.get('swademacros')?.api.sm;
 const chatimage = "icons/magic/death/undead-ghost-scream-teal.webp";
 let coreRules = false;
 let rules = '@Compendium[swade-core-rules.swade-rules.jaYcLBJnBk1ai5EH]{Fear}';
