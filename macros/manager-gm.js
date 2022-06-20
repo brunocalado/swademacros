@@ -1,4 +1,4 @@
-const version = '1.0';
+const version = '1.1';
 const sm = game.modules.get('swademacros')?.api.sm;
 
 /*
@@ -25,6 +25,7 @@ const managerType = 'GM - Macro Manager';
     "Mass Roll",
     "Raise Calculator",
     "Size/Scale Calculator",
+    "Social Conflict",
     "Quick Combat",
     "Token Disposition Changer"
   ];

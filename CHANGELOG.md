@@ -1,3 +1,9 @@
+# 0.8.4
+- dramatic task update for challenge Tracker module
+- social conflict macro for challenge Tracker module
+- docs
+- gm manager update
+
 # 0.8.3
 WARNING!!! AUTO UPDATE MACROS MUST BE IMPORTED AGAIN! THIS IS A ONE TIME THING.
 - esmodules: better for future
