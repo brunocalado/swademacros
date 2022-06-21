@@ -28,16 +28,26 @@ Hooks.once('init', function() {
     type: String
   });
 
+  // call this with: game.settings.get("swademacros", "chasedeck")
+  game.settings.register(moduleName, 'chasedeck', {
+    name: 'Chase Deck',
+    hint: 'Default name of the Deck where you want the macro Chase to drawn.',
+    scope: 'world',
+    config: true,
+    default: 'Action Cards',
+    type: String
+  });
+/*
   // call this with: game.settings.get("swademacros", "chasedecktable")
   game.settings.register(moduleName, 'chasedecktable', {
-    name: 'Chase Deck',
+    name: 'Chase Table',
     hint: 'Default name of the table where you want the macro Chase to drawn.',
     scope: 'world',
     config: true,
     default: 'Action Cards',
     type: String
   });
-
+*/
   // call this with: game.settings.get("swademacros", "interludedeck")
   game.settings.register(moduleName, 'interludedeck', {
     name: 'Interlude Deck',

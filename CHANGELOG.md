@@ -1,3 +1,9 @@
+# 0.8.5
+- requires: warpgate and tagger
+- docs
+- smart chase macro
+- test scenes
+
 # 0.8.4
 - dramatic task update for challenge Tracker module
 - social conflict macro for challenge Tracker module
