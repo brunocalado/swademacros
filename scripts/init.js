@@ -37,17 +37,7 @@ Hooks.once('init', function() {
     default: 'Action Cards',
     type: String
   });
-/*
-  // call this with: game.settings.get("swademacros", "chasedecktable")
-  game.settings.register(moduleName, 'chasedecktable', {
-    name: 'Chase Table',
-    hint: 'Default name of the table where you want the macro Chase to drawn.',
-    scope: 'world',
-    config: true,
-    default: 'Action Cards',
-    type: String
-  });
-*/
+
   // call this with: game.settings.get("swademacros", "interludedeck")
   game.settings.register(moduleName, 'interludedeck', {
     name: 'Interlude Deck',
@@ -77,6 +67,16 @@ Hooks.once('init', function() {
     default: 'SWADE',
     type: String
   });  
+
+  // call this with: game.settings.get("swademacros", "fixItemTrait")
+  game.settings.register(moduleName, 'fixItemTrait', {
+    name: 'Fix Item Trait Skills',
+    hint: 'Type the skills you want to be available for the macro. You must add a comma after each skill. Ex.: Fighting, Spellcasting, Occult, Faith',
+    default: 'Fighting, Spellcasting, Occult, Faith',
+    scope: 'world',
+    config: true,
+    type: String
+  });
 
   // --------------------------------------------------
   // Keybinding

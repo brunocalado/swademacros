@@ -1,3 +1,9 @@
+# 0.8.6
+- falling damage can ace
+- power point macro improve
+- fix item trait
+- docs
+
 # 0.8.5
 - requires: warpgate and tagger
 - docs

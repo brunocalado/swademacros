@@ -1,4 +1,4 @@
-const version = 'v1.2';
+const version = 'v1.3';
 const sm = game.modules.get('swademacros')?.api.sm;
 const chatimage = 'icons/skills/wounds/bone-broken-marrow-red.webp';
 /*
@@ -34,7 +34,7 @@ main();
 //roll the damage the character takes based on the distance:
 async function roll_damage(token, fallingDepth, snowDepth, waterSuccess) {
   let halvedDepth = Math.min( Math.ceil(fallingDepth / 2), 10); //damage per 2" - max 10
-  let damageFormula = `(${halvedDepth}d6)+${halvedDepth}`;
+  let damageFormula = `(${halvedDepth}d6x)+${halvedDepth}`;
   let rollDamage = await new Roll(`${damageFormula}`).roll({ async : false });
   await rollDamage.toMessage(); // 3d dice
   let damage = rollDamage.total;

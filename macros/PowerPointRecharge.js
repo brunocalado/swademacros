@@ -4,7 +4,7 @@
 icon: icons/magic/symbols/elements-air-earth-fire-water.webp
 */
 
-const version = 'v1.1';
+const version = 'v1.2';
 const sm = game.modules.get('swademacros')?.api.sm;
 const chatimage = "icons/magic/symbols/elements-air-earth-fire-water.webp";
 const rule = '@Compendium[swade-core-rules.swade-rules.6SGCG8rZNklN3U6w]{Recharging}';
@@ -134,8 +134,34 @@ async function manualChange(html) {
 }
 
 async function changePowerPoints(tokenD, val) {
-  let maximumPP = tokenD.actor.data.data.powerPoints.max;
-  let currentPP = tokenD.actor.data.data.powerPoints.value;
+  const power = tokenD.actor.data.data.powerPoints;  
+  let maximumPP = power.max;
+  let currentPP = power.value;
+  
+  const newValue = Math.clamped( currentPP + val, 0, maximumPP);
+  await tokenD.actor.update({ "data.powerPoints.value": newValue });    
+}
+
+
+// Replace if with: Math.min(Math.max(currentPP+val, 0), maximumPP); in place of the if/else block
+/*
+const tokenD = canvas.tokens.controlled[0];
+
+async function changePowerPoints(tokenD, val) {
+  const powerName = "Miracles (Sun)"
+
+  const miraclePower = tokenD.actor.data.data.powerPoints[name];
+
+  const maximumPP    = miraclePower.max;
+  const currentPP    = miraclePower.value;
+
+  console.log("Max PP = " + maximumPP.toString());
+  console.log("Current PP = " + currentPP.toString());  
+
+  const newValue = Math.clamped( currentPP + val, 0, maximumPP);
+  console.log('New value should be ' + (currentPP+val).toString());
+  await tokenD.actor.update({[`data.powerPoints.${powerName}.value`]:newValue});  
+  //old
   
   if ( (currentPP+val)> maximumPP ) {
     await tokenD.actor.update({ "data.powerPoints.value": maximumPP });    
@@ -143,6 +169,8 @@ async function changePowerPoints(tokenD, val) {
     await tokenD.actor.update({ "data.powerPoints.value": 0 });    
   } else {
     await tokenD.actor.update({ "data.powerPoints.value": (currentPP+val) });    
-  }  
+  }    
 }
 
+changePowerPoints(tokenD, 3);
+*/
