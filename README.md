@@ -6,21 +6,21 @@ Simple macros for Savage Worlds Adventure Edition (SWADE).
   <tr>
     <th>
       <p align="center">
-        <img width="1000" src="docs/preview01.jpg">
+        <img width="800" src="docs/preview01.jpg">
       </p>
     </th>
   </tr>
   <tr>
     <th>
       <p align="center">
-        <img width="600" src="docs/preview02.jpg">
+        <img width="600" src="docs/macromanager.webp">
       </p>
     </th>    
   </tr>  
   <tr>
     <th>
       <p align="center">
-        <img width="500" src="docs/preview03.jpg">
+        <img width="600" src="docs/preview03.jpg">
       </p>
     </th>    
   </tr>    

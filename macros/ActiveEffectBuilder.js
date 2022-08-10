@@ -3,7 +3,7 @@
 docs: https://gitlab.com/peginc/swade/-/wikis/active-effects#attribute-keys
 */
 
-const version = 'v1.7';
+const version = 'v1.8';
 const icon = "icons/magic/symbols/rune-sigil-green.webp";
 const sm = game.modules.get('swademacros')?.api.sm;
 
@@ -64,6 +64,8 @@ function main() {
           <option value="data.initiative.hasQuick">Quick</option>         
 
           <option value="data.attributes.strength.encumbranceSteps">Encumbrance Steps</option>                   
+          
+          <option value="simple.tracker">Simple Tracker</option>                             
         </datalist>  
       </div>
       <div class="form-group">
@@ -133,7 +135,7 @@ async function applyActiveEffect(html) {
   let aeExpirationBehavior = html.find('[name="select-aeExpirationBehavior"]')[0].value;
 
   let myActiveEffect;
-
+  let myChanges=[];
   let aemode = keyToMode(aekey);
   aevalue = keyToValue(aekey, aevalue);
   let tagToKey = skillToKey(aekey);
@@ -141,8 +143,13 @@ async function applyActiveEffect(html) {
     aekey = tagToKey;
   }
 
-  if ( aename=='effect 1') {
-    aename = autoNaming(aekey);
+  if ( aename=='effect 1') aename = autoNaming(aekey);
+  
+  if ( aekey!='simple.tracker') {
+    myChanges = [{
+      "key": aekey,
+      "value": aevalue, mode: aemode 
+    }];    
   }
 
   if ( aeturns!=0) {
@@ -152,16 +159,14 @@ async function applyActiveEffect(html) {
           aename:{
             label: aename,
             icon : icon,
-            changes: [{
-              "key": aekey,
-              "value": aevalue, mode: aemode 
-            }],
+            changes: myChanges,
             duration: {
-              "rounds": 5
+              "rounds": aeturns
             },
             flags: {
               swade: {
-                "expiration": expirationBehaviorCode(aeExpirationBehavior)
+                "expiration": expirationBehaviorCode(aeExpirationBehavior),
+                "favorite": true
               }
             }  
           }
@@ -175,15 +180,19 @@ async function applyActiveEffect(html) {
           aename: {
             label: aename,
             icon : icon,
-            changes: [{
-              "key": aekey,
-              "value": aevalue, mode: aemode 
-            }]
+            changes: myChanges,
+            flags: {
+              swade: {
+                "favorite": true
+              }
+            }             
           }
         }
       }
     }
   }
+
+
 
   //----------------------------------
   for (let tokenD of canvas.tokens.controlled) {

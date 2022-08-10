@@ -5,6 +5,7 @@ const rankSeasoned = 'Seasoned';
 const rankVeteran = 'Veteran';
 const rankHeroic = 'Heroic';
 const rankLegendary = 'Legendary';
+const craftFolder = 'Craft - Scroll';
 
 /* Scroll Craft for Savage Pathfinder 
 source: 
@@ -17,7 +18,7 @@ power’s Rank × the number of Power Points it uses; then multiply that total b
 
 */
 
-const version = 'v0.1';
+const version = 'v0.2';
 const sm = game.modules.get('swademacros')?.api.sm;
 const icon = "icons/sundries/scrolls/scroll-plain-red.webp";
 
@@ -77,8 +78,11 @@ async function main() {
       
       </br>
       <h3>Options</h3>
-      <input type = "checkbox" id = "createItem" name = "createItem">
-      <label for = "createItem"> Create Item? </ label>      
+      <input type = "checkbox" id = "createItem" name = "createItem" checked>
+      <label for = "createItem"> Create Item? </ label>   
+
+      <input type = "checkbox" id = "shareItem" name = "shareItem" checked>
+      <label for = "shareItem"> Share with Players? </ label>          
   `;
   
   new Dialog({
@@ -91,10 +95,14 @@ async function main() {
           let powerLabel = html.find("#aeType")[0].value;
           let modifierPoints = Number( html.find('[name="modifierPoints"]')[0].value );
           let createItem = html.find("#createItem")[0].checked;
+          let shareItem = html.find("#shareItem")[0].checked;
           let modifierMessage = html.find('[name="modifierMessage"]')[0].value;
 
           let power = await getPower( compendiumLabel, powerLabel );
-          if(!power) return;
+          if(!power) {
+            ui.notifications.warn('You must select a power!');
+            return;
+          }
           let rankMultiplier = rankToNumber( power.data.data.rank );
           let powerPointCost = Number(power.data.data.pp);
           let finalCraftCost = (rankMultiplier*(powerPointCost+modifierPoints))*25;
@@ -106,22 +114,24 @@ async function main() {
           <p><b>Reading a scroll is an action</b> and requires a Smarts roll or arcane skill roll (caster’s choice). If the roll is successful, the power activates and the scroll fades.</p>          
           <h2>Power Description</h2>
           </div>`;
-          console.log( '-----------------' );
-          console.log( power );
-          console.log( rankMultiplier );
-          console.log( powerPointCost );
-          console.log( finalCraftCost );
+
+          const folder = await sm.getFolder(craftFolder, 'Item');
+
           let data = {
             "name": 'Scroll: ' + power.name,
             "type": "gear",
             "img": icon,
+            "folder": folder,
             "data": {
-            "description": extraMessage + power.data.data.description,
-            "quantity": 1,
-            "weight": 0.1,
-            "price": finalCraftCost,
-            "equippable": true
-            }
+              "description": extraMessage + power.data.data.description,
+              "quantity": 1,
+              "weight": 0.1,
+              "price": finalCraftCost,
+              "equippable": true
+            },
+            "permission": {
+              "default": shareItem ? 3 : 0
+            }            
           };    
           
           const scroll = await Item.createDocuments([data]);                
@@ -169,27 +179,3 @@ function rankToNumber( rank ) {
       console.log(`Unknown rank: ${rank}.`);
   }
 }    
-
-//compendium = await game.packs.find(p=>p.metadata.label==compendiumLabel)
-
-
-/*
-
-let compendium = await game.packs.find(p=>p.metadata.label==compendiumLabel).getDocuments()
- powers = compendium.filter(p=> p.type=='power');
- power = powers.filter(p=> p.type=='Shape Change');
- powers.filter(p=>p.name=='Blind')
-  for (power of powers ) {
-    console.log(power.id)
-    console.log(power.name)
-    console.log(power.data.data.description)
-  }
-  
-  
-let compendium = await game.packs.find(p=>p.metadata.label==compendiumLabel)
-  
-  
-  
-  
-  
-  */

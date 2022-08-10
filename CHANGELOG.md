@@ -1,3 +1,13 @@
+# 0.8.8
+- craft swpf scroll goes to folder, can define permission
+- craft swpf masterwork
+- api folder create 
+- removed macro manager, use the module macro manager, it's a lot better
+- active effect builder set the ae as favorite by default
+- active effect builder turns fix
+- active effect builder simple tracker
+- docs
+
 # 0.8.6
 - falling damage can ace
 - power point macro improve

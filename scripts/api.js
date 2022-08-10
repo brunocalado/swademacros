@@ -332,6 +332,20 @@ export class sm {
     else { return false; }
   }
 
+  // Folder
+  static async getFolder(folderName, folderType) {
+    let folder;
+    if( game.folders.filter(f => f.type === folderType).find(f => f.name === folderName)===undefined) {
+      folder = await Folder.create( {
+        name: folderName,
+        type: folderType
+      } );
+    } else {
+      folder = game.folders.find( f => f.name === folderName);
+    }
+    return folder;
+  }  
+
   // ---------------------------------------------------------------
   // Alchemy
   static async getItem(tokenD, itemName) {    

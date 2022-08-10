@@ -1,3 +1,3 @@
 - easy shape change
 - Quick apply skill to powers
-- 
+- https://github.com/foundryvtt/foundryvtt/issues/7686
