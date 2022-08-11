@@ -1,6 +1,6 @@
 // CUSTOMIZE
 const compendiumLabel = 'Savage Pathfinder Gear'; // YOU CAN REPLACE THIS FOR ANOTHER COMPENDIUM LABEL
-const suffix = '[Masterwork]';
+const suffix = '⭐';
 const craftFolder = 'Craft - Masterwork';
 
 /* Masterwork
@@ -17,7 +17,7 @@ reduce the Minimum Strength requirement by one die type, to a minimum of d4. Shi
 
 */
 
-const version = 'v0.2';
+const version = 'v0.3';
 const icon = "icons/tools/smithing/anvil.webp";
 const sm = game.modules.get('swademacros')?.api.sm;
 let coreRules = false;
@@ -75,7 +75,7 @@ async function main() {
     content: template,
     buttons: {
       ok: {
-        label: "Craft",
+        label: `<i class="fas fa-magic"></i> Craft`,
         callback: async (html) => {
           let itemLabel = html.find("#aeType")[0].value;
           let shareItem = html.find("#shareItem")[0].checked;
@@ -85,17 +85,14 @@ async function main() {
             ui.notifications.warn('You must select an item!');
             return;
           }
-          const itemData = await forgeMasterwork(item.toObject())
-          if (forgedItem) itemData.permission.default = 3;
+          const itemData = await forgeMasterwork( item.toObject(), shareItem );
           const forgedItem = await Item.createDocuments([itemData]);                
           game.items.get(forgedItem[0].id).sheet.render(true);
         // END CALLBACK  
         },
-      },
-      cancel: {
-        label: "Cancel",
       }
     },
+    default: "ok"
   }).render(true);
 }
 
@@ -117,7 +114,8 @@ async function getItem( compendiumLabel='Savage Pathfinder Gear', itemLabel ) {
   return items.find(p=> p.name==itemLabel);
 }    
 
-async function forgeMasterwork( data ) {
+// v0.1
+async function forgeMasterwork( data, permissionLevel ) {
   let description = '';
   if ( data.type=='shield') {
     const minStr = parseInt( data.data.minStr.toLowerCase().replace('d', '') );
@@ -160,6 +158,7 @@ async function forgeMasterwork( data ) {
     data.data.description = description + data.data.description;
     data.data.price = data.data.price + 6;    
   }
+  if (permissionLevel) data.permission.default = 3;
   const folder = await sm.getFolder(craftFolder, 'Item');
   data.folder = folder;
   data.name = `${suffix} ${data.name}`;

@@ -18,18 +18,14 @@ power’s Rank × the number of Power Points it uses; then multiply that total b
 
 */
 
-const version = 'v0.2';
+const version = 'v0.3';
 const sm = game.modules.get('swademacros')?.api.sm;
 const icon = "icons/sundries/scrolls/scroll-plain-red.webp";
 
 let coreRules = false;
 if (game.modules.get("swpf-core-rules")?.active) { coreRules = true; }
 
-if ( canvas.tokens.controlled[0]===undefined ) {
-  main();
-} else {
-  main();
-}
+main();
 
 async function main() {
   let tokenD = canvas.tokens.controlled[0];
@@ -78,23 +74,20 @@ async function main() {
       
       </br>
       <h3>Options</h3>
-      <input type = "checkbox" id = "createItem" name = "createItem" checked>
-      <label for = "createItem"> Create Item? </ label>   
-
       <input type = "checkbox" id = "shareItem" name = "shareItem" checked>
       <label for = "shareItem"> Share with Players? </ label>          
+      </br></br>
   `;
   
   new Dialog({
     title: `Scroll Craft for Savage Pathfinder - ${version}`,
     content: template,
-    buttons: {
+    buttons: {  
       ok: {
-        label: "Craft",
+        label: `<i class="fas fa-magic"></i> Craft`,
         callback: async (html) => {
           let powerLabel = html.find("#aeType")[0].value;
           let modifierPoints = Number( html.find('[name="modifierPoints"]')[0].value );
-          let createItem = html.find("#createItem")[0].checked;
           let shareItem = html.find("#shareItem")[0].checked;
           let modifierMessage = html.find('[name="modifierMessage"]')[0].value;
 
@@ -136,12 +129,10 @@ async function main() {
           
           const scroll = await Item.createDocuments([data]);                
           game.items.get(scroll[0].id).sheet.render(true);
-        },
-      },
-      cancel: {
-        label: "Cancel",
-      },
+        }
+      }
     },
+    default: "ok"
   }).render(true);
 }
 

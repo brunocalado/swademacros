@@ -1,3 +1,9 @@
+# 0.8.9
+- craft swpf scroll fix
+- Enchantments swpf
+- craft swpf masterwork fix
+- docs
+
 # 0.8.8
 - craft swpf scroll goes to folder, can define permission
 - craft swpf masterwork
