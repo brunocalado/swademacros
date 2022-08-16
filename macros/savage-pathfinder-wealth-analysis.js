@@ -5,12 +5,12 @@ icon: icons/commodities/currency/coins-plain-stack-gold-yellow.webp
 TODO
 */
 
-const version = 'v0.2';
+const version = 'v0.3';
 const sm = game.modules.get('swademacros')?.api.sm;
 const icon = "icons/commodities/currency/coins-plain-stack-gold-yellow.webp";
 
 if ( canvas.tokens.controlled[0]===undefined ) {
-  ui.notifications.error("Please, select or target a token."); // No Token is Selected
+  ui.notifications.error("Please, select some tokens."); // No Token is Selected
 } else {
   main();
 }
@@ -100,38 +100,53 @@ function getGearPrice(character) {
 }
 
 function suggestion(rank, total) {
-  let message=`<b style="color:black;">It's OK.</b>`;
-  let messageFlag = false;
+  let selectedMessage;
+
   if (rank=='Novice') { 
     if (total<300) {
-      message = `<b style="color:green;">Give me More Gold!</b>`;
-    } else {
-      message = `<b style="color:red;">Too Much Gold on this guy!</b>`;
+      selectedMessage=1; //Give me More Gold!
+    } else if (total>=300 && total<10000) {
+      selectedMessage=2;//It's OK.
+    } else if (total>=10000) {
+      selectedMessage=3;//Too Much Gold on this guy!
     }    
   } else if (rank=='Seasoned') { 
     if (total<10000) {
-      message = `<b style="color:green;">Give me More Gold!</b>`;
-    } else {
-      message = `<b style="color:red;">Too Much Gold on this guy!</b>`;
-    }    
+      selectedMessage=1; //Give me More Gold!
+    } else if (total>=10000 && total<40000) {
+      selectedMessage=2;//It's OK.
+    } else if (total>=40000) {
+      selectedMessage=3;//Too Much Gold on this guy!
+    }     
   } else if (rank=='Veteran') { 
     if (total<40000) {
-      message = `<b style="color:green;">Give me More Gold!</b>`;
-    } else {
-      message = `<b style="color:red;">Too Much Gold on this guy!</b>`;
-    }      
+      selectedMessage=1; //Give me More Gold!
+    } else if (total>=40000 && total<150000) {
+      selectedMessage=2;//It's OK.
+    } else if (total>=150000) {
+      selectedMessage=3;//Too Much Gold on this guy!
+    }       
   } else if (rank=='Heroic') { 
     if (total<150000) {
-      message = `<b style="color:green;">Give me More Gold!</b>`;
-    } else {
-      message = `<b style="color:red;">Too Much Gold on this guy!</b>`;
-    }      
+      selectedMessage=1; //Give me More Gold!
+    } else if (total>=150000 && total<500000) {
+      selectedMessage=2;//It's OK.
+    } else if (total>=500000) {
+      selectedMessage=3;//Too Much Gold on this guy!
+    }       
   } else if (rank=='Legendary') { 
     if (total<500000) {
-      message = `<b style="color:green;">Give me More Gold!</b>`;
-    } else {
-      message = `<b style="color:red;">Too Much Gold on this guy!</b>`;
-    }      
+      selectedMessage=1; //Give me More Gold!
+    } else if (total>=500000) {
+      selectedMessage=2;//It's OK.
+    }     
   }
-  return message;
+
+  if (selectedMessage==1) {
+    return `<b style="color:green;">Give me More Gold!</b>`;
+  } else if (selectedMessage==2) {
+    return `<b style="color:black;">It's OK.</b>`;
+  } else if (selectedMessage==3) {
+    return `<b style="color:red;">Too Much Gold on this guy!</b>`;
+  }
 }

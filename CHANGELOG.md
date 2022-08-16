@@ -1,3 +1,6 @@
+# 0.9.2
+- savage-pathfinder-wealth-analysis fix guess
+
 # 0.9.1
 - savage-pathfinder-wealth-analysis fix + improve
 
