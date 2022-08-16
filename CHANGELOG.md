@@ -1,3 +1,6 @@
+# 0.9.1
+- savage-pathfinder-wealth-analysis fix + improve
+
 # 0.9.0
 - savage-pathfinder-wealth-analysis
 

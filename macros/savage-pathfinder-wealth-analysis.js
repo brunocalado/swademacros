@@ -3,14 +3,9 @@ source:
 icon: icons/commodities/currency/coins-plain-stack-gold-yellow.webp
 
 TODO
-read selectc tokens
-read coins quantity
-read all items, get their value 
-show token and value
-out: gold: xxx / items: xxx / total: xxx
 */
 
-const version = 'v0.1';
+const version = 'v0.2';
 const sm = game.modules.get('swademacros')?.api.sm;
 const icon = "icons/commodities/currency/coins-plain-stack-gold-yellow.webp";
 
@@ -27,13 +22,16 @@ function main() {
   let currentHeroPointsList = '';
   for (var tokenD of tokens) {
     const character = game.actors.get(tokenD.actor.id);
+    const rank = character.data.data.advances.rank;
     var copper = getCoinsTotal(getCoins(character, 'Copper') );
     var silver = getCoinsTotal(getCoins(character, 'Silver') );
     var gold = getCoinsTotal(getCoins(character, 'Gold') );
     var platinum = getCoinsTotal(getCoins(character, 'Platinum') );
-    var totalCoins = Math.floor(silver/10) + Math.floor(copper/100) + Math.floor(platinum*10) + gold;
-    var totalGearValue = getGearPrice(character);
-    currentHeroPointsList += `<p><b>${character.name}</b> <b>(${character.data.data.advances.rank})</b></p>`;
+    
+    var totalCoins =  Math.round( Math.floor(silver/10) + Math.floor(copper/100) + Math.floor(platinum*10) + parseInt(gold) );
+    
+    var totalGearValue = Math.round( getGearPrice(character) );
+    currentHeroPointsList += `<p><b>${character.name}</b> <b>(${rank})</b> - ${ suggestion(rank, totalCoins+totalGearValue) }</p>`;
     currentHeroPointsList += `<ul>
     <li>Total: <b>${totalCoins+totalGearValue}</b></li>
     <li>Gold (coins): <b>${totalCoins}</b></li>
@@ -44,7 +42,7 @@ function main() {
 
   let template = ` 
   <h2>Core (p16)</h2>
-  <p><b>Seasoned heroes have 10,000</b> gold pieces worth of goods and magic items, <b>Veteran</b> characters get <b>40,000</b>, <b>Heroic 150,000</b>, and <b>Legendary 500,000</b>.</p>
+  <p><b>Seasoned heroes have 10,000</b> gold pieces worth of goods and magic items, <b>Veteran</b> characters get <b>40,000</b>, <b>Heroic 150,000</b>, and <b>Legendary 500,000</b>. Starting characters (Novice) have 300 gold.</p>
   
   <h2>Current Wealth</h2>
   <ul>
@@ -64,7 +62,6 @@ function main() {
     },
   }).render(true);
 }
-
 
 // -------------------------------------------------------
 // Functions
@@ -95,7 +92,46 @@ function getGearPrice(character) {
   let gear;
   gear = character.items.filter(e => e.type==='gear' || e.type==='weapon' || e.type==='armor' || e.type==='shield');  
   
-  const sum = gear.reduce((total, item) => total += item.data.data.price, 0);
-  
-  return sum;
+  let total=0;
+  for (const item of gear) {
+    if (item.data.data.price) total = total + parseFloat(item.data.data.price);
+  }
+  return total;
+}
+
+function suggestion(rank, total) {
+  let message=`<b style="color:black;">It's OK.</b>`;
+  let messageFlag = false;
+  if (rank=='Novice') { 
+    if (total<300) {
+      message = `<b style="color:green;">Give me More Gold!</b>`;
+    } else {
+      message = `<b style="color:red;">Too Much Gold on this guy!</b>`;
+    }    
+  } else if (rank=='Seasoned') { 
+    if (total<10000) {
+      message = `<b style="color:green;">Give me More Gold!</b>`;
+    } else {
+      message = `<b style="color:red;">Too Much Gold on this guy!</b>`;
+    }    
+  } else if (rank=='Veteran') { 
+    if (total<40000) {
+      message = `<b style="color:green;">Give me More Gold!</b>`;
+    } else {
+      message = `<b style="color:red;">Too Much Gold on this guy!</b>`;
+    }      
+  } else if (rank=='Heroic') { 
+    if (total<150000) {
+      message = `<b style="color:green;">Give me More Gold!</b>`;
+    } else {
+      message = `<b style="color:red;">Too Much Gold on this guy!</b>`;
+    }      
+  } else if (rank=='Legendary') { 
+    if (total<500000) {
+      message = `<b style="color:green;">Give me More Gold!</b>`;
+    } else {
+      message = `<b style="color:red;">Too Much Gold on this guy!</b>`;
+    }      
+  }
+  return message;
 }
