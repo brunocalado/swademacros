@@ -1,3 +1,6 @@
+# 0.9.0
+- savage-pathfinder-wealth-analysis
+
 # 0.8.9
 - craft swpf scroll fix
 - Enchantments swpf
