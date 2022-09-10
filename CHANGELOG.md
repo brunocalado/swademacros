@@ -1,3 +1,8 @@
+# 0.9.3
+- Enchantments swpf update
+- dramatic tasks fix
+- social conflict fix
+
 # 0.9.2
 - savage-pathfinder-wealth-analysis fix guess
 

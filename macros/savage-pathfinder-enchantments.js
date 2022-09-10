@@ -2,10 +2,13 @@
 const compendiumLabel = 'Savage Pathfinder Gear'; // YOU CAN REPLACE THIS FOR ANOTHER COMPENDIUM LABEL
 const craftFolder = 'Craft - Enchantments';
 const suffix = '🔮';
+//const extraGear = []; // You can add items filtered to the search box. Example: you will not find Arrow, you can add 'Arrow', it will try to find it.
+
+const version = 'v0.2';
 
 // RULES
 /*
-type: 'weapon', 'shield', 'armor', 'rweapon', 'mweapon'
+  type: 'weapon', 'shield', 'armor'
 */
 const enchants = {};
 enchants.accurate = {
@@ -32,6 +35,14 @@ enchants.brutal = {
   price: 5000,
   type: "weapon"
 }; 
+enchants.damaging = {
+  name: "Damaging",
+  quality: 1,
+  description: "The weapon’s damage increases by +1.",
+  cost: "Price: 3,000 gp. Craft: Smite, 1,500 gp.",
+  price: 3000,
+  type: "weapon"
+};
 enchants.dancing = {
   name: "Dancing",
   quality: 4,
@@ -194,6 +205,73 @@ enchants.spellresistance = {
   type: "shield"
 };
 
+//advanced swpf - armor/shield
+enchants.champion = {
+  name: "Champion",
+  quality: 1,
+  description: "Armor only. This armor property only works for good creatures with the challenge ability (such as cavaliers) or the smite evil ability (such as paladins). The wearer uses one of these abilities, the selected target reduces its melee attacks against the wearer by –2.",
+  cost: "Cost: 4,000 gp. Craft: Deflection.",
+  price: 4000,
+  type: "armor"
+};
+enchants.determination = {
+  name: "Determination",
+  quality: 2,
+  description: "A shield or armor with this property helps its owner fight on against seemingly impossible odds. She gains the Nerves of Steel Edge when wearing the armor or bearing the shield.",
+  cost: "Cost: 30,000 gp. Craft: Healing.",
+  price: 30000,
+  type: "shield,armor"
+};
+enchants.jousting = {
+  name: "Jousting",
+  quality: 1,
+  description: "Armor only. This suit of armor helps its wearer remain mounted and in control of his mount. She adds +2 to Riding rolls.",
+  cost: "Cost: 3,750 gp. Craft: boost Trait.",
+  price: 3750,
+  type: "armor"
+};
+enchants.righteous = {
+  name: "Righteous",
+  quality: 2,
+  description: "Armor only. Armor with this property is often engraved or enameled with religious symbols. Once per day, as a limited action, the wearer may increase his Size by +3 Each increase in Size grants the target a onestep increase to Strength and 1 point of Toughness. Righteous armor does not work for Evil creatures.",
+  cost: "Cost: 27,000 gp. Craft: Boost Trait, growth.",
+  price: 27000,
+  type: "armor"
+};
+//weapons
+enchants.allying = {
+  name: "Allying",
+  quality: 1,
+  description: "Melee Only. The weapon grants the wielder the Formation Fighter Edge while it is being used.",
+  cost: "Cost: 4,000 gp. Craft: Illusion.",
+  price: 4000,
+  type: "weapon"
+};
+enchants.dueling = {
+  name: "Dueling",
+  quality: 2,
+  description: "1-handed Melee Only. While drawn, a dueling weapon grants the character the Quick Edge. The bearer also gets a free reroll when attempting a called shot on a held item.",
+  cost: "Cost: 14,000 gp. Craft: Boost trait.",
+  price: 14000,
+  type: "weapon"
+};
+enchants.huntsman = {
+  name: "Huntsman",
+  quality: 1,
+  description: "A huntsman weapon helps its wielder locate and capture quarry. While it's in hand, he adds +1 to Survival (Tracking) rolls.",
+  cost: "Cost: 4,000 gp. Craft: Boost trait.",
+  price: 4000,
+  type: "weapon"
+};
+enchants.transformative = {
+  name: "Transformative",
+  quality: 1,
+  description: "Melee Only. A transformative weapon alters its shape at its wielder’s command, becoming any other melee weapon of the same general shape and handedness. For example, a transformative longsword can transform into any other one-handed melee weapon, such as a scimitar, flail, or trident; but not a great axe. The weapon retains all of its abilities, including enhancements and weapon properties, except those prohibited by its current shape. For example, a keen transformative weapon functions normally in the form of a piercing or slashing weapon, but loses it when in the shape of a bludgeoning weapon. When unattended, a transformative weapon reverts to its true shape.",
+  cost: "Cost: 10,000 gp. Craft: Create Object.",
+  price: 10000,
+  type: "weapon"
+};
+
 /* enchantments.
 TODO
 - FLAGs
@@ -203,7 +281,6 @@ TODO
 
 */
 
-const version = 'v0.1';
 const icon = "icons/weapons/swords/sword-flanged-lightning.webp";
 const sm = game.modules.get('swademacros')?.api.sm;
 let coreRules = false;

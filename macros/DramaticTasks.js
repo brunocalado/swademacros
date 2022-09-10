@@ -1,4 +1,4 @@
-const version = 'v1.2';
+const version = 'v1.4';
 const sm = game.modules.get('swademacros')?.api.sm;
 
 const chatimage = 'icons/commodities/tech/detonator-timer.webp';
@@ -156,7 +156,9 @@ function calculateTaskTokens(players, difficult, challengeTracker=false) {
   message+=`<ul><li>Task Tokens: <b style="color:red;">${tasksTokens}</b></li><li>Rounds: <b style="color:red;">${tasksTurns}</b></p>`;
   
   if (challengeTracker) {
-    ChallengeTracker.open(tasksTokens, tasksTurns);
+    ChallengeTracker.open({
+      outerTotal: tasksTokens, innerTotal: tasksTurns, title: 'Dramatic Task', windowed: true
+    })
   }  
   
   return message;
@@ -167,7 +169,9 @@ function customDramaticTask(tokens, turns, challengeTracker=false) {
   message+=`<ul><li>Task Tokens: <b style="color:red;">${tokens}</b></li><li>Rounds: <b style="color:red;">${turns}</b></p>`;
   
   if (challengeTracker) {
-    ChallengeTracker.open(tokens, turns);
+    ChallengeTracker.open({
+      outerTotal: tokens, innerTotal: turns, title: 'Dramatic Task', windowed: true
+    })
   }
   
   return message;

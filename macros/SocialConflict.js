@@ -1,4 +1,4 @@
-const version = 'v1.0';
+const version = 'v1.1';
 const sm = game.modules.get('swademacros')?.api.sm;
 
 const chatimage = 'icons/skills/social/trading-justice-scale-yellow.webp';
@@ -101,7 +101,10 @@ function customSocialConflict(tokens, turns, challengeTracker=false) {
   message+=`<ul><li>Task Tokens: <b style="color:red;">${tokens}</b></li><li>Rounds: <b style="color:red;">${turns}</b></p>`;
   
   if (challengeTracker) {
-    ChallengeTracker.open(tokens, turns);
+    //ChallengeTracker.open(tokens, turns);
+    ChallengeTracker.open({
+      outerTotal: tokens, innerTotal: turns, title: 'Social Conflict', windowed: true
+    })
   }
   
   return message;
